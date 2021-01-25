@@ -9,9 +9,11 @@ import LoginPage from './LoginPage';
 import ClassSearchPage from './ClassSearchPage';
 import GenerateSchedulesPage from './GenerateSchedulesPage';
 import SavedSchedulesPage from './SavedSchedulesPage';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   return (
+
     <Router>
       <div>
         <nav>

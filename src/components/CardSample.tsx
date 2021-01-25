@@ -1,10 +1,9 @@
 import React from 'react';
-import {Form, Button, Card, Alert} from "react-bootstap";
+import {Card} from "react-bootstrap";
 
 function cardSample() {
     return (
-
-    <Card></Card>
+ <Card></Card>
 
     );
 }
