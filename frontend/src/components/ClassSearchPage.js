@@ -1,8 +1,14 @@
 import React from 'react';
+import { Container, Row } from 'react-bootstrap';
+import '../style/Pages.css'
 
 function ClassSearchPage() {
     return (
-        <h2>Class Search</h2>
+        <Container>
+            <Row className='page-header'>
+                <h1>Class Search</h1>
+            </Row>
+        </Container>
     );
 }
 
