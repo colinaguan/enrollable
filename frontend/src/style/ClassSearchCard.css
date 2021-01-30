@@ -2,8 +2,17 @@
     width: 100%;
 }
 
-.class-body {
-    padding: 2rem;
+.class-card-body {
+    padding: 2rem !important;
+}
+
+.more-class-info {
+    color: #673ab7;
+}
+
+.more-class-info:hover {
+    color: #8561c5;
+    cursor: pointer;
 }
 
 .star-container {
