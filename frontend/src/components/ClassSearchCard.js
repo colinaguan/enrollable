@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Card, Modal, Button, Row, Col } from 'react-bootstrap';
+import { Card, Row, Col } from 'react-bootstrap';
 import { StarFill } from "react-bootstrap-icons";
 import ClassSearchModal from './ClassSearchModal';
 import '../style/ClassSearchCard.css'
@@ -20,7 +20,7 @@ function ClassSearchCard() {
                         <Card.Text>
                             MWF 10:00AM - 12:00PM
                         </Card.Text>
-                        <Card.Link onClick={handleShow}>
+                        <Card.Link onClick={handleShow} className='more-class-info'>
                             More class information...
                         </Card.Link>
                     </Col>
