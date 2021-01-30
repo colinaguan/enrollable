@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Card, Modal, Button, Row, Col } from 'react-bootstrap';
 import { StarFill } from "react-bootstrap-icons";
+import ClassSearchModal from './ClassSearchModal';
 import '../style/ClassSearchCard.css'
 
 function ClassSearchCard() {
 
     const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
     return (
@@ -29,17 +29,7 @@ function ClassSearchCard() {
                     </Col>
                 </Row>
             </Card.Body>
-            <Modal show={show} onHide={handleClose} animation={false}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Modal heading</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>Woohoo, you're reading this text in a modal!</Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={handleClose}>
-                        Close
-                    </Button>
-                </Modal.Footer>
-            </Modal>
+            <ClassSearchModal show={show} setShow={setShow}/>
         </Card>
     );
 }
