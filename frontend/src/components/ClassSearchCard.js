@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Card, Modal, Button, Row, Col } from 'react-bootstrap';
-// import StarOutlineIcon from '@material-ui/icons/StarOutline';
+import { StarFill } from "react-bootstrap-icons";
 import '../style/ClassSearchCard.css'
 
 function ClassSearchCard() {
@@ -11,7 +11,7 @@ function ClassSearchCard() {
 
     return (
         <Card className="class-card">
-            <Card.Body>
+            <Card.Body className='class-card-body'>
                 <Row>
                     <Col sm={10}>
                         <Card.Title>
@@ -24,8 +24,8 @@ function ClassSearchCard() {
                             More class information...
                         </Card.Link>
                     </Col>
-                    <Col sm={2}>
-                        star
+                    <Col sm={2} className='star-container'>
+                        <StarFill width={'40'} height={'40'}/>
                     </Col>
                 </Row>
             </Card.Body>
