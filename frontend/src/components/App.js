@@ -1,9 +1,10 @@
 import React from 'react';
 import {
+  BrowserRouter as Router,
   Switch,
-  Route
+  Route,
+  Link
 } from "react-router-dom";
-import Header from './Header';
 import LoginPage from './LoginPage';
 import ClassSearchPage from './ClassSearchPage';
 import GenerateSchedulesPage from './GenerateSchedulesPage';
@@ -12,7 +13,6 @@ import { AuthProvider } from "../contexts/AuthContext";
 
 function App() {
   return (
-
     <Router>
       <div>
         <nav>
@@ -50,7 +50,6 @@ function App() {
         </AuthProvider>
       </div>
     </Router>
-
   );
 }
 

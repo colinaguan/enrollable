@@ -64,9 +64,11 @@ function Signup() {
                     value={passwordConfirm}
                     onChange={(e) => setPasswordConfirm(e.target.value)}
                     required />
+                <div>
                 <button type="submit" id="signup" disabled={loading} onClick={handleSubmit}>
                     Sign Up
                 </button>
+                </div>
             </form>
         </div>  
     );

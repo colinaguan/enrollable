@@ -39,9 +39,11 @@ function Login() {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required />
+                <div>
                 <button type="submit" id="login" disabled={loading} onClick={handleSubmit}>
                     Login
                 </button>
+                </div>
             </form>
         </div>  
     );
