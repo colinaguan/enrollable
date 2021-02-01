@@ -8,7 +8,7 @@ function Signup() {
     const [passwordConfirm, setPasswordConfirm] = useState('')
     const [lastName, setLastName] = useState('')
     const [firstName, setFirstName] = useState('')
-    const { signup } = useAuth()
+    const { signup, firestoreInit } = useAuth()
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
     const history = useHistory()
@@ -24,12 +24,14 @@ function Signup() {
             setError('')
             setLoading(true)
             await signup(email, password) 
+            await firestoreInit(email, firstName, lastName)
             history.push("/search")
-        } catch {
-            setError('Fail to create an account')
+        } catch (error) {
+            setError(error.message)
         }
         setLoading(false)
     }
+
 
     return (
         <div>
@@ -65,6 +67,9 @@ function Signup() {
                     onChange={(e) => setPasswordConfirm(e.target.value)}
                     required />
                 <div>
+                <p className="errorMsg">
+                    {error}
+                </p>
                 <button type="submit" id="signup" disabled={loading} onClick={handleSubmit}>
                     Sign Up
                 </button>
