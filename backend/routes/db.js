@@ -5,25 +5,34 @@ var json = require('json');
 
 var classData = {};
 var items = {};
+var items2 = {};
 
 const getData=()=>{
+    console.log("get data start");
+    console.time('parse');
     fetch('https://andromeda.miragespace.net/slugsurvival/data/fetch/terms/2210')
     .then(res => res.json()) 
     .then(json => {
         items = json;
-        parsedata();
-        //console.log(items);
-        //return json;
+        getData2();
       });
+}
+
+const getData2=()=>{
+  fetch('https://andromeda.miragespace.net/slugsurvival/data/fetch/courses/2210')
+  .then(res => res.json())
+  .then(json => {
+    items2 = json;
+    console.log('get data completed');
+    parsedata();
+  })
 }
 
 getData();
 
 function parsedata() {
   console.log("Started parse data");
-  //console.log(items);
   Object.entries(items).map(department => {
-    //console.log(department[0]);
     classData[department[0]]= [];
     var newDepartment = {};
     Object.entries(department[1]).map(course => {
@@ -59,43 +68,28 @@ function parsedata() {
         newClass.end = '';
       }
 
-      classData[department[0]].push(newClass);
-      //console.log(newClass);
+      for (var i in items2){
+        if (i == newClass.num){
+          newClass.ge = items2[i].ge;
+          newClass.type = items2[i].ty;
+          if (newClass.type){
+            newClass.type = newClass.type.toUpperCase();
+          }
+          break;
+        }
+      }
 
+      classData[department[0]].push(newClass);
     });
 
     });
   console.log("completed parsedata");
-  //console.log(classData);
+  console.timeEnd('parse');
 }
-
-//parsedata();
 
 router.get('/', function(req, res) {
     res.send(classData);
   });
 
-router.get('/departments', function(req,res){
-  res.send(Object.keys(classData));
-})
-
-router.get('/departments/:depid', function(req,res){
-  var courses;
-  for (var i in classData){
-    //console.log(i);
-    if (i === req.params.depid.toUpperCase()){
-      //console.log("found course" + i);
-      courses = classData[i];
-      //console.log(classData[i]);
-    }
-  }
-  if (!courses){
-    res.status(404).send("department not found");
-  } else{
-    res.send(courses);
-  }
-})
-
-//export {items};
 module.exports = router;
 module.exports.classData = classData;

@@ -11,11 +11,8 @@ router.get('/', function(req, res) {
 router.get('/:depid', function(req,res){
   var courses;
   for (var i in classData){
-    //console.log(i);
     if (i === req.params.depid.toUpperCase()){
-      //console.log("found course" + i);
       courses = classData[i];
-      //console.log(classData[i]);
     }
   }
   if (!courses){
