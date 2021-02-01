@@ -98,3 +98,4 @@ router.get('/departments/:depid', function(req,res){
 
 //export {items};
 module.exports = router;
+module.exports.classData = classData;

@@ -9,6 +9,7 @@ var usersRouter = require('./routes/users');
 var apiRouter = require('./routes/api');
 var dbRouter = require('./routes/db.js');
 var depRouter = require('./routes/department.js');
+var courseRouter = require('./routes/course.js');
 const { Console } = require('console');
 
 var app = express();
@@ -25,9 +26,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/api', apiRouter);
+//app.use('/api', apiRouter);
 app.use('/db', dbRouter);
-app.use('/department', depRouter);
+app.use('/api/department', depRouter);
+app.use('/api/course', courseRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
