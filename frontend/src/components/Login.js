@@ -6,7 +6,7 @@ function Login() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const { login } = useAuth()
-    const [error, setError] = useState('error msg here')
+    const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
     const history = useHistory()
 
