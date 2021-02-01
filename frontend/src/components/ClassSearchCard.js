@@ -43,7 +43,7 @@ function ClassSearchCard({ classData, isFav }) {
                     </Col>
                 </Row>
             </Card.Body>
-            <ClassSearchModal show={show} setShow={setShow}/>
+            <ClassSearchModal classData={classData} show={show} setShow={setShow}/>
         </Card>
     );
 }
