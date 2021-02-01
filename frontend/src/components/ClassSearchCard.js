@@ -1,13 +1,22 @@
 import React, { useState } from 'react';
 import { Card, Row, Col } from 'react-bootstrap';
-import { StarFill } from "react-bootstrap-icons";
+import { StarFill, Star } from "react-bootstrap-icons";
 import ClassSearchModal from './ClassSearchModal';
 import '../style/ClassSearchCard.css'
 
-function ClassSearchCard() {
+function ClassSearchCard({ classData, isFav }) {
 
+    const [favorite, setFav] = useState(isFav);
     const [show, setShow] = useState(false);
     const handleShow = () => setShow(true);
+
+    const handleFav = () => {
+        // sets favorite
+        if (favorite) setFav(false);
+        else setFav(true);
+        // access Firestore
+        console.log(classData);
+    };
 
     return (
         <Card className="class-card">
@@ -25,7 +34,12 @@ function ClassSearchCard() {
                         </Card.Link>
                     </Col>
                     <Col sm={2} className='star-container'>
-                        <StarFill width={'40'} height={'40'}/>
+                        {favorite &&
+                        <StarFill className='star' width={'40'} height={'40'} onClick={handleFav}/>
+                        }
+                        {!favorite &&
+                        <Star className='star' width={'40'} height={'40'} onClick={handleFav}/>
+                        }
                     </Col>
                 </Row>
             </Card.Body>
