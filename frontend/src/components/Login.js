@@ -6,7 +6,7 @@ function Login() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const { login } = useAuth()
-    const [error, setError] = useState('')
+    const [error, setError] = useState('error msg here')
     const [loading, setLoading] = useState(false)
     const history = useHistory()
 
@@ -18,8 +18,8 @@ function Login() {
             setLoading(true)
             await login(email, password) 
             history.push("/search")
-        } catch {
-            setError('Fail to sign in')
+        } catch (error) {
+            setError(error.message)
         }
         setLoading(false)
     }
@@ -40,6 +40,9 @@ function Login() {
                     onChange={(e) => setPassword(e.target.value)}
                     required />
                 <div>
+                <p className="errorMsg">
+                    {error}
+                </p>
                 <button type="submit" id="login" disabled={loading} onClick={handleSubmit}>
                     Login
                 </button>
