@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Container, Row } from 'react-bootstrap';
 import ClassSearchCard from './ClassSearchCard'
 import ClassSearchFilters from './ClassSearchFilters'
 import '../style/Pages.css'
 
 function ClassSearchPage() {
+
     return (
         <Container>
             <Row className='page-header'>
@@ -14,7 +15,7 @@ function ClassSearchPage() {
                 <ClassSearchFilters />
             </Row>
             <Row>
-                <ClassSearchCard />
+                <ClassSearchCard id="cse101" classData={'todo'} isFav={false}/>
             </Row>
         </Container>
     );
