@@ -13,7 +13,7 @@ function LoginPage() {
     }
     
     return (
-        <div>
+        <div className="center">
             <section className="loginBlock">
                 <div className="tabs">
                     <li onClick={toggleActive} className={loginActive ? "active" : ""}>Login</li>

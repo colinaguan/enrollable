@@ -1,11 +1,21 @@
 .loginBlock {
 	display: block;
-	position: relative;
     width: 350px;
     margin: auto;
     text-align: center;	
     border: none;
+    position: absolute;
+    top: 30%;
+    left: 35%;
 }
+
+.center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
 
 .tabs {
     display: table; 
@@ -72,4 +82,9 @@ form #signupEmail{
     width: 100px; 
     cursor: pointer;
     font-weight: 400;
+}
+.errorMsg{
+    color: rgb(255, 92, 92);
+    margin-top: 14px;
+    margin-bottom: 0px;
 }
