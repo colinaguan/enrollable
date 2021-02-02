@@ -3,6 +3,10 @@ div.info-modal {
     width: 60%;
 }
 
+div.modal-header {
+    padding: 1.5rem 1.5rem 1rem 1.5rem;
+}
+
 .section-title {
     margin: 1rem 0rem .5rem 1rem;
 }
