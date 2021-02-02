@@ -1,8 +1,13 @@
 import React from 'react';
+import { Container, Row } from 'react-bootstrap';
 
 function GenerateSchedulesPage() {
     return (
-        <h2>Generate Schedules</h2>
+        <Container>
+            <Row className='page-header'>
+                <h1>Generate Schedules</h1>
+            </Row>
+        </Container>
     );
 }
 
