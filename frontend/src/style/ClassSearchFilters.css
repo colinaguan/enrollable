@@ -1,7 +1,18 @@
 .filter-form {
     width: 100%;
+    margin-bottom: 1rem;
 }
 
 .filters-button {
     margin-top: 2rem;
+}
+
+button.btn-purple {
+    background-color: #673ab7;
+    color: white;
+}
+
+button.btn-purple:hover {
+    background-color: #8561c5;
+    color: white;
 }
