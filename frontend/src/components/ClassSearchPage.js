@@ -24,15 +24,22 @@ function ClassSearchPage() {
     const [fType, setFType] = useState('any');
     const [fFav, setFFav] = useState('any');
 
-    // updates displayed cards
+    // stores cards
+    const [classCards, setCards] = useState();
+
+    // updates displayed cards after filters are submitted
     const handleFilters = (e) => {
+        // prevent page from refreshing
         e.preventDefault();
+        // temporary card assignment
+        setCards(<ClassSearchCard id="cse101" classData={'todo'} isFav={false}/>);
         // for debugging
         console.log("---------- FILTERS");
         console.log(fDep);
         console.log(fGE);
         console.log(fType);
         console.log(fFav);
+        console.log(classCards);
     };
 
     return (
@@ -46,7 +53,7 @@ function ClassSearchPage() {
                     fType={fType} setFType={setFType} fFav={fFav} setFFav={setFFav}/>
             </Row>
             <Row>
-                <ClassSearchCard id="cse101" classData={'todo'} isFav={false}/>
+                {classCards ? classCards : <p><i>No classes to display. Set filters and click 'Search' to update.</i></p>}
             </Row>
         </Container>
     );
