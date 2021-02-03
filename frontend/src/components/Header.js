@@ -5,7 +5,7 @@ import '../style/Header.css'
 
 function Header() {
     return (
-        <Navbar bg="light" variant="light">
+        <Navbar className='header' bg="light" variant="light">
             <Nav className="mr-auto">
                 <Navbar.Brand>
                     <Link className='nav-link' to="/home">Enrollable</Link>
