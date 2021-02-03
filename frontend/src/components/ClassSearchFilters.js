@@ -2,49 +2,63 @@ import React, { useState } from 'react';
 import { Form, Button, Col } from "react-bootstrap";
 import '../style/ClassSearchFilters.css';
 
-function ClassSearchFilters() {
+function ClassSearchFilters({ dep, ge, type }) {
 
-    const [department, setDep] = useState('any');
-    const [ge, setGE] = useState('any');
-    const [type, setType] = useState('any');
-    const [favorites, setFav] = useState('any');
+    const [fDep, setDep] = useState('any');
+    const [fGE, setGE] = useState('any');
+    const [fType, setType] = useState('any');
+    const [fFav, setFav] = useState('any');
 
+    // for debugging
     const handleSubmit = (e) => {
         e.preventDefault();
         console.log("---------- FILTERS");
-        console.log(department);
-        console.log(ge);
-        console.log(type);
-        console.log(favorites);
+        console.log(fDep);
+        console.log(fGE);
+        console.log(fType);
+        console.log(fFav);
     };
+
+    // create option elements from props
+    var depOptions = dep.map((elem) => {
+        return <option key={elem} value={elem}>{elem}</option>;
+    });
+    var geOptions = ge.map((elem) => {
+        return <option key={elem} value={elem}>{elem}</option>;
+    });
+    var typeOptions = type.map((elem) => {
+        return <option key={elem} value={elem}>{elem}</option>;
+    });
     
     return (
         <Form className='filter-form' onSubmit={handleSubmit}>
             <Form.Row>
                 <Form.Group as={Col} sm={3} controlId="formDepartment">
                     <Form.Label>Department</Form.Label>
-                    <Form.Control as="select" value={department} onChange={(e) => setDep(e.target.value)}>
+                    <Form.Control as="select" value={fDep} onChange={(e) => setDep(e.target.value)}>
                         <option value='any'>Any Department</option>
-                        <option>CSE</option>
+                        {depOptions}
                     </Form.Control>
                 </Form.Group>
                 <Form.Group as={Col} sm={2} controlId="formGE">
                     <Form.Label>GE</Form.Label>
-                    <Form.Control as="select" value={ge} onChange={(e) => setGE(e.target.value)}>
+                    <Form.Control as="select" value={fGE} onChange={(e) => setGE(e.target.value)}>
                         <option value='any'>Any GE</option>
+                        {geOptions}
                     </Form.Control>
                 </Form.Group>
                 <Form.Group as={Col} sm={3} controlId="formClassType">
                     <Form.Label>Class Type</Form.Label>
-                    <Form.Control as="select" value={type} onChange={(e) => setType(e.target.value)}>
+                    <Form.Control as="select" value={fType} onChange={(e) => setType(e.target.value)}>
                         <option value='any'>Any Class Type</option>
+                        {typeOptions}
                     </Form.Control>
                 </Form.Group>
                 <Form.Group as={Col} sm={3} controlId="formFavorites">
                     <Form.Label>Favorites</Form.Label>
-                    <Form.Control as="select" value={favorites} onChange={(e) => setFav(e.target.value)}>
+                    <Form.Control as="select" value={fFav} onChange={(e) => setFav(e.target.value)}>
                         <option value='any'>All Classes</option>
-                        <option>My Favorites</option>
+                        <option value='fav'>My Favorites</option>
                     </Form.Control>
                 </Form.Group>
                 <Form.Group as={Col} sm={1} className='filters-button' controlId="formFavorites">
