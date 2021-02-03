@@ -1,8 +1,15 @@
 import React from 'react';
 import { Button, ButtonGroup, Col, Container, Dropdown, DropdownButton, Row } from "react-bootstrap";
 /*To add more eventkey to the dropdown box, use <Dropdown.Item eventKey="1">1</Dropdown.Item>*/
+
 function ClassSearchFilters() {
     return(
+        <p>Filters</p>
+    );
+}
+
+function Dropdowns() {
+    return (
         <Container>
             <Row className="justify-content-lg-center">
                 {['Department'].map((idx)=>(
