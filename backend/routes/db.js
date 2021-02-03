@@ -80,14 +80,15 @@ function parsedata() {
         if (i == newClass.num){
           newClass.ge = items2[i].ge;
           newClass.type = items2[i].ty;
-          //newClass.sections = items2[i].sec;
+          newClass.credits = parseInt(items2[i].cr);
           newClass.section = [];
-          //var newSection = {};
+
           for (var j in items2[i].sec){
             var newSection = {};
             newSection.secName = items2[i].sec[j].sec;
             newSection.num = items2[i].sec[j].num;
             newSection.instructor = items2[i].sec[j].ins;
+            
 
             if (items2[i].sec[j].loct[0].t != null && 
                 typeof(items2[i].sec[j].loct[0].t.time) != 'undefined'){

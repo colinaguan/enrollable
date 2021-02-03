@@ -8,7 +8,7 @@ router.get('/', function(req, res) {
   res.send(Object.keys(classData));
 });
 
-router.get('/:depid', function(req,res){
+router.get('/dep=:depid', function(req,res){
   var courses;
   for (var i in classData){
     if (i === req.params.depid.toUpperCase()){
@@ -22,7 +22,7 @@ router.get('/:depid', function(req,res){
   }
 })
 
-router.get('/department=:depId/type=:typeId', function(req,res){
+router.get('/dep=:depId/type=:typeId', function(req,res){
   var courses;
   for (var i in classData){
     if (i === req.params.depId.toUpperCase()){
@@ -35,13 +35,13 @@ router.get('/department=:depId/type=:typeId', function(req,res){
     }
   }
   if (!courses){
-    res.status(404).send("department not found");
+    res.status(404).send("No classes found");
   } else{
     res.send(courses);
   }
 })
 
-router.get('/department=:depId/ge=:geId', function(req,res){
+router.get('/dep=:depId/ge=:geId', function(req,res){
   var courses = [];
   for (var i in classData){
     if (i === req.params.depId.toUpperCase()){
@@ -55,7 +55,7 @@ router.get('/department=:depId/ge=:geId', function(req,res){
     }
   }
   if (courses.length === 0){
-    res.status(404).send("department not found");
+    res.status(404).send("No clases found");
   } else{
     res.send(courses);
   }

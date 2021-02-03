@@ -18,8 +18,24 @@ router.get('/term', function(req,res) {
 })
 
 router.get('/ge', function(req,res) {
-    res.send(['CC', 'ER', 'IM', 'MF', 'SI', 'SR', 'TA', 'PE-E', 
-                'PE-H', 'PE-T', 'PR-E', 'PR-C', 'PR-S', 'C1', 'C2']);
+    res.send({
+        "CC": "Cross-Cultural Analysis",
+        "ER": "Ethnicity and race",
+        "IM": "Interpreting Arts and Media",
+        "MF": "Mathematical and Formal Reasoning",
+        "SI": "Scientific Inquiry",
+        "SR": "Statistical Reasoning",
+        "TA": "Textual Analysis",
+        "PE-E": "Environmental Awareness",
+        "PE-H": "Human Behavior",
+        "PE-T": "Technology and Society",
+        "PR-E": "Collaborative Endeavor",
+        "PR-C": "Creative Process",
+        "PR-S": "Service Learning",
+        "C2": "Composition",
+        "C1": "Composition",
+        "DC": "Disciplinary Communication"
+    });
 })
 
 router.get('/ge=:geid', function(req,res) {
