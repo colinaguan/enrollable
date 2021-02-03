@@ -1,7 +1,9 @@
 import React, { useState} from 'react'
 import { useAuth } from "../contexts/AuthContext";
 import { Link, useHistory } from "react-router-dom";
-
+// import { Alert } from 'reactstrap';
+import Alert from 'react-bootstrap/Alert';
+import AlertDisplay from "./AlertDisplay"
 function Login() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -9,6 +11,7 @@ function Login() {
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
     const history = useHistory()
+    const [show, setShow] = useState(false)
 
     async function handleSubmit(e) {
         e.preventDefault()
@@ -19,7 +22,10 @@ function Login() {
             await login(email, password) 
             history.push("/search")
         } catch (error) {
-            setError(error.message)
+            setError(error.message);
+            // setShow(true);
+            // <AlertDisplay/>
+         
         }
         setLoading(false)
     }
@@ -49,7 +55,11 @@ function Login() {
                 </button>
                 </div>
             </form>
-        </div>  
+            <div>
+              {show ? <AlertDisplay /> : null }
+            </div>
+        </div> 
+      
     );
 }
 export default Login;
