@@ -1,6 +1,6 @@
 import React from 'react';
 import { Modal, Container, Row, Col, Card } from 'react-bootstrap';
-import '../style/ClassSearchModal.css'
+import '../style/ClassSearchModal.css';
 
 function ClassSearchModal({ classData, show, setShow }) {
     const handleClose = () => setShow(false);
