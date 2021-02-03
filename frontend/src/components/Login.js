@@ -4,7 +4,7 @@ import { Link, useHistory } from "react-router-dom";
 // import { Alert } from 'reactstrap';
 import Alert from 'react-bootstrap/Alert';
 import AlertDisplay from "./AlertDisplay"
-function Login(errorDisplay, setErrorDisplay, errorContent, setErrorContent) {
+function Login(props) {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const { login } = useAuth()
@@ -24,8 +24,8 @@ function Login(errorDisplay, setErrorDisplay, errorContent, setErrorContent) {
         } catch (error) {
             setError(error.message);
             // setErrorDisplay(true);
-            setErrorDisplay({errorDisplay:true});
-            setErrorContent({errorContent:error.message});
+            props.setErrorDisplay(true);
+            props.setErrorContent(error.message);
             // setShow(true);
             // <AlertDisplay/>
          

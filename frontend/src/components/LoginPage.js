@@ -2,7 +2,7 @@ import React,{ useState } from 'react';
 import Login from "./Login"
 import Signup from "./Signup"
 import "../style/Login.css"
-
+import { Alert } from 'reactstrap';
 function LoginPage() {
     const [loginActive, setLoginActive] = useState(true);
     const [signupActive, setSignupActive] = useState(false);
@@ -28,7 +28,12 @@ function LoginPage() {
             </section> 
             <div>
               {/* {show ? <AlertDisplay /> : null } */}
-              {errorDisplay && <div>{errorContent}</div>}
+              {errorDisplay && <div>
+                  
+                  {errorContent}
+              
+              
+              </div>}
               
             </div>  
         </div>  
