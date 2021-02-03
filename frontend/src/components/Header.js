@@ -10,20 +10,12 @@ function Header() {
                 <Navbar.Brand>
                     <Link className='nav-link' to="/home">Enrollable</Link>
                 </Navbar.Brand>
-                <Nav.Link>
-                    <Link className='nav-link' to="/search">Class Search</Link>
-                </Nav.Link>
-                <Nav.Link>
-                    <Link className='nav-link' to="/generate">Generate Schedules</Link>
-                </Nav.Link>
-                <Nav.Link>
-                    <Link className='nav-link' to="/saved">Saved Schedules</Link>
-                </Nav.Link>
+                <Link className='nav-link' to="/search">Class Search</Link>
+                <Link className='nav-link' to="/generate">Generate Schedules</Link>
+                <Link className='nav-link' to="/saved">Saved Schedules</Link>
             </Nav>
             <Nav>
-                <Nav.Link>
-                    <Link className='nav-link' to="/">Login</Link>
-                </Nav.Link>
+                <Link className='nav-link' to="/">Login</Link>
             </Nav>
         </Navbar>
     );
