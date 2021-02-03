@@ -1,23 +1,21 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Form, Button, Col } from "react-bootstrap";
 import '../style/ClassSearchFilters.css';
 
-function ClassSearchFilters({ dep, ge, type }) {
-
-    const [fDep, setDep] = useState('any');
-    const [fGE, setGE] = useState('any');
-    const [fType, setType] = useState('any');
-    const [fFav, setFav] = useState('any');
-
-    // for debugging
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log("---------- FILTERS");
-        console.log(fDep);
-        console.log(fGE);
-        console.log(fType);
-        console.log(fFav);
-    };
+function ClassSearchFilters({
+    dep,
+    ge,
+    type,
+    fDep,
+    setFDep,
+    fGE,
+    setFGE,
+    fType,
+    setFType,
+    fFav,
+    setFFav,
+    handleFilters
+}) {
 
     // create option elements from props
     var depOptions = dep.map((elem) => {
@@ -31,32 +29,32 @@ function ClassSearchFilters({ dep, ge, type }) {
     });
     
     return (
-        <Form className='filter-form' onSubmit={handleSubmit}>
+        <Form className='filter-form' onSubmit={handleFilters}>
             <Form.Row>
                 <Form.Group as={Col} sm={3} controlId="formDepartment">
                     <Form.Label>Department</Form.Label>
-                    <Form.Control className='filter-dropdown' as="select" value={fDep} onChange={(e) => setDep(e.target.value)}>
+                    <Form.Control className='filter-dropdown' as="select" value={fDep} onChange={(e) => setFDep(e.target.value)}>
                         <option value='any'>Any Department</option>
                         {depOptions}
                     </Form.Control>
                 </Form.Group>
                 <Form.Group as={Col} sm={2} controlId="formGE">
                     <Form.Label>GE</Form.Label>
-                    <Form.Control className='filter-dropdown' as="select" value={fGE} onChange={(e) => setGE(e.target.value)}>
+                    <Form.Control className='filter-dropdown' as="select" value={fGE} onChange={(e) => setFGE(e.target.value)}>
                         <option value='any'>Any GE</option>
                         {geOptions}
                     </Form.Control>
                 </Form.Group>
                 <Form.Group as={Col} sm={3} controlId="formClassType">
                     <Form.Label>Class Type</Form.Label>
-                    <Form.Control className='filter-dropdown' as="select" value={fType} onChange={(e) => setType(e.target.value)}>
+                    <Form.Control className='filter-dropdown' as="select" value={fType} onChange={(e) => setFType(e.target.value)}>
                         <option value='any'>Any Class Type</option>
                         {typeOptions}
                     </Form.Control>
                 </Form.Group>
                 <Form.Group as={Col} sm={3} controlId="formFavorites">
                     <Form.Label>Favorites</Form.Label>
-                    <Form.Control className='filter-dropdown' as="select" value={fFav} onChange={(e) => setFav(e.target.value)}>
+                    <Form.Control className='filter-dropdown' as="select" value={fFav} onChange={(e) => setFFav(e.target.value)}>
                         <option value='any'>All Classes</option>
                         <option value='fav'>My Favorites</option>
                     </Form.Control>
