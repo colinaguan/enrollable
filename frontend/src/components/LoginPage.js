@@ -7,6 +7,8 @@ function LoginPage() {
     const [loginActive, setLoginActive] = useState(true);
     const [signupActive, setSignupActive] = useState(false);
     
+    const [errorDisplay, setErrorDisplay] = useState(false);
+    const [errorContent, setErrorContent] = useState('');
     function toggleActive(){
         setLoginActive(!loginActive);
         setSignupActive(!signupActive);
@@ -21,11 +23,23 @@ function LoginPage() {
                 </div>
               
                 <div className="formBlock">
-                    {loginActive ? <Login /> : <Signup />}
+                    {loginActive ? <Login setErrorDisplay={setErrorDisplay} errorDisplay={errorDisplay} errorContent={errorContent} setErrorContent={setErrorContent}/> : <Signup setErrorDisplay={setErrorDisplay} errorDisplay={errorDisplay} errorContent={errorContent} setErrorContent={setErrorContent}/>}
                 </div>
-            </section>   
+            </section> 
+            <div>
+              {/* {show ? <AlertDisplay /> : null } */}
+              {errorDisplay && <div>{errorContent}</div>}
+              
+            </div>  
         </div>  
     );
 }
 
 export default LoginPage;
+
+{/* <Alert variant="danger"  dismissible>
+        <Alert.Heading>error!</Alert.Heading>
+        <p>
+          display
+        </p>
+</Alert> */}

@@ -1,7 +1,7 @@
 import React, { useState} from 'react'
 import { useAuth } from "../contexts/AuthContext";
 import { Link, useHistory } from "react-router-dom";
-
+import { Alert } from 'reactstrap';
 function Signup() {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -12,6 +12,7 @@ function Signup() {
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
     const history = useHistory()
+    const [show, setShow] = useState(true);
 
     async function handleSubmit(e) {
         e.preventDefault()
@@ -28,10 +29,28 @@ function Signup() {
             history.push("/search")
         } catch (error) {
             setError(error.message)
+            AlertDismissibleExample(error.message)
         }
         setLoading(false)
     }
+   
+    function AlertDismissibleExample({error}) {
+        const [show, setShow] = useState(true);
+      
+        if (show) {
+            console.log("a");
+          return (
+            <Alert variant="danger" onClose={() => setShow(false)} dismissible>
+              <Alert.Heading>error!</Alert.Heading>
+              <p>
 
+                error
+              </p>
+            </Alert>
+          );
+        }
+        // return <Button onClick={() => setShow(true)}>Show Alert</Button>;
+    }
 
     return (
         <div>
@@ -75,7 +94,11 @@ function Signup() {
                 </button>
                 </div>
             </form>
+            
+            
+      
         </div>  
     );
+    
 }
 export default Signup;
