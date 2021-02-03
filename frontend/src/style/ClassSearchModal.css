@@ -1,6 +1,6 @@
 div.info-modal {
-    max-width: none;
-    width: 60%;
+    min-width: 710px;
+    max-width: 60%;
 }
 
 div.modal-header {

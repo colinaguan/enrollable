@@ -35,28 +35,28 @@ function ClassSearchFilters({ dep, ge, type }) {
             <Form.Row>
                 <Form.Group as={Col} sm={3} controlId="formDepartment">
                     <Form.Label>Department</Form.Label>
-                    <Form.Control as="select" value={fDep} onChange={(e) => setDep(e.target.value)}>
+                    <Form.Control className='filter-dropdown' as="select" value={fDep} onChange={(e) => setDep(e.target.value)}>
                         <option value='any'>Any Department</option>
                         {depOptions}
                     </Form.Control>
                 </Form.Group>
                 <Form.Group as={Col} sm={2} controlId="formGE">
                     <Form.Label>GE</Form.Label>
-                    <Form.Control as="select" value={fGE} onChange={(e) => setGE(e.target.value)}>
+                    <Form.Control className='filter-dropdown' as="select" value={fGE} onChange={(e) => setGE(e.target.value)}>
                         <option value='any'>Any GE</option>
                         {geOptions}
                     </Form.Control>
                 </Form.Group>
                 <Form.Group as={Col} sm={3} controlId="formClassType">
                     <Form.Label>Class Type</Form.Label>
-                    <Form.Control as="select" value={fType} onChange={(e) => setType(e.target.value)}>
+                    <Form.Control className='filter-dropdown' as="select" value={fType} onChange={(e) => setType(e.target.value)}>
                         <option value='any'>Any Class Type</option>
                         {typeOptions}
                     </Form.Control>
                 </Form.Group>
                 <Form.Group as={Col} sm={3} controlId="formFavorites">
                     <Form.Label>Favorites</Form.Label>
-                    <Form.Control as="select" value={fFav} onChange={(e) => setFav(e.target.value)}>
+                    <Form.Control className='filter-dropdown' as="select" value={fFav} onChange={(e) => setFav(e.target.value)}>
                         <option value='any'>All Classes</option>
                         <option value='fav'>My Favorites</option>
                     </Form.Control>

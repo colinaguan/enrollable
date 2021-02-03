@@ -3,6 +3,11 @@
     margin-bottom: 1rem;
 }
 
+select.filter-dropdown:focus {
+    border-color: #673ab7;
+    box-shadow: 0 0 0 0.2rem rgb(133 97 197 / 25%);
+}
+
 .filters-button {
     margin-top: 2rem;
 }
