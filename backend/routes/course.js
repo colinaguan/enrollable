@@ -50,6 +50,29 @@ router.get('/type=:typeid', function(req,res) {
         for (var j in classData[i]){
             if (classData[i][j].type == req.params.typeid.toUpperCase()){
                 getCourses.push(classData[i][j]);
+                break;
+            }
+            
+        }
+    }
+    if (getCourses.length == 0){
+        res.status(404).send("No courses found");
+    } else {
+        res.send(getCourses);
+    }
+})
+
+router.get('/type=:typeid/ge=:geid', function(req,res) {
+    var getCourses = [];
+    for (var i in classData){
+        for (var j in classData[i]){
+            if (classData[i][j].type == req.params.typeid.toUpperCase()){
+                for (var k in classData[i][j].ge){
+                    if (classData[i][j].ge[k] == req.params.geid.toUpperCase()){
+                        getCourses.push(classData[i][j]);
+                        break;
+                    }
+                }
             }
             
         }
@@ -76,5 +99,6 @@ router.get('/course=:courseId', function(req,res) {
         res.send(course);
     }
 });
+
 
 module.exports = router;

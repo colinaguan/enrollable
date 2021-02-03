@@ -21,5 +21,44 @@ router.get('/:depid', function(req,res){
     res.send(courses);
   }
 })
+
+router.get('/department=:depId/type=:typeId', function(req,res){
+  var courses;
+  for (var i in classData){
+    if (i === req.params.depId.toUpperCase()){
+      courses = [];
+      for (var j in classData[i]){
+        if (classData[i][j].type === req.params.typeId.toUpperCase()){
+          courses.push(classData[i][j]);
+        }
+      }
+    }
+  }
+  if (!courses){
+    res.status(404).send("department not found");
+  } else{
+    res.send(courses);
+  }
+})
+
+router.get('/department=:depId/ge=:geId', function(req,res){
+  var courses = [];
+  for (var i in classData){
+    if (i === req.params.depId.toUpperCase()){
+      for (var j in classData[i]){
+        for (var k in classData[i][j].ge){
+          if (classData[i][j].ge[k] === req.params.geId.toUpperCase()){
+            courses.push(classData[i][j]);
+          }
+        }
+      }
+    }
+  }
+  if (courses.length === 0){
+    res.status(404).send("department not found");
+  } else{
+    res.send(courses);
+  }
+})
   
 module.exports = router;

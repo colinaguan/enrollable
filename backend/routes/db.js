@@ -14,6 +14,7 @@ const getData=()=>{
     .then(res => res.json()) 
     .then(json => {
         items = json;
+        //get second json file from slug survival
         getData2();
       });
 }
@@ -24,17 +25,24 @@ const getData2=()=>{
   .then(json => {
     items2 = json;
     console.log('get data completed');
+    //after all data has been received
+    //parse data into our new javascript object
     parsedata();
   })
 }
 
+//get first json file from slugsurvival
 getData();
 
 function parsedata() {
   console.log("Started parse data");
+  //for each department create a new empty object
   Object.entries(items).map(department => {
     classData[department[0]]= [];
     var newDepartment = {};
+    //for each class in a department create a new empty class object
+    //then fill that object with information from the 2 json files
+    //that were retrieved from slug survival
     Object.entries(department[1]).map(course => {
       var newClass = {};
       newClass.code = course[1].c;
@@ -72,13 +80,47 @@ function parsedata() {
         if (i == newClass.num){
           newClass.ge = items2[i].ge;
           newClass.type = items2[i].ty;
+          //newClass.sections = items2[i].sec;
+          newClass.section = [];
+          //var newSection = {};
+          for (var j in items2[i].sec){
+            var newSection = {};
+            newSection.secName = items2[i].sec[j].sec;
+            newSection.num = items2[i].sec[j].num;
+            newSection.instructor = items2[i].sec[j].ins;
+
+            if (items2[i].sec[j].loct[0].t != null && 
+                typeof(items2[i].sec[j].loct[0].t.time) != 'undefined'){
+                  newSection.start = items2[i].sec[j].loct[0].t.time.start;
+                  newSection.end = items2[i].sec[j].loct[0].t.time.end;
+            } else {
+              newSection.start = '';
+              newSection.end = '';
+            }
+
+            if (items2[i].sec[j].loct[0].t != null && 
+                typeof(items2[i].sec[j].loct[0].t.day) != 'undefined') {
+                  newSection.day = items2[i].sec[j].loct[0].t.day;
+            } else {
+              newSection.day = [];
+            }
+            
+            if (items2[i].sec[j].loct[0].t != null && 
+                typeof(items2[i].sec[j].loct[0].loc) != 'undefined'){
+                  newSection.loc = items2[i].sec[j].loct[0].loc;
+            } else {
+              newSection.loc = '';
+            }
+             
+            newClass.section.push(newSection);
+
+          }
           if (newClass.type){
             newClass.type = newClass.type.toUpperCase();
           }
           break;
         }
       }
-
       classData[department[0]].push(newClass);
     });
 
