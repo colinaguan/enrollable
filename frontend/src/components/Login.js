@@ -1,34 +1,26 @@
 import React, { useState} from 'react'
 import { useAuth } from "../contexts/AuthContext";
 import { Link, useHistory } from "react-router-dom";
-// import { Alert } from 'reactstrap';
-import Alert from 'react-bootstrap/Alert';
-import AlertDisplay from "./AlertDisplay"
+
 function Login(props) {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const { login } = useAuth()
-    const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
     const history = useHistory()
-    const [show, setShow] = useState(false)
 
     async function handleSubmit(e) {
         e.preventDefault()
 
         try {
-            setError('')
+            props.setErrorDisplay(false);
+            props.setErrorContent('');
             setLoading(true)
             await login(email, password) 
             history.push("/search")
         } catch (error) {
-            setError(error.message);
-            // setErrorDisplay(true);
             props.setErrorDisplay(true);
             props.setErrorContent(error.message);
-            // setShow(true);
-            // <AlertDisplay/>
-         
         }
         setLoading(false)
     }
@@ -48,19 +40,12 @@ function Login(props) {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required />
-
-                <p className="errorMsg">
-                    {error}
-                </p>
                 <div>
-                <button type="submit" id="login" disabled={loading} onClick={handleSubmit}>
-                    Login
-                </button>
+                    <button type="submit" id="login" disabled={loading} onClick={handleSubmit}>
+                        Login
+                    </button>
                 </div>
             </form>
-            <div>
-              {show ? <AlertDisplay /> : null }
-            </div>
         </div> 
       
     );

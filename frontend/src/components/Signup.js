@@ -1,56 +1,40 @@
 import React, { useState} from 'react'
 import { useAuth } from "../contexts/AuthContext";
 import { Link, useHistory } from "react-router-dom";
-import { Alert } from 'reactstrap';
-function Signup() {
+
+function Signup(props) {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [passwordConfirm, setPasswordConfirm] = useState('')
     const [lastName, setLastName] = useState('')
     const [firstName, setFirstName] = useState('')
     const { signup, firestoreInit } = useAuth()
-    const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
     const history = useHistory()
-    const [show, setShow] = useState(true);
+    
 
     async function handleSubmit(e) {
         e.preventDefault()
 
         if (password !== passwordConfirm){
-            return setError('Passwords do not match')
+            props.setErrorDisplay(true);
+            return props.setErrorContent('Passwords do not match');//setError('Passwords do not match')
         }
 
         try {
-            setError('')
+            props.setErrorDisplay(false);
+            props.setErrorContent('');
             setLoading(true)
             await signup(email, password) 
             await firestoreInit(email, firstName, lastName)
             history.push("/search")
         } catch (error) {
-            setError(error.message)
-            AlertDismissibleExample(error.message)
+            props.setErrorDisplay(true);
+            props.setErrorContent(error.message);
         }
         setLoading(false)
     }
-   
-    function AlertDismissibleExample({error}) {
-        const [show, setShow] = useState(true);
-      
-        if (show) {
-            console.log("a");
-          return (
-            <Alert variant="danger" onClose={() => setShow(false)} dismissible>
-              <Alert.Heading>error!</Alert.Heading>
-              <p>
 
-                error
-              </p>
-            </Alert>
-          );
-        }
-        // return <Button onClick={() => setShow(true)}>Show Alert</Button>;
-    }
 
     return (
         <div>
@@ -86,19 +70,12 @@ function Signup() {
                     onChange={(e) => setPasswordConfirm(e.target.value)}
                     required />
                 <div>
-                <p className="errorMsg">
-                    {error}
-                </p>
-                <button type="submit" id="signup" disabled={loading} onClick={handleSubmit}>
-                    Sign Up
-                </button>
+                    <button type="submit" id="signup" disabled={loading} onClick={handleSubmit}>
+                        Sign Up
+                    </button>
                 </div>
             </form>
-            
-            
-      
         </div>  
     );
-    
 }
 export default Signup;

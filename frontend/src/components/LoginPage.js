@@ -2,16 +2,20 @@ import React,{ useState } from 'react';
 import Login from "./Login"
 import Signup from "./Signup"
 import "../style/Login.css"
-import { Alert } from 'reactstrap';
+import Alert from 'react-bootstrap/Alert';
+
 function LoginPage() {
     const [loginActive, setLoginActive] = useState(true);
     const [signupActive, setSignupActive] = useState(false);
     
     const [errorDisplay, setErrorDisplay] = useState(false);
     const [errorContent, setErrorContent] = useState('');
+    
     function toggleActive(){
         setLoginActive(!loginActive);
         setSignupActive(!signupActive);
+        setErrorDisplay(false);
+        setErrorContent('');
     }
     
     return (
@@ -26,25 +30,20 @@ function LoginPage() {
                     {loginActive ? <Login setErrorDisplay={setErrorDisplay} errorDisplay={errorDisplay} errorContent={errorContent} setErrorContent={setErrorContent}/> : <Signup setErrorDisplay={setErrorDisplay} errorDisplay={errorDisplay} errorContent={errorContent} setErrorContent={setErrorContent}/>}
                 </div>
             </section> 
+            
             <div>
-              {/* {show ? <AlertDisplay /> : null } */}
-              {errorDisplay && <div>
-                  
-                  {errorContent}
-              
-              
-              </div>}
-              
+                {errorDisplay && <div className="alertBox">
+                    <Alert variant="danger" onClose={() => setErrorDisplay(false)} dismissible >
+                        <Alert.Heading>error!</Alert.Heading>
+                        <p>
+                            {errorContent}
+                        </p>
+                    </Alert>
+                </div>}
             </div>  
+        
         </div>  
     );
 }
 
 export default LoginPage;
-
-{/* <Alert variant="danger"  dismissible>
-        <Alert.Heading>error!</Alert.Heading>
-        <p>
-          display
-        </p>
-</Alert> */}
