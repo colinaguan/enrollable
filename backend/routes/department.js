@@ -1,13 +1,13 @@
-var express = require("express");
+var express = require('express');
 var router = express.Router();
-var database = require("./db.js");
+var database = require('./db.js');
 var classData = database.classData;
 
 /* GET api page. */
 router.get("/", function (req, res) {
   var getCourses = [];
   var dep;
-  
+
   // if there are parameters
   if (Object.keys(req.query).length != 0) {
     var queryParameter = req.query;
@@ -64,89 +64,89 @@ router.get("/", function (req, res) {
   }
 });
 
-router.get("/details", function (req, res) {
+router.get('/details', function (req, res) {
   res.send({
-    ANTH: "Anthropology",
-    APLX: "Applied Linguistics",
-    AM: "Applied Mathematics",
-    ARBC: "Arabic",
-    ART: "Art",
-    ARTG: "Art & Design: Games and Playable Media",
-    ASTR: "Astronomy and Astrophysics",
-    BIOC: "Biochemistry and Molecular Bio",
-    BIOL: "Biology: Molecular & Cell Dev",
-    BIOE: "Biology: Ecology & Evolutionary",
-    BME: "Biomolecular Engineering",
-    CRSN: "Carson College",
-    CHEM: "Chemistry and Biochemistry",
-    CHIN: "Chinese",
-    CSP: "Coastal Science and Policy",
-    CLNI: "College Nine",
-    CLTE: "College Ten",
-    CMMU: "Community Studies",
-    CMPM: "Computational Media",
-    CSE: "Computer Science & Engineering",
-    COWL: "Cowell College",
-    CRES: "Critical Race & Ethnic Studies",
-    CRWN: "Crown College",
-    DANM: "Digital Arts and New Media",
-    EART: "Earth Science",
-    ECON: "Economics",
-    EDUC: "Education",
-    ECE: "Electrical and Computer Engineering",
-    ESCI: "Environmental Science",
-    ENVS: "Environmental Studies",
-    FMST: "Feminist Studies",
-    FILM: "Film and Digital Media",
-    FREN: "French",
-    GAME: "Games and Playable Media",
-    GERM: "German",
-    GREE: "Greek",
-    HERB: "Hebrew",
-    HIS: "History",
-    HAVC: "History of Art and Visual Culture",
-    HISC: "History of Consciousness",
-    ITAL: "Italan",
-    JAPN: "Japanese",
-    JWST: "Jewish Studies",
-    KRSG: "Kresge College",
-    LAAD: "Language",
-    LATN: "Latin",
-    LALS: "Latin American and Latino Studies",
-    LGST: "Legal Studies",
-    LING: "Linguistics",
-    LIT: "Literature",
-    MATH: "Mathematics",
-    MERR: "Merril College",
-    METX: "Microbiol & Environ Toxicology",
-    MUSC: "Music",
-    NLP: "Natural Language Processing",
-    OAKS: "Oakes College",
-    OCEA: "Ocean Sciences",
-    PERS: "Persian",
-    PHIL: "Philosophy",
-    PBS: "Physical & Biological Sciences",
-    PHYS: "Physics",
-    POLI: "Politics",
-    PRTR: "Porter College",
-    PORT: "Portuguese",
-    PSYC: "Psychology",
-    PUNJ: "Punjabi",
-    SCIC: "Science Communication",
-    SOCD: "Social Documentation",
-    SOCY: "Sociology",
-    SPAN: "Spanish",
-    SPHS: "Spanish for Heritage Speakers",
-    STAT: "Statistics",
-    STEV: "Stevensen College",
-    THEA: "Theater Arts",
-    UCDC: "UCDC",
-    WRIT: "Writing",
-    YIDD: "Yiddish",
+    "ANTH": "Anthropology",
+    "APLX": "Applied Linguistics",
+    "AM": "Applied Mathematics",
+    "ARBC": "Arabic",
+    "ART": "Art",
+    "ARTG": "Art & Design: Games and Playable Media",
+    "ASTR": "Astronomy and Astrophysics",
+    "BIOC": "Biochemistry and Molecular Bio",
+    "BIOL": "Biology: Molecular & Cell Dev",
+    "BIOE": "Biology: Ecology & Evolutionary",
+    "BME": "Biomolecular Engineering",
+    "CRSN": "Carson College",
+    "CHEM": "Chemistry and Biochemistry",
+    "CHIN": "Chinese",
+    "CSP": "Coastal Science and Policy",
+    "CLNI": "College Nine",
+    "CLTE": "College Ten",
+    "CMMU": "Community Studies",
+    "CMPM": "Computational Media",
+    "CSE": "Computer Science & Engineering",
+    "COWL": "Cowell College",
+    "CRES": "Critical Race & Ethnic Studies",
+    "CRWN": "Crown College",
+    "DANM": "Digital Arts and New Media",
+    "EART": "Earth Science",
+    "ECON": "Economics",
+    "EDUC": "Education",
+    "ECE": "Electrical and Computer Engineering",
+    "ESCI": "Environmental Science",
+    "ENVS": "Environmental Studies",
+    "FMST": "Feminist Studies",
+    "FILM": "Film and Digital Media",
+    "FREN": "French",
+    "GAME": "Games and Playable Media",
+    "GERM": "German",
+    "GREE": "Greek",
+    "HERB": "Hebrew",
+    "HIS": "History",
+    "HAVC": "History of Art and Visual Culture",
+    "HISC": "History of Consciousness",
+    "ITAL": "Italan",
+    "JAPN": "Japanese",
+    "JWST": "Jewish Studies",
+    "KRSG": "Kresge College",
+    "LAAD": "Language",
+    "LATN": "Latin",
+    "LALS": "Latin American and Latino Studies",
+    "LGST": "Legal Studies",
+    "LING": "Linguistics",
+    "LIT": "Literature",
+    "MATH": "Mathematics",
+    "MERR": "Merril College",
+    "METX": "Microbiol & Environ Toxicology",
+    "MUSC": "Music",
+    "NLP": "Natural Language Processing",
+    "OAKS": "Oakes College",
+    "OCEA": "Ocean Sciences",
+    "PERS": "Persian",
+    "PHIL": "Philosophy",
+    "PBS": "Physical & Biological Sciences",
+    "PHYS": "Physics",
+    "POLI": "Politics",
+    "PRTR": "Porter College",
+    "PORT": "Portuguese",
+    "PSYC": "Psychology",
+    "PUNJ": "Punjabi",
+    "SCIC": "Science Communication",
+    "SOCD": "Social Documentation",
+    "SOCY": "Sociology",
+    "SPAN": "Spanish",
+    "SPHS": "Spanish for Heritage Speakers",
+    "STAT": "Statistics",
+    "STEV": "Stevensen College",
+    "THEA": "Theater Arts",
+    "UCDC": "UCDC",
+    "WRIT": "Writing",
+    "YIDD": "Yiddish",
   });
 });
 
-router.get("/dep=:depid", function (req, res) {
+router.get('/dep=:depid', function (req, res) {
   var getCourses;
   for (var i in classData) {
     if (i === req.params.depid.toUpperCase()) {
@@ -160,7 +160,7 @@ router.get("/dep=:depid", function (req, res) {
   }
 });
 
-router.get("/dep=:depId/type=:typeId", function (req, res) {
+router.get('/dep=:depId/type=:typeId', function (req, res) {
   var getCourses = [];
   for (var i in classData) {
     if (i === req.params.depId.toUpperCase()) {
@@ -178,7 +178,7 @@ router.get("/dep=:depId/type=:typeId", function (req, res) {
   }
 });
 
-router.get("/dep=:depId/ge=:geId", function (req, res) {
+router.get('/dep=:depId/ge=:geId', function (req, res) {
   var getCourses = [];
   for (var i in classData) {
     if (i === req.params.depId.toUpperCase()) {
