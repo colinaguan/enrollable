@@ -4,13 +4,73 @@ var database = require('./db.js');
 var classData = database.classData;
 
 router.get('/', function(req, res) {
-    var courses = [];
-    for (var i in classData){
-        for (var j in classData[i]){
-            courses.push(classData[i][j]);
+    var getCourses = [];
+    var course;
+    
+    // if there are parameters entered
+    if (Object.keys(req.query).length != 0) {
+        // console.log('has req');
+        var queryParameter = req.query;
+        // console.log(queryParameter);
+        // if reads type=xx
+        if (queryParameter.type){
+            for (var i in classData){
+                for (var j in classData[i]){
+                    if (classData[i][j].type == queryParameter.type.toUpperCase()){
+                        // if reads type=xx&ge=xx
+                        if (queryParameter.ge) {
+                            for (var k in classData[i][j].ge){
+                                if (classData[i][j].ge[k] == queryParameter.ge.toUpperCase()){
+                                    getCourses.push(classData[i][j]);
+                                    break;
+                                }
+                            }
+                        } else {
+                            getCourses.push(classData[i][j]);
+                        }
+                    }
+                }
+            }
+        // else if only reads ge=xx
+        } else if (queryParameter.ge){
+            for (var i in classData){
+                for (var j in classData[i]){
+                    for (k in classData[i][j].ge){
+                        if (classData[i][j].ge[k] == queryParameter.ge.toUpperCase()){
+                            getCourses.push(classData[i][j]);
+                            break;
+                        }
+                    }
+                }
+            }
+        // else if only reads course=xx
+        } else if (queryParameter.course){
+            for (var i in classData){
+                for (var j in classData[i]){
+                    if(classData[i][j].num == queryParameter.course){
+                        course = classData[i][j];
+                        break;
+                    }
+                }
+            }
+        }
+    // if no parameter entered return entire course list
+    } else {
+        // console.log('no req');
+        for (var i in classData){
+            for (var j in classData[i]){
+                getCourses.push(classData[i][j]);
+            }
         }
     }
-    res.send(courses);
+
+    if (course) {
+        res.send(course)
+    } else if (getCourses.length == 0){
+        res.status(404).send("No courses found");
+    } else {
+        res.send(getCourses);
+    }
 });
 
 router.get('/term', function(req,res) {
@@ -45,6 +105,7 @@ router.get('/ge=:geid', function(req,res) {
             for (k in classData[i][j].ge){
                 if (classData[i][j].ge[k] == req.params.geid.toUpperCase()){
                     getCourses.push(classData[i][j]);
+                    break;
                 }
             }
         }
@@ -66,9 +127,7 @@ router.get('/type=:typeid', function(req,res) {
         for (var j in classData[i]){
             if (classData[i][j].type == req.params.typeid.toUpperCase()){
                 getCourses.push(classData[i][j]);
-                break;
             }
-            
         }
     }
     if (getCourses.length == 0){
@@ -90,7 +149,6 @@ router.get('/type=:typeid/ge=:geid', function(req,res) {
                     }
                 }
             }
-            
         }
     }
     if (getCourses.length == 0){
@@ -106,6 +164,7 @@ router.get('/course=:courseId', function(req,res) {
         for (var j in classData[i]){
             if(classData[i][j].num == req.params.courseId){
                 course = classData[i][j];
+                break;
             }
         }
     }
