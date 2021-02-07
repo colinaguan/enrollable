@@ -6,10 +6,7 @@ import '../style/Pages.css'
 
 function ClassSearchPage() {
 
-<<<<<<< HEAD
     // list of departments, ge's, and types
-=======
->>>>>>> a64f23582bac61acb8ae8b8c17f0cdd234405dbd
     const [dep, setDep] = useState([]);
     const [ge, setGE] = useState([]);
     const [type, setType] = useState([]);
@@ -21,7 +18,6 @@ function ClassSearchPage() {
         setType(['lecture', 'lab']);
     }, []);
 
-<<<<<<< HEAD
     // filters
     const [fDep, setFDep] = useState('any');
     const [fGE, setFGE] = useState('any');
@@ -46,27 +42,18 @@ function ClassSearchPage() {
         console.log(classCards);
     };
 
-=======
->>>>>>> a64f23582bac61acb8ae8b8c17f0cdd234405dbd
     return (
         <Container>
             <Row className='page-header'>
                 <h1>Class Search</h1>
             </Row>
             <Row>
-<<<<<<< HEAD
                 <ClassSearchFilters dep={dep} ge={ge} type={type} handleFilters={handleFilters}
                     fDep={fDep} setFDep={setFDep} fGE={fGE} setFGE={setFGE}
                     fType={fType} setFType={setFType} fFav={fFav} setFFav={setFFav}/>
             </Row>
             <Row>
                 {classCards ? classCards : <p><i>No classes to display. Set filters and click 'Search' to update.</i></p>}
-=======
-                <ClassSearchFilters dep={dep} ge={ge} type={type}/>
-            </Row>
-            <Row>
-                <ClassSearchCard id="cse101" classData={'todo'} isFav={false}/>
->>>>>>> a64f23582bac61acb8ae8b8c17f0cdd234405dbd
             </Row>
         </Container>
     );
