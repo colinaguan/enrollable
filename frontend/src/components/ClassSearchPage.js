@@ -106,6 +106,7 @@ function ClassSearchPage() {
             fetch('course?ge=' + fGE)
             .then(res => res.json())
             .then(courses => {
+                console.log(courses);
                 // map cards
                 var cards = courses.map((data) => {
                     return <ClassSearchCard key={data['num']} id={data['num']} classData={data} isFav={false}/>;
@@ -136,7 +137,6 @@ function ClassSearchPage() {
             fetch('department?dep=' + fDep)
             .then(res => res.json())
             .then(courses => {
-                console.log(courses);
                 // map cards
                 var cards = courses.map((data) => {
                     return <ClassSearchCard key={data['num']} id={data['num']} classData={data} isFav={false}/>;

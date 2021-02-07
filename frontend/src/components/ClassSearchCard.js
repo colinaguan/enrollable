@@ -14,10 +14,7 @@ function ClassSearchCard({ classData, isFav }) {
     const handleFav = () => {
         // sets favorite
         favorite ? setFav(false) : setFav(true);
-        // if (favorite) setFav(false);
-        // else setFav(true);
         // access Firestore
-        console.log(classData);
     };
 
     var classTitle = classData['dep'].toUpperCase() + ' ' + classData['code'];

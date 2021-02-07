@@ -1,14 +1,50 @@
 import React from 'react';
 import { Modal, Container, Row, Col, Card } from 'react-bootstrap';
+import { toTitleCase, shortenDays, timeToString, arrayToString } from '../utils/format';
 import '../style/ClassSearchModal.css';
 
 function ClassSearchModal({ classData, show, setShow }) {
     const handleClose = () => setShow(false);
+
+    var classTitle = classData['dep'].toUpperCase() + ' ' + classData['code'];
+    // will be added when class section is added
+    // if (classData['csection'] !== '') classTitle += '-' + classData['csection'];
+    var classDay = shortenDays(classData['day']);
+    var classStart = timeToString(classData['start']);
+    var classEnd = timeToString(classData['end']);
+
+    var classDayTime = (classDay && classStart && classEnd) ?
+        classDay + ' ' + classStart + ' - ' + classEnd :
+        '';
+
+    var sections = classData['section'].map(data => {
+        var secDay = shortenDays(data['day']);
+        var secStart = timeToString(data['start']);
+        var secEnd = timeToString(data['end']);
+        var secDayTime = (secDay && secStart && secEnd) ?
+            secDay + ' ' + secStart + ' - ' + secEnd :
+            '';
+        return (
+            <Row key={data['num']} className='row-bottom-pad'>
+                <Col sm={4}>
+                    {classTitle}-{data['secName']}
+                </Col>
+                <Col sm={4}>
+                    {secDayTime !== '' && secDayTime}
+                    {secDayTime === '' && <i>Not stated</i>}
+                </Col>
+                <Col sm={4}>
+                    {data['instructor']}
+                </Col>
+            </Row>
+        )
+    })
+
     return (
         <Modal show={show} onHide={handleClose} animation={false} dialogClassName="info-modal">
             <Modal.Header closeButton>
                 <Modal.Title>
-                    CSE 101-01 Intro to Algorithms
+                    {classTitle} {classData['name']}
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
@@ -24,23 +60,34 @@ function ClassSearchModal({ classData, show, setShow }) {
                                         <Col>
                                             <Row className='row-bottom-pad'>
                                                 <Col className='info-title' sm={4}>Time</Col>
-                                                <Col sm={8}>MWF 9:20AM - 10:25AM</Col>
+                                                <Col sm={8}>
+                                                    {classDayTime !== '' && classDayTime}
+                                                    {classDayTime === '' && <i>No listed day or time</i>}
+                                                </Col>
                                             </Row>
                                             <Row className='row-bottom-pad'>
                                                 <Col className='info-title' sm={4}>Location</Col>
-                                                <Col sm={8}>Remote Instruction</Col>
+                                                <Col sm={8}>
+                                                    {classData['location']}
+                                                </Col>
                                             </Row>
                                             <Row className='row-bottom-pad'>
                                                 <Col className='info-title' sm={4}>Type</Col>
-                                                <Col sm={8}>Lecture</Col>
+                                                <Col sm={8}>
+                                                    {toTitleCase(classData['type'])}
+                                                </Col>
                                             </Row>
                                             <Row className='row-bottom-pad'>
                                                 <Col className='info-title' sm={4}>GE</Col>
-                                                <Col sm={8}>N/A</Col>
+                                                <Col sm={8}>
+                                                    {arrayToString(classData['ge']) || <i>None</i>}
+                                                </Col>
                                             </Row>
                                             <Row className='row-bottom-pad'>
                                                 <Col className='info-title' sm={4}>Units</Col>
-                                                <Col sm={8}>5</Col>
+                                                <Col sm={8}>
+                                                    {classData['credits']}
+                                                </Col>
                                             </Row>
                                         </Col>
                                         <Col>
@@ -103,16 +150,7 @@ function ClassSearchModal({ classData, show, setShow }) {
                                                 <Col className='info-title' sm={4}>Day and Time</Col>
                                                 <Col className='info-title' sm={4}>Instructor</Col>
                                             </Row>
-                                            <Row className='row-bottom-pad'>
-                                                <Col sm={4}>CSE101-01A</Col>
-                                                <Col sm={4}>MWF 4:00PM - 5:00PM </Col>
-                                                <Col sm={4}>Unknown</Col>
-                                            </Row>
-                                            <Row className='row-bottom-pad'>
-                                                <Col sm={4}>CSE101-01A</Col>
-                                                <Col sm={4}>MWF 4:00PM - 5:00PM </Col>
-                                                <Col sm={4}>Unknown</Col>
-                                            </Row>
+                                            {sections}
                                         </Col>
                                     </Row>
                                 </Container>

@@ -31,3 +31,7 @@ export function timeToString(time) {
     hours = (hours > 12) ? hours - 12 : hours;
     return hours + time.substring(2) + period;
 }
+
+export function arrayToString(array) {
+    return array.join(', ');
+}
