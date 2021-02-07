@@ -66,6 +66,9 @@ function ClassSearchPage() {
         //         return <ClassSearchCard key={data['num']} id={data['num']} classData={data} isFav={false}/>;
         //     })
         //     setCards(cards);
+        // })
+        // .catch(() => {
+        //     setCards();
         // });
 
         // all courses
@@ -78,6 +81,9 @@ function ClassSearchPage() {
                     return <ClassSearchCard key={data['num']} id={data['num']} classData={data} isFav={false}/>;
                 })
                 setCards(cards);
+            })
+            .catch(() => {
+                setCards();
             });
         }
         // type
@@ -91,6 +97,9 @@ function ClassSearchPage() {
                 })
                 setCards(cards);
             })
+            .catch(() => {
+                setCards();
+            });
         }
         // GE
         else if (fDep === 'any' && fGE !== 'any' && fType === 'any') {
@@ -103,6 +112,9 @@ function ClassSearchPage() {
                 })
                 setCards(cards);
             })
+            .catch(() => {
+                setCards();
+            });
         }
         // GE and type
         else if (fDep === 'any' && fGE !== 'any' && fType !== 'any') {
@@ -115,6 +127,9 @@ function ClassSearchPage() {
                 })
                 setCards(cards);
             })
+            .catch(() => {
+                setCards();
+            });
         }
         // dep
         else if (fDep !== 'any' && fGE === 'any' && fType === 'any') {
@@ -128,6 +143,9 @@ function ClassSearchPage() {
                 })
                 setCards(cards);
             })
+            .catch(() => {
+                setCards();
+            });
         }
         // dep and type
         else if (fDep !== 'any' && fGE === 'any' && fType !== 'any') {
@@ -140,6 +158,9 @@ function ClassSearchPage() {
                 })
                 setCards(cards);
             })
+            .catch(() => {
+                setCards();
+            });
         }
         // dep and ge
         else if (fDep !== 'any' && fGE !== 'any' && fType === 'any') {
@@ -152,6 +173,9 @@ function ClassSearchPage() {
                 })
                 setCards(cards);
             })
+            .catch(() => {
+                setCards();
+            });
         }
         // all filters
         else {
@@ -164,6 +188,9 @@ function ClassSearchPage() {
                 })
                 setCards(cards);
             })
+            .catch(() => {
+                setCards();
+            });
         }
     };
 
