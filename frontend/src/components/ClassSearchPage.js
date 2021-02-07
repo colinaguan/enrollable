@@ -1,21 +1,39 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row } from 'react-bootstrap';
-import ClassSearchCard from './ClassSearchCard'
-import ClassSearchFilters from './ClassSearchFilters'
-import '../style/Pages.css'
+import ClassSearchCard from './ClassSearchCard';
+import ClassSearchFilters from './ClassSearchFilters';
+import '../style/Pages.css';
 
 function ClassSearchPage() {
 
     // list of departments, ge's, and types
-    const [dep, setDep] = useState([]);
+    const [dep, setDep] = useState({});
     const [ge, setGE] = useState([]);
     const [type, setType] = useState([]);
 
     // call API and store list of filters
     useEffect(() => {
-        setDep(['AMS', 'CSE']);
-        setGE(['CC', 'IM']);
-        setType(['lecture', 'lab']);
+        // get departments
+        fetch('/department/details')
+            .then(res => res.json())
+            .then(departments => {
+                setDep(departments);
+            })
+            .catch((error) => { console.log(error) });
+        // get GE
+        fetch('/course/ge')
+            .then(res => res.json())
+            .then(ges => {
+                setGE(Object.keys(ges));
+            })
+            .catch((error) => { console.log(error) })
+        // get types
+        fetch('/course/type')
+            .then(res => res.json())
+            .then(types => {
+                setType(types)
+            })
+            .catch((error) => { console.log(error) })
     }, []);
 
     // filters

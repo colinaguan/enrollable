@@ -1,6 +1,7 @@
 import React from 'react';
 import { Form, Button, Col } from "react-bootstrap";
 import '../style/ClassSearchFilters.css';
+import { toTitleCase } from '../utils/format';
 
 function ClassSearchFilters({
     dep,
@@ -18,14 +19,14 @@ function ClassSearchFilters({
 }) {
 
     // create option elements from props
-    var depOptions = dep.map((elem) => {
-        return <option key={elem} value={elem}>{elem}</option>;
+    var depOptions = Object.keys(dep).map((key) => {
+    return <option key={key} value={key}>{dep[key]}</option>;
     });
     var geOptions = ge.map((elem) => {
         return <option key={elem} value={elem}>{elem}</option>;
     });
     var typeOptions = type.map((elem) => {
-        return <option key={elem} value={elem}>{elem}</option>;
+        return <option key={elem} value={elem}>{toTitleCase(elem)}</option>;
     });
     
     return (
