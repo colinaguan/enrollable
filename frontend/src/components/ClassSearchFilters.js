@@ -20,7 +20,7 @@ function ClassSearchFilters({
 
     // create option elements from props
     var depOptions = Object.keys(dep).map((key) => {
-    return <option key={key} value={key}>{dep[key]}</option>;
+        return <option key={key} value={key}>{dep[key]}</option>;
     });
     var geOptions = ge.map((elem) => {
         return <option key={elem} value={elem}>{elem}</option>;

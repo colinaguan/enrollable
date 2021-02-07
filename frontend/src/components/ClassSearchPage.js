@@ -15,25 +15,25 @@ function ClassSearchPage() {
     useEffect(() => {
         // get departments
         fetch('/department/details')
-            .then(res => res.json())
-            .then(departments => {
-                setDep(departments);
-            })
-            .catch((error) => { console.log(error) });
+        .then(res => res.json())
+        .then(departments => {
+            setDep(departments);
+        })
+        .catch((error) => { console.log(error) });
         // get GE
         fetch('/course/ge')
-            .then(res => res.json())
-            .then(ges => {
-                setGE(Object.keys(ges));
-            })
-            .catch((error) => { console.log(error) })
+        .then(res => res.json())
+        .then(ges => {
+            setGE(Object.keys(ges));
+        })
+        .catch((error) => { console.log(error) });
         // get types
         fetch('/course/type')
-            .then(res => res.json())
-            .then(types => {
-                setType(types)
-            })
-            .catch((error) => { console.log(error) })
+        .then(res => res.json())
+        .then(types => {
+            setType(types)
+        })
+        .catch((error) => { console.log(error) });
     }, []);
 
     // filters
@@ -49,15 +49,122 @@ function ClassSearchPage() {
     const handleFilters = (e) => {
         // prevent page from refreshing
         e.preventDefault();
-        // temporary card assignment
-        setCards(<ClassSearchCard id="cse101" classData={'todo'} isFav={false}/>);
         // for debugging
         console.log("---------- FILTERS");
         console.log(fDep);
         console.log(fGE);
         console.log(fType);
         console.log(fFav);
-        console.log(classCards);
+        // API filtering
+
+        // AFTER API FIX:
+        // fetch('course?dep=' + fDep + '&type=' + fType + '&ge=' + fGE)
+        // .then(res => res.json())
+        // .then(courses => {
+        //     // map cards
+        //     var cards = courses.map((data) => {
+        //         return <ClassSearchCard key={data['num']} id={data['num']} classData={data} isFav={false}/>;
+        //     })
+        //     setCards(cards);
+        // });
+
+        // all courses
+        if (fDep === 'any' && fGE === 'any' && fType === 'any') {
+            fetch('/course')
+            .then(res => res.json())
+            .then(courses => {
+                // map cards
+                var cards = courses.map((data) => {
+                    return <ClassSearchCard key={data['num']} id={data['num']} classData={data} isFav={false}/>;
+                })
+                setCards(cards);
+            });
+        }
+        // type
+        else if (fDep === 'any' && fGE === 'any' && fType !== 'any') {
+            fetch('/course?type=' + fType)
+            .then(res => res.json())
+            .then(courses => {
+                // map cards
+                var cards = courses.map((data) => {
+                    return <ClassSearchCard key={data['num']} id={data['num']} classData={data} isFav={false}/>;
+                })
+                setCards(cards);
+            })
+        }
+        // GE
+        else if (fDep === 'any' && fGE !== 'any' && fType === 'any') {
+            fetch('course?ge=' + fGE)
+            .then(res => res.json())
+            .then(courses => {
+                // map cards
+                var cards = courses.map((data) => {
+                    return <ClassSearchCard key={data['num']} id={data['num']} classData={data} isFav={false}/>;
+                })
+                setCards(cards);
+            })
+        }
+        // GE and type
+        else if (fDep === 'any' && fGE !== 'any' && fType !== 'any') {
+            fetch('course?ge=' + fGE + '&type=' + fType)
+            .then(res => res.json())
+            .then(courses => {
+                // map cards
+                var cards = courses.map((data) => {
+                    return <ClassSearchCard key={data['num']} id={data['num']} classData={data} isFav={false}/>;
+                })
+                setCards(cards);
+            })
+        }
+        // dep
+        else if (fDep !== 'any' && fGE === 'any' && fType === 'any') {
+            fetch('department?dep=' + fDep)
+            .then(res => res.json())
+            .then(courses => {
+                console.log(courses);
+                // map cards
+                var cards = courses.map((data) => {
+                    return <ClassSearchCard key={data['num']} id={data['num']} classData={data} isFav={false}/>;
+                })
+                setCards(cards);
+            })
+        }
+        // dep and type
+        else if (fDep !== 'any' && fGE === 'any' && fType !== 'any') {
+            fetch('department?dep=' + fDep + '&type=' + fType)
+            .then(res => res.json())
+            .then(courses => {
+                // map cards
+                var cards = courses.map((data) => {
+                    return <ClassSearchCard key={data['num']} id={data['num']} classData={data} isFav={false}/>;
+                })
+                setCards(cards);
+            })
+        }
+        // dep and ge
+        else if (fDep !== 'any' && fGE !== 'any' && fType === 'any') {
+            fetch('department?dep=' + fDep + '&ge=' + fGE)
+            .then(res => res.json())
+            .then(courses => {
+                // map cards
+                var cards = courses.map((data) => {
+                    return <ClassSearchCard key={data['num']} id={data['num']} classData={data} isFav={false}/>;
+                })
+                setCards(cards);
+            })
+        }
+        // all filters
+        else {
+            fetch('department?dep=' + fDep + '&type=' + fType + '&ge=' + fGE)
+            .then(res => res.json())
+            .then(courses => {
+                // map cards
+                var cards = courses.map((data) => {
+                    return <ClassSearchCard key={data['num']} id={data['num']} classData={data} isFav={false}/>;
+                })
+                setCards(cards);
+            })
+        }
     };
 
     return (
