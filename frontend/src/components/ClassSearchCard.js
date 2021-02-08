@@ -38,13 +38,15 @@ function ClassSearchCard({ classData, isFav, favList, setFavList }) {
         }
     };
 
+    // class title (ex: CSE 101-01)
     var classTitle = classData['dep'].toUpperCase() + ' ' + classData['code'];
     // TODO: will be added when class section is added
     // if (classData['csection'] !== '') classTitle += '-' + classData['csection'];
+
+    // class day time info
     var classDay = shortenDays(classData['day']);
     var classStart = timeToString(classData['start']);
     var classEnd = timeToString(classData['end']);
-
     var classDayTime = (classDay && classStart && classEnd) ?
         classDay + ' ' + classStart + ' - ' + classEnd :
         '';

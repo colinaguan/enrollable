@@ -20,9 +20,9 @@ function ClassSearchPage() {
     const [fFav, setFFav] = useState('any');
 
     // stores cards
-    const [classCards, setCards] = useState();
+    const [classCards, setCards] = useState([]);
 
-    // call API and store list of filters
+    // store lists of filters
     useEffect(() => {
 
         // get departments
@@ -81,9 +81,7 @@ function ClassSearchPage() {
         // fetch('course?dep=' + fDep + '&type=' + fType + '&ge=' + fGE)
         // .then(res => res.json())
         // .then(courses => {
-        //     cardData = courses.map(data => {
-        //         return data;
-        //     });
+        //     cardData = courses;
         //     // favorite filter
         //     if (fFav === 'fav') {
         //         cardData = cardData.filter(data => favList.includes(data['num']));
@@ -106,9 +104,7 @@ function ClassSearchPage() {
             fetch('/course')
             .then(res => res.json())
             .then(courses => {
-                cardData = courses.map(data => {
-                    return data;
-                });
+                cardData = courses;
                 // favorite filter
                 if (fFav === 'fav') {
                     cardData = cardData.filter(data => favList.includes(data['num']));
@@ -130,9 +126,7 @@ function ClassSearchPage() {
             fetch('/course?type=' + fType)
             .then(res => res.json())
             .then(courses => {
-                cardData = courses.map(data => {
-                    return data;
-                });
+                cardData = courses;
                 // favorite filter
                 if (fFav === 'fav') {
                     cardData = cardData.filter(data => favList.includes(data['num']));
@@ -154,9 +148,7 @@ function ClassSearchPage() {
             fetch('course?ge=' + fGE)
             .then(res => res.json())
             .then(courses => {
-                cardData = courses.map(data => {
-                    return data;
-                });
+                cardData = courses;
                 // favorite filter
                 if (fFav === 'fav') {
                     cardData = cardData.filter(data => favList.includes(data['num']));
@@ -178,9 +170,7 @@ function ClassSearchPage() {
             fetch('course?ge=' + fGE + '&type=' + fType)
             .then(res => res.json())
             .then(courses => {
-                cardData = courses.map(data => {
-                    return data;
-                });
+                cardData = courses;
                 // favorite filter
                 if (fFav === 'fav') {
                     cardData = cardData.filter(data => favList.includes(data['num']));
@@ -202,9 +192,7 @@ function ClassSearchPage() {
             fetch('department?dep=' + fDep)
             .then(res => res.json())
             .then(courses => {
-                cardData = courses.map(data => {
-                    return data;
-                });
+                cardData = courses;
                 // favorite filter
                 if (fFav === 'fav') {
                     cardData = cardData.filter(data => favList.includes(data['num']));
@@ -226,9 +214,7 @@ function ClassSearchPage() {
             fetch('department?dep=' + fDep + '&type=' + fType)
             .then(res => res.json())
             .then(courses => {
-                cardData = courses.map(data => {
-                    return data;
-                });
+                cardData = courses;
                 // favorite filter
                 if (fFav === 'fav') {
                     cardData = cardData.filter(data => favList.includes(data['num']));
@@ -250,9 +236,7 @@ function ClassSearchPage() {
             fetch('department?dep=' + fDep + '&ge=' + fGE)
             .then(res => res.json())
             .then(courses => {
-                cardData = courses.map(data => {
-                    return data;
-                });
+                cardData = courses;
                 // favorite filter
                 if (fFav === 'fav') {
                     cardData = cardData.filter(data => favList.includes(data['num']));
@@ -274,9 +258,7 @@ function ClassSearchPage() {
             fetch('department?dep=' + fDep + '&type=' + fType + '&ge=' + fGE)
             .then(res => res.json())
             .then(courses => {
-                cardData = courses.map(data => {
-                    return data;
-                });
+                cardData = courses;
                 // favorite filter
                 if (fFav === 'fav') {
                     cardData = cardData.filter(data => favList.includes(data['num']));
@@ -295,7 +277,6 @@ function ClassSearchPage() {
         }
     };
 
-    console.log(classCards);
     return (
         <Container>
             <Row className='page-header'>

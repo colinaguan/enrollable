@@ -6,17 +6,20 @@ import '../style/ClassSearchModal.css';
 function ClassSearchModal({ classData, show, setShow }) {
     const handleClose = () => setShow(false);
 
+    // class title (ex: CSE 101-01)
     var classTitle = classData['dep'].toUpperCase() + ' ' + classData['code'];
-    // will be added when class section is added
+    // TODO: will be added when class section is added
     // if (classData['csection'] !== '') classTitle += '-' + classData['csection'];
+
+    // class day time info
     var classDay = shortenDays(classData['day']);
     var classStart = timeToString(classData['start']);
     var classEnd = timeToString(classData['end']);
-
     var classDayTime = (classDay && classStart && classEnd) ?
         classDay + ' ' + classStart + ' - ' + classEnd :
         '';
 
+    // map section info
     var sections = classData['section'].map(data => {
         var secDay = shortenDays(data['day']);
         var secStart = timeToString(data['start']);
@@ -44,7 +47,7 @@ function ClassSearchModal({ classData, show, setShow }) {
         <Modal show={show} onHide={handleClose} animation={false} dialogClassName="info-modal">
             <Modal.Header closeButton>
                 <Modal.Title>
-                    {classTitle} {classData['name']}
+                    <b>{classTitle}</b> {classData['name']}
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
