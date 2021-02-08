@@ -90,7 +90,7 @@ function ClassSearchPage() {
         //     }
         //     // map cards
         //     var cards = cardData.map(data => {
-        //         var isFav = data['num'] in favList;
+        //         var isFav = favList.includes(data['num']);
         //         return <ClassSearchCard key={data['num']} id={data['num']} classData={data}
         //             isFav={isFav} favList={favList} setFavList={setFavList}/>;
         //     });
@@ -115,7 +115,7 @@ function ClassSearchPage() {
                 }
                 // map cards
                 var cards = cardData.map(data => {
-                    var isFav = data['num'] in favList;
+                    var isFav = favList.includes(data['num']);
                     return <ClassSearchCard key={data['num']} id={data['num']} classData={data}
                         isFav={isFav} favList={favList} setFavList={setFavList}/>;
                 });
@@ -139,7 +139,7 @@ function ClassSearchPage() {
                 }
                 // map cards
                 var cards = cardData.map(data => {
-                    var isFav = data['num'] in favList;
+                    var isFav = favList.includes(data['num']);
                     return <ClassSearchCard key={data['num']} id={data['num']} classData={data}
                         isFav={isFav} favList={favList} setFavList={setFavList}/>;
                 });
@@ -163,7 +163,7 @@ function ClassSearchPage() {
                 }
                 // map cards
                 var cards = cardData.map(data => {
-                    var isFav = data['num'] in favList;
+                    var isFav = favList.includes(data['num']);
                     return <ClassSearchCard key={data['num']} id={data['num']} classData={data}
                         isFav={isFav} favList={favList} setFavList={setFavList}/>;
                 });
@@ -187,7 +187,7 @@ function ClassSearchPage() {
                 }
                 // map cards
                 var cards = cardData.map(data => {
-                    var isFav = data['num'] in favList;
+                    var isFav = favList.includes(data['num']);
                     return <ClassSearchCard key={data['num']} id={data['num']} classData={data}
                         isFav={isFav} favList={favList} setFavList={setFavList}/>;
                 });
@@ -235,7 +235,7 @@ function ClassSearchPage() {
                 }
                 // map cards
                 var cards = cardData.map(data => {
-                    var isFav = data['num'] in favList;
+                    var isFav = favList.includes(data['num']);
                     return <ClassSearchCard key={data['num']} id={data['num']} classData={data}
                         isFav={isFav} favList={favList} setFavList={setFavList}/>;
                 });
@@ -259,7 +259,7 @@ function ClassSearchPage() {
                 }
                 // map cards
                 var cards = cardData.map(data => {
-                    var isFav = data['num'] in favList;
+                    var isFav = favList.includes(data['num']);
                     return <ClassSearchCard key={data['num']} id={data['num']} classData={data}
                         isFav={isFav} favList={favList} setFavList={setFavList}/>;
                 });
@@ -283,7 +283,7 @@ function ClassSearchPage() {
                 }
                 // map cards
                 var cards = cardData.map(data => {
-                    var isFav = data['num'] in favList;
+                    var isFav = favList.includes(data['num']);
                     return <ClassSearchCard key={data['num']} id={data['num']} classData={data}
                         isFav={isFav} favList={favList} setFavList={setFavList}/>;
                 });
@@ -295,6 +295,7 @@ function ClassSearchPage() {
         }
     };
 
+    console.log(classCards);
     return (
         <Container>
             <Row className='page-header'>
@@ -306,7 +307,11 @@ function ClassSearchPage() {
                     fType={fType} setFType={setFType} fFav={fFav} setFFav={setFFav}/>
             </Row>
             <Row>
-                {classCards ? classCards : <p><i>No classes to display. Set filters and click 'Search' to update.</i></p>}
+                {
+                    classCards && classCards.length > 0 ?
+                    classCards :
+                    <p><i>No classes to display. Set filters and click 'Search' to update.</i></p>
+                }
             </Row>
         </Container>
     );
