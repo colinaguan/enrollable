@@ -301,7 +301,7 @@ function ClassSearchPage() {
             <Row className='page-header'>
                 <h1>Class Search</h1>
             </Row>
-            <Row>
+            <Row className="sticky-top filter-row">
                 <ClassSearchFilters dep={dep} ge={ge} type={type} handleFilters={handleFilters}
                     fDep={fDep} setFDep={setFDep} fGE={fGE} setFGE={setFGE}
                     fType={fType} setFType={setFType} fFav={fFav} setFFav={setFFav}/>
