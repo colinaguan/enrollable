@@ -58,11 +58,11 @@ function ClassSearchPage() {
                 list = doc.data().favorList;
                 setFavList(list);
             } else {
-                console.log("favorites document dne");
+                console.error("favorites document dne");
                 setFavList([]);
             }
         }).catch(() => {
-            console.log("favorites not found");
+            console.error("favorites not found");
             setFavList([]);
         });
     }, []);
