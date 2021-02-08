@@ -39,7 +39,8 @@ function ClassSearchPage() {
         })
         .catch((error) => { console.log(error) });
         // get favorites list
-        setFavList(getFavorList());
+        var newFavList = getFavorList();
+        setFavList(newFavList);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -64,7 +65,8 @@ function ClassSearchPage() {
         console.log(fFav);
         // API filtering
         var cardData = [];
-        // AFTER API FIX:
+        
+        // TODO: after API fix
         // fetch('course?dep=' + fDep + '&type=' + fType + '&ge=' + fGE)
         // .then(res => res.json())
         // .then(courses => {
@@ -79,7 +81,8 @@ function ClassSearchPage() {
         //     // map cards
         //     var cards = cardData.map(data => {
         //         var isFav = data['num'] in favList;
-        //         return <ClassSearchCard key={data['num']} id={data['num']} classData={data} isFav={isFav}/>;
+        //         return <ClassSearchCard key={data['num']} id={data['num']} classData={data}
+        //             isFav={isFav} favList={favList} setFavList={setFavList}/>;
         //     });
         //     setCards(cards);
         // })
@@ -101,9 +104,11 @@ function ClassSearchPage() {
                     cardData.filter(data => data['num'] in favList);
                 }
                 // map cards
+                console.log(cardData);
                 var cards = cardData.map(data => {
                     var isFav = data['num'] in favList;
-                    return <ClassSearchCard key={data['num']} id={data['num']} classData={data} isFav={isFav}/>;
+                    return <ClassSearchCard key={data['num']} id={data['num']} classData={data}
+                        isFav={isFav} favList={favList} setFavList={setFavList}/>;
                 });
                 setCards(cards);
             })
@@ -127,7 +132,8 @@ function ClassSearchPage() {
                 // map cards
                 var cards = cardData.map(data => {
                     var isFav = data['num'] in favList;
-                    return <ClassSearchCard key={data['num']} id={data['num']} classData={data} isFav={isFav}/>;
+                    return <ClassSearchCard key={data['num']} id={data['num']} classData={data}
+                        isFav={isFav} favList={favList} setFavList={setFavList}/>;
                 });
                 setCards(cards);
             })
@@ -151,7 +157,8 @@ function ClassSearchPage() {
                 // map cards
                 var cards = cardData.map(data => {
                     var isFav = data['num'] in favList;
-                    return <ClassSearchCard key={data['num']} id={data['num']} classData={data} isFav={isFav}/>;
+                    return <ClassSearchCard key={data['num']} id={data['num']} classData={data}
+                        isFav={isFav} favList={favList} setFavList={setFavList}/>;
                 });
                 setCards(cards);
             })
@@ -175,7 +182,8 @@ function ClassSearchPage() {
                 // map cards
                 var cards = cardData.map(data => {
                     var isFav = data['num'] in favList;
-                    return <ClassSearchCard key={data['num']} id={data['num']} classData={data} isFav={isFav}/>;
+                    return <ClassSearchCard key={data['num']} id={data['num']} classData={data}
+                        isFav={isFav} favList={favList} setFavList={setFavList}/>;
                 });
                 setCards(cards);
             })
@@ -198,8 +206,11 @@ function ClassSearchPage() {
                 }
                 // map cards
                 var cards = cardData.map(data => {
-                    var isFav = data['num'] in favList;
-                    return <ClassSearchCard key={data['num']} id={data['num']} classData={data} isFav={isFav}/>;
+                    var isFav = favList.includes(data['num']);
+                    console.log(data['num']);
+                    console.log(isFav);
+                    return <ClassSearchCard key={data['num']} id={data['num']} classData={data}
+                        isFav={isFav} favList={favList} setFavList={setFavList}/>;
                 });
                 setCards(cards);
             })
@@ -223,7 +234,8 @@ function ClassSearchPage() {
                 // map cards
                 var cards = cardData.map(data => {
                     var isFav = data['num'] in favList;
-                    return <ClassSearchCard key={data['num']} id={data['num']} classData={data} isFav={isFav}/>;
+                    return <ClassSearchCard key={data['num']} id={data['num']} classData={data}
+                        isFav={isFav} favList={favList} setFavList={setFavList}/>;
                 });
                 setCards(cards);
             })
@@ -247,7 +259,8 @@ function ClassSearchPage() {
                 // map cards
                 var cards = cardData.map(data => {
                     var isFav = data['num'] in favList;
-                    return <ClassSearchCard key={data['num']} id={data['num']} classData={data} isFav={isFav}/>;
+                    return <ClassSearchCard key={data['num']} id={data['num']} classData={data}
+                        isFav={isFav} favList={favList} setFavList={setFavList}/>;
                 });
                 setCards(cards);
             })
@@ -271,7 +284,8 @@ function ClassSearchPage() {
                 // map cards
                 var cards = cardData.map(data => {
                     var isFav = data['num'] in favList;
-                    return <ClassSearchCard key={data['num']} id={data['num']} classData={data} isFav={isFav}/>;
+                    return <ClassSearchCard key={data['num']} id={data['num']} classData={data}
+                        isFav={isFav} favList={favList} setFavList={setFavList}/>;
                 });
                 setCards(cards);
             })

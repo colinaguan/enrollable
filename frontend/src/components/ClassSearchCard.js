@@ -3,22 +3,42 @@ import { Card, Row, Col } from 'react-bootstrap';
 import { StarFill, Star } from "react-bootstrap-icons";
 import ClassSearchModal from './ClassSearchModal';
 import { shortenDays, timeToString } from '../utils/format';
+import { useAuth } from '../contexts/AuthContext';
 import '../style/ClassSearchCard.css';
 
-function ClassSearchCard({ classData, isFav }) {
+function ClassSearchCard({ classData, isFav, favList, setFavList }) {
 
     const [favorite, setFav] = useState(isFav);
     const [show, setShow] = useState(false);
     const handleShow = () => setShow(true);
 
+    const { addToFavorList, removeFromFavorList } = useAuth();
     const handleFav = () => {
-        // sets favorite
-        favorite ? setFav(false) : setFav(true);
-        // access Firestore
+        if (favorite) {
+            // make new favorites list
+            var newFavList = favList;
+            const index = newFavList.indexOf(classData['num']);
+            if (index > -1) {
+                newFavList.splice(index, 1);
+            }
+            // set values for hooks and firestore
+            setFav(false);
+            removeFromFavorList(classData['num']);
+            setFavList(newFavList);
+        }
+        else {
+            // make new favorites list
+            var newFavList = favList;
+            newFavList.push(classData['num']);
+            // set values for hooks and firestore
+            setFav(true);
+            addToFavorList(classData['num']);
+            setFavList(newFavList);
+        }
     };
 
     var classTitle = classData['dep'].toUpperCase() + ' ' + classData['code'];
-    // will be added when class section is added
+    // TODO: will be added when class section is added
     // if (classData['csection'] !== '') classTitle += '-' + classData['csection'];
     var classDay = shortenDays(classData['day']);
     var classStart = timeToString(classData['start']);

@@ -82,7 +82,7 @@ export function AuthProvider({ children }) {
         docRef.get().then(function(doc) {
             if (doc.exists) {
                 list = doc.data().favorList;
-                console.log("Document data:", doc.data().favorList);
+                console.log("Document data:", list);
             } else {
                 console.log("No such document!");
             }
