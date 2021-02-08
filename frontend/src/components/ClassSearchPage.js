@@ -54,12 +54,15 @@ function ClassSearchPage() {
         var list = [];
         docRef.get().then(function(doc) {
             if (doc.exists) {
+                console.log("favorites retrieved");
                 list = doc.data().favorList;
                 setFavList(list);
             } else {
+                console.log("favorites document dne");
                 setFavList([]);
             }
         }).catch(() => {
+            console.log("favorites not found");
             setFavList([]);
         });
     }, []);
