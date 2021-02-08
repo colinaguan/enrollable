@@ -10,14 +10,16 @@ export function shortenDays(days) {
         "Tuesday": "Tu",
         "Wednesday": "W",
         "Thursday": "Th",
-        "Friday": "F"
+        "Friday": "F",
+        "Saturday": "Sa",
+        "Sunday": "Su"
     };
     var dayString = '';
     days.forEach(day => {
         if (day in shortened)
             dayString += shortened[day];
         else
-            console.log("day " + day + "not found");
+            console.log("day " + day + " not found");
     });
     return dayString;
 }

@@ -40,6 +40,7 @@ function ClassSearchPage() {
         .catch((error) => { console.log(error) });
         // get favorites list
         var newFavList = getFavorList();
+        console.log(newFavList);
         setFavList(newFavList);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
