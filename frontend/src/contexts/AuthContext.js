@@ -77,9 +77,11 @@ export function AuthProvider({ children }) {
     // return a list of user favourite class
     function getFavorList() {
         var docRef = db.collection("users").doc(auth.currentUser.uid);
+        var list = [];
 
         docRef.get().then(function(doc) {
             if (doc.exists) {
+                list = doc.data().favorList;
                 console.log("Document data:", doc.data().favorList);
             } else {
                 console.log("No such document!");
@@ -88,7 +90,7 @@ export function AuthProvider({ children }) {
             console.log("Error getting document:", error);
         });
 
-        return docRef.get().data().favorList
+        return list;
     }
 
     // set up firestore for new user
