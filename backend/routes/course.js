@@ -9,16 +9,14 @@ router.get('/', function(req, res) {
     
     // if there are parameters entered
     if (Object.keys(req.query).length != 0) {
-        // console.log('has req');
         var queryParameter = req.query;
-        // console.log(queryParameter);
         // if reads type=xx
-        if (queryParameter.type){
+        if (queryParameter.type && queryParameter.type != 'any'){
             for (var i in classData){
                 for (var j in classData[i]){
                     if (classData[i][j].type == queryParameter.type.toUpperCase()){
                         // if reads type=xx&ge=xx
-                        if (queryParameter.ge) {
+                        if (queryParameter.ge && queryParameter.ge != 'any') {
                             for (var k in classData[i][j].ge){
                                 if (classData[i][j].ge[k] == queryParameter.ge.toUpperCase()){
                                     getCourses.push(classData[i][j]);
@@ -32,7 +30,7 @@ router.get('/', function(req, res) {
                 }
             }
         // else if only reads ge=xx
-        } else if (queryParameter.ge){
+        } else if (queryParameter.ge && queryParameter.ge != 'any'){
             for (var i in classData){
                 for (var j in classData[i]){
                     for (k in classData[i][j].ge){
@@ -44,7 +42,7 @@ router.get('/', function(req, res) {
                 }
             }
         // else if only reads course=xx
-        } else if (queryParameter.course){
+        } else if (queryParameter.course && queryParameter.course != 'any'){
             for (var i in classData){
                 for (var j in classData[i]){
                     if(classData[i][j].num == queryParameter.course){
@@ -56,7 +54,6 @@ router.get('/', function(req, res) {
         }
     // if no parameter entered return entire course list
     } else {
-        // console.log('no req');
         for (var i in classData){
             for (var j in classData[i]){
                 getCourses.push(classData[i][j]);
