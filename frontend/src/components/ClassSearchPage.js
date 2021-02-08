@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Row } from 'react-bootstrap';
 import ClassSearchCard from './ClassSearchCard';
 import ClassSearchFilters from './ClassSearchFilters';
-import { useAuth } from '../contexts/AuthContext';
+import { auth, db } from "../firebase";
 import '../style/Pages.css';
 
 function ClassSearchPage() {
@@ -13,38 +13,6 @@ function ClassSearchPage() {
     const [type, setType] = useState([]);
     const [favList, setFavList] = useState([]);
 
-    const { getFavorList } = useAuth();
-
-    // call API and store list of filters
-    useEffect(() => {
-        // get departments
-        fetch('/department/details')
-        .then(res => res.json())
-        .then(departments => {
-            setDep(departments);
-        })
-        .catch((error) => { console.log(error) });
-        // get GE
-        fetch('/course/ge')
-        .then(res => res.json())
-        .then(ges => {
-            setGE(Object.keys(ges));
-        })
-        .catch((error) => { console.log(error) });
-        // get types
-        fetch('/course/type')
-        .then(res => res.json())
-        .then(types => {
-            setType(types)
-        })
-        .catch((error) => { console.log(error) });
-        // get favorites list
-        var newFavList = getFavorList();
-        console.log(newFavList);
-        setFavList(newFavList);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
     // filters
     const [fDep, setFDep] = useState('any');
     const [fGE, setFGE] = useState('any');
@@ -53,6 +21,48 @@ function ClassSearchPage() {
 
     // stores cards
     const [classCards, setCards] = useState();
+
+    // call API and store list of filters
+    useEffect(() => {
+
+        // get departments
+        fetch('/department/details')
+        .then(res => res.json())
+        .then(departments => {
+            setDep(departments);
+        })
+        .catch((error) => { console.log(error) });
+
+        // get GE
+        fetch('/course/ge')
+        .then(res => res.json())
+        .then(ges => {
+            setGE(Object.keys(ges));
+        })
+        .catch((error) => { console.log(error) });
+
+        // get types
+        fetch('/course/type')
+        .then(res => res.json())
+        .then(types => {
+            setType(types)
+        })
+        .catch((error) => { console.log(error) });
+
+        // get favorites list (copied from AuthContext)
+        var docRef = db.collection("users").doc(auth.currentUser.uid);
+        var list = [];
+        docRef.get().then(function(doc) {
+            if (doc.exists) {
+                list = doc.data().favorList;
+                setFavList(list);
+            } else {
+                setFavList([]);
+            }
+        }).catch(() => {
+            setFavList([]);
+        });
+    }, []);
 
     // updates displayed cards after filters are submitted
     const handleFilters = (e) => {
@@ -76,8 +86,7 @@ function ClassSearchPage() {
         //     });
         //     // favorite filter
         //     if (fFav === 'fav') {
-        //         console.log('filtering');
-        //         cardData.filter(data => data['num'] in favList);
+        //         cardData = cardData.filter(data => favList.includes(data['num']));
         //     }
         //     // map cards
         //     var cards = cardData.map(data => {
@@ -89,8 +98,9 @@ function ClassSearchPage() {
         // })
         // .catch(() => {
         //     setCards([])
-        // });
+        // })
 
+        // TODO: all if/else statements will be deleted after API fix
         // all courses
         if (fDep === 'any' && fGE === 'any' && fType === 'any') {
             fetch('/course')
@@ -101,11 +111,9 @@ function ClassSearchPage() {
                 });
                 // favorite filter
                 if (fFav === 'fav') {
-                    console.log('filtering');
-                    cardData.filter(data => data['num'] in favList);
+                    cardData = cardData.filter(data => favList.includes(data['num']));
                 }
                 // map cards
-                console.log(cardData);
                 var cards = cardData.map(data => {
                     var isFav = data['num'] in favList;
                     return <ClassSearchCard key={data['num']} id={data['num']} classData={data}
@@ -127,8 +135,7 @@ function ClassSearchPage() {
                 });
                 // favorite filter
                 if (fFav === 'fav') {
-                    console.log('filtering');
-                    cardData.filter(data => data['num'] in favList);
+                    cardData = cardData.filter(data => favList.includes(data['num']));
                 }
                 // map cards
                 var cards = cardData.map(data => {
@@ -152,8 +159,7 @@ function ClassSearchPage() {
                 });
                 // favorite filter
                 if (fFav === 'fav') {
-                    console.log('filtering');
-                    cardData.filter(data => data['num'] in favList);
+                    cardData = cardData.filter(data => favList.includes(data['num']));
                 }
                 // map cards
                 var cards = cardData.map(data => {
@@ -177,8 +183,7 @@ function ClassSearchPage() {
                 });
                 // favorite filter
                 if (fFav === 'fav') {
-                    console.log('filtering');
-                    cardData.filter(data => data['num'] in favList);
+                    cardData = cardData.filter(data => favList.includes(data['num']));
                 }
                 // map cards
                 var cards = cardData.map(data => {
@@ -202,14 +207,11 @@ function ClassSearchPage() {
                 });
                 // favorite filter
                 if (fFav === 'fav') {
-                    console.log('filtering');
-                    cardData.filter(data => data['num'] in favList);
+                    cardData = cardData.filter(data => favList.includes(data['num']));
                 }
                 // map cards
                 var cards = cardData.map(data => {
                     var isFav = favList.includes(data['num']);
-                    console.log(data['num']);
-                    console.log(isFav);
                     return <ClassSearchCard key={data['num']} id={data['num']} classData={data}
                         isFav={isFav} favList={favList} setFavList={setFavList}/>;
                 });
@@ -229,8 +231,7 @@ function ClassSearchPage() {
                 });
                 // favorite filter
                 if (fFav === 'fav') {
-                    console.log('filtering');
-                    cardData.filter(data => data['num'] in favList);
+                    cardData = cardData.filter(data => favList.includes(data['num']));
                 }
                 // map cards
                 var cards = cardData.map(data => {
@@ -254,8 +255,7 @@ function ClassSearchPage() {
                 });
                 // favorite filter
                 if (fFav === 'fav') {
-                    console.log('filtering');
-                    cardData.filter(data => data['num'] in favList);
+                    cardData = cardData.filter(data => favList.includes(data['num']));
                 }
                 // map cards
                 var cards = cardData.map(data => {
@@ -279,8 +279,7 @@ function ClassSearchPage() {
                 });
                 // favorite filter
                 if (fFav === 'fav') {
-                    console.log('filtering');
-                    cardData.filter(data => data['num'] in favList);
+                    cardData = cardData.filter(data => favList.includes(data['num']));
                 }
                 // map cards
                 var cards = cardData.map(data => {

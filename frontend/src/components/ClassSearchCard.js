@@ -14,9 +14,10 @@ function ClassSearchCard({ classData, isFav, favList, setFavList }) {
 
     const { addToFavorList, removeFromFavorList } = useAuth();
     const handleFav = () => {
+        var newFavList = []
         if (favorite) {
             // make new favorites list
-            var newFavList = favList;
+            newFavList = favList;
             const index = newFavList.indexOf(classData['num']);
             if (index > -1) {
                 newFavList.splice(index, 1);
@@ -28,7 +29,7 @@ function ClassSearchCard({ classData, isFav, favList, setFavList }) {
         }
         else {
             // make new favorites list
-            var newFavList = favList;
+            newFavList = favList;
             newFavList.push(classData['num']);
             // set values for hooks and firestore
             setFav(true);
