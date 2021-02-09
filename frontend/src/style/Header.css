@@ -1,5 +1,10 @@
+nav.header {
+    padding: 1rem;
+}
+
 .nav-link {
     text-decoration: none;
+    display: inline !important;
 }
 
 .nav-link:hover {
