@@ -1,13 +1,13 @@
 import React from 'react';
 import { Container, Row } from 'react-bootstrap';
+import GenerateSchedulesUnitAndTimePicker from "./GenerateSchedulesUnitAndTimePicker";
 
 function GenerateSchedulesPage() {
     return (
-        <Container>
-            <Row className='page-header'>
-                <h1>Generate Schedules</h1>
-            </Row>
-        </Container>
+
+            <GenerateSchedulesUnitAndTimePicker/>
+
+
     );
 }
 

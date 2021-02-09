@@ -1,33 +1,53 @@
 import React from 'react';
 import {
+  BrowserRouter as Router,
   Switch,
-  Route
+  Route,
+  Link
 } from "react-router-dom";
-import Header from './Header';
 import LoginPage from './LoginPage';
 import ClassSearchPage from './ClassSearchPage';
 import GenerateSchedulesPage from './GenerateSchedulesPage';
 import SavedSchedulesPage from './SavedSchedulesPage';
+import GenerateSchedulesUnitAndTimePicker from "./GenerateSchedulesUnitAndTimePicker";
 
 function App() {
   return (
-    <div>
-      <Header/>
-      <Switch>
-        <Route path="/search">
-          <ClassSearchPage />
-        </Route>
-        <Route path="/generate">
-          <GenerateSchedulesPage />
-        </Route>
-        <Route path="/saved">
-          <SavedSchedulesPage />
-        </Route>
-        <Route path="/">
-          <LoginPage />
-        </Route>
-      </Switch>
-    </div>
+    <Router>
+      <div>
+        <nav>
+          <ul>
+            <li>
+              <Link to='/'>Login</Link>
+            </li>
+            <li>
+              <Link to="/search">Class Search</Link>
+            </li>
+            <li>
+              <Link to="/generate">Generate</Link>
+            </li>
+            <li>
+              <Link to="/saved">Saved Schedules</Link>
+            </li>
+          </ul>
+        </nav>
+
+        <Switch>
+          <Route path="/search">
+            <ClassSearchPage />
+          </Route>
+          <Route path="/generate">
+            <GenerateSchedulesUnitAndTimePicker />
+          </Route>
+          <Route path="/saved">
+            <SavedSchedulesPage />
+          </Route>
+          <Route path="/">
+            <LoginPage />
+          </Route>
+        </Switch>
+      </div>
+    </Router>
   );
 }
 
