@@ -12,15 +12,15 @@ router.get("/", function (req, res) {
   if (Object.keys(req.query).length != 0) {
     var queryParameter = req.query;
     // case dep=XX
-    if (queryParameter.dep && queryParameter.dep != 'any') {
+    if (queryParameter.dep && queryParameter.dep !== 'any') {
       for (var i in classData) {
         if (i == queryParameter.dep.toUpperCase()) {
           // case dep=XX&type=XX
-          if (queryParameter.type && queryParameter.type != 'any') {
+          if (queryParameter.type && queryParameter.type !== 'any') {
             for (var j in classData[i]) {
               if (classData[i][j].type == queryParameter.type.toUpperCase()) {
                 // case dep=XX&type=XX&ge=XX
-                if (queryParameter.ge && queryParameter.ge != 'any') {
+                if (queryParameter.ge && queryParameter.ge !== 'any') {
                   for (var k in classData[i][j].ge) {
                     if (
                       classData[i][j].ge[k] == queryParameter.ge.toUpperCase()
@@ -35,7 +35,7 @@ router.get("/", function (req, res) {
               }
             }
           // case dep=XX&ge=XX
-          } else if (queryParameter.ge && queryParameter.ge != 'any') {
+          } else if (queryParameter.ge && queryParameter.ge !== 'any') {
             for (var j in classData[i]) {
               for (k in classData[i][j].ge) {
                 if (classData[i][j].ge[k] == queryParameter.ge.toUpperCase()) {
@@ -50,12 +50,12 @@ router.get("/", function (req, res) {
         }
       }
     // case type=XX
-    } else if (queryParameter.type && queryParameter.type != 'any') {
+    } else if (queryParameter.type && queryParameter.type !== 'any') {
       for (var i in classData){
         for (var j in classData[i]){
             if (classData[i][j].type == queryParameter.type.toUpperCase()){
                 // case type=xx&ge=xx
-                if (queryParameter.ge && queryParameter.ge != 'any') {
+                if (queryParameter.ge && queryParameter.ge !== 'any') {
                     for (var k in classData[i][j].ge){
                         if (classData[i][j].ge[k] == queryParameter.ge.toUpperCase()){
                             getCourses.push(classData[i][j]);
@@ -69,7 +69,7 @@ router.get("/", function (req, res) {
         }
       }
     //case ge=XX
-    } else if (queryParameter.ge && queryParameter.ge != 'any'){
+    } else if (queryParameter.ge && queryParameter.ge !== 'any'){
       for (var i in classData){
           for (var j in classData[i]){
               for (k in classData[i][j].ge){
