@@ -50,25 +50,25 @@ function parsedata() {
       newClass.num = course[1].num;
       newClass.dep = department[0];
 
-      if (course[1].loct[0].t != null && typeof(course[1].loct[0].loc) != 'undefined'){
+      if (course[1].loct[0].t !== null && typeof(course[1].loct[0].loc) !== 'undefined'){
         newClass.location = course[1].loct[0].loc;
       } else{
         newClass.location = '';
       }
 
-      if (course[1].ins.d != null){
+      if (course[1].ins.d !== null){
         newClass.instructor = course[1].ins.d[0];
       } else {
         newClass.instructor = '';
       }
 
-      if (course[1].loct[0].t != null && typeof(course[1].loct[0].t.day) != 'undefined'){
+      if (course[1].loct[0].t !== null && typeof(course[1].loct[0].t.day) !== 'undefined'){
         newClass.day = course[1].loct[0].t.day;
       } else {
         newClass.day = [];
       }
 
-      if (course[1].loct[0].t != null && typeof(course[1].loct[0].t.time) != 'undefined'){
+      if (course[1].loct[0].t !== null && typeof(course[1].loct[0].t.time) !== 'undefined'){
         newClass.start = course[1].loct[0].t.time.start;
         newClass.end = course[1].loct[0].t.time.end;
       } else {
@@ -77,7 +77,7 @@ function parsedata() {
       }
 
       for (var i in items2){
-        if (i == newClass.num){
+        if (i === newClass.num){
           newClass.ge = items2[i].ge;
           newClass.type = items2[i].ty;
           newClass.credits = parseInt(items2[i].cr);
@@ -90,8 +90,8 @@ function parsedata() {
             newSection.instructor = items2[i].sec[j].ins;
             
 
-            if (items2[i].sec[j].loct[0].t != null && 
-                typeof(items2[i].sec[j].loct[0].t.time) != 'undefined'){
+            if (items2[i].sec[j].loct[0].t !== null && 
+                typeof(items2[i].sec[j].loct[0].t.time) !== 'undefined'){
                   newSection.start = items2[i].sec[j].loct[0].t.time.start;
                   newSection.end = items2[i].sec[j].loct[0].t.time.end;
             } else {
@@ -99,15 +99,15 @@ function parsedata() {
               newSection.end = '';
             }
 
-            if (items2[i].sec[j].loct[0].t != null && 
-                typeof(items2[i].sec[j].loct[0].t.day) != 'undefined') {
+            if (items2[i].sec[j].loct[0].t !== null && 
+                typeof(items2[i].sec[j].loct[0].t.day) !== 'undefined') {
                   newSection.day = items2[i].sec[j].loct[0].t.day;
             } else {
               newSection.day = [];
             }
             
-            if (items2[i].sec[j].loct[0].t != null && 
-                typeof(items2[i].sec[j].loct[0].loc) != 'undefined'){
+            if (items2[i].sec[j].loct[0].t !== null && 
+                typeof(items2[i].sec[j].loct[0].loc) !== 'undefined'){
                   newSection.loc = items2[i].sec[j].loct[0].loc;
             } else {
               newSection.loc = '';
