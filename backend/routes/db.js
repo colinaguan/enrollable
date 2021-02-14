@@ -77,7 +77,7 @@ function parsedata() {
       }
 
       for (var i in items2){
-        if (i === newClass.num){
+        if (i == newClass.num){
           newClass.ge = items2[i].ge;
           newClass.type = items2[i].ty;
           newClass.credits = parseInt(items2[i].cr);
