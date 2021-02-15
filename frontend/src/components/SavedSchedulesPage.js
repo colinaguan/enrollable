@@ -1,8 +1,13 @@
 import React from 'react';
+import { Container, Row } from 'react-bootstrap';
 
 function SavedSchedulesPage() {
     return (
-        <h2>Saved Schedules</h2>
+        <Container>
+            <Row className='page-header'>
+                <h1>Saved Schedules</h1>
+            </Row>
+        </Container>
     );
 }
 
