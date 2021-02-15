@@ -37,7 +37,7 @@ function App() {
             <ClassSearchPage />
           </Route>
           <Route path="/generate">
-            <GenerateSchedulesUnitAndTimePicker />
+            <GenerateSchedulesPage />
           </Route>
           <Route path="/saved">
             <SavedSchedulesPage />
