@@ -6,10 +6,11 @@ var json = require('json');
 var classData = {};
 var items = {};
 var items2 = {};
+var rmpMap = {};
 
 const getData=()=>{
     console.log("get data start");
-    console.time('parse');
+    console.time('Startup Time');
     fetch('https://andromeda.miragespace.net/slugsurvival/data/fetch/terms/2210')
     .then(res => res.json()) 
     .then(json => {
@@ -24,17 +25,44 @@ const getData2=()=>{
   .then(res => res.json())
   .then(json => {
     items2 = json;
+    getRmpMap();
     console.log('get data completed');
-    //after all data has been received
-    //parse data into our new javascript object
-    parsedata();
-  })
+  });
 }
+
+//Get mapping of prof FirstnameLastname to rate my proffessor id
+const getRmpMap=()=>{
+  fetch('https://andromeda.miragespace.net/slugsurvival/data/fetch/rmp.json')
+  .then(res => res.json())
+  .then(json => {
+    rmpMap = json;
+    //After all data needed for parsing is fetched and stored
+    //begin parsing class data
+    parsedata();
+  });
+}
+
+/*
+  //Old attempt at getting rate my professor data for each class
+  //Because fetch is slow this will take a huge amount of time
+  //Because fetch is also asychnronous there are additional problems with using it 1,300 times
+  //in the middle of parsing a bunch of data
+const getRmpInfo=(id)=>{
+  fetch('https://andromeda.miragespace.net/slugsurvival/data/fetch/rmp/scores/' + id)
+  .then(res => res.json())
+  .then(json => {
+    json = {};
+    //console.log(json);
+    return json;
+  });
+}
+*/
 
 //get first json file from slugsurvival
 getData();
 
 function parsedata() {
+  var test = true;
   console.log("Started parse data");
   //for each department create a new empty object
   Object.entries(items).map(department => {
@@ -45,21 +73,36 @@ function parsedata() {
     //that were retrieved from slug survival
     Object.entries(department[1]).map(course => {
       var newClass = {};
+      //Parse class data from slugsurvival/terms
       newClass.code = course[1].c;
+      newClass.clasSection = course[1].s;
       newClass.name = course[1].n;
       newClass.num = course[1].num;
       newClass.dep = department[0];
 
-      if (course[1].loct[0].t != null && typeof(course[1].loct[0].loc) != 'undefined'){
+      if (course[1].loct[0].t !== null && typeof(course[1].loct[0].loc) !== 'undefined'){
         newClass.location = course[1].loct[0].loc;
       } else{
         newClass.location = '';
       }
 
-      if (course[1].ins.d != null){
+      if (course[1].ins.d !== null){
         newClass.instructor = course[1].ins.d[0];
       } else {
         newClass.instructor = '';
+      }
+
+      //Get RateMyProfessor id for each isntructor
+      if (course[1].ins.f != null && course[1].ins.l != null){
+        var temp = course[1].ins.f + course[1].ins.l;
+        for (var fl in rmpMap){
+          if (fl === temp){
+            newClass.instructorId = rmpMap[fl];
+            break;
+          }
+        }
+      } else {
+        newClass.instructorId = '';
       }
 
       if (course[1].loct[0].t != null && typeof(course[1].loct[0].t.day) != 'undefined'){
@@ -68,7 +111,7 @@ function parsedata() {
         newClass.day = [];
       }
 
-      if (course[1].loct[0].t != null && typeof(course[1].loct[0].t.time) != 'undefined'){
+      if (course[1].loct[0].t !== null && typeof(course[1].loct[0].t.time) !== 'undefined'){
         newClass.start = course[1].loct[0].t.time.start;
         newClass.end = course[1].loct[0].t.time.end;
       } else {
@@ -76,12 +119,15 @@ function parsedata() {
         newClass.end = '';
       }
 
+      //Parse class data from slug survival/courses 
       for (var i in items2){
         if (i == newClass.num){
           newClass.ge = items2[i].ge;
+          newClass.description = items2[i].desc;
+          newClass.requirements = items2[i].re;
           newClass.type = items2[i].ty;
           newClass.credits = parseInt(items2[i].cr);
-          newClass.section = [];
+          newClass.sections = [];
 
           for (var j in items2[i].sec){
             var newSection = {};
@@ -90,8 +136,8 @@ function parsedata() {
             newSection.instructor = items2[i].sec[j].ins;
             
 
-            if (items2[i].sec[j].loct[0].t != null && 
-                typeof(items2[i].sec[j].loct[0].t.time) != 'undefined'){
+            if (items2[i].sec[j].loct[0].t !== null && 
+                typeof(items2[i].sec[j].loct[0].t.time) !== 'undefined'){
                   newSection.start = items2[i].sec[j].loct[0].t.time.start;
                   newSection.end = items2[i].sec[j].loct[0].t.time.end;
             } else {
@@ -99,8 +145,8 @@ function parsedata() {
               newSection.end = '';
             }
 
-            if (items2[i].sec[j].loct[0].t != null && 
-                typeof(items2[i].sec[j].loct[0].t.day) != 'undefined') {
+            if (items2[i].sec[j].loct[0].t !== null && 
+                typeof(items2[i].sec[j].loct[0].t.day) !== 'undefined') {
                   newSection.day = items2[i].sec[j].loct[0].t.day;
             } else {
               newSection.day = [];
@@ -108,12 +154,12 @@ function parsedata() {
             
             if (items2[i].sec[j].loct[0].t != null && 
                 typeof(items2[i].sec[j].loct[0].loc) != 'undefined'){
-                  newSection.loc = items2[i].sec[j].loct[0].loc;
+                  newSection.location = items2[i].sec[j].loct[0].loc;
             } else {
-              newSection.loc = '';
+              newSection.location = '';
             }
              
-            newClass.section.push(newSection);
+            newClass.sections.push(newSection);
 
           }
           if (newClass.type){
@@ -127,7 +173,7 @@ function parsedata() {
 
     });
   console.log("completed parsedata");
-  console.timeEnd('parse');
+  console.timeEnd('Startup Time');
 }
 
 router.get('/', function(req, res) {
