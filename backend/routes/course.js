@@ -8,17 +8,17 @@ router.get('/', function(req, res) {
     var course;
     
     // if there are parameters entered
-    if (Object.keys(req.query).length != 0) {
+    if (Object.keys(req.query).length !== 0) {
         var queryParameter = req.query;
         // if reads type=xx
         if (queryParameter.type && queryParameter.type !== 'any'){
             for (var i in classData){
                 for (var j in classData[i]){
-                    if (classData[i][j].type == queryParameter.type.toUpperCase()){
+                    if (classData[i][j].type === queryParameter.type.toUpperCase()){
                         // if reads type=xx&ge=xx
                         if (queryParameter.ge && queryParameter.ge !== 'any') {
                             for (var k in classData[i][j].ge){
-                                if (classData[i][j].ge[k] == queryParameter.ge.toUpperCase()){
+                                if (classData[i][j].ge[k] === queryParameter.ge.toUpperCase()){
                                     getCourses.push(classData[i][j]);
                                     break;
                                 }
@@ -34,7 +34,7 @@ router.get('/', function(req, res) {
             for (var i in classData){
                 for (var j in classData[i]){
                     for (k in classData[i][j].ge){
-                        if (classData[i][j].ge[k] == queryParameter.ge.toUpperCase()){
+                        if (classData[i][j].ge[k] === queryParameter.ge.toUpperCase()){
                             getCourses.push(classData[i][j]);
                             break;
                         }
@@ -45,7 +45,7 @@ router.get('/', function(req, res) {
         } else if (queryParameter.course && queryParameter.course !== 'any'){
             for (var i in classData){
                 for (var j in classData[i]){
-                    if(classData[i][j].num == queryParameter.course){
+                    if(classData[i][j].num === queryParameter.course){
                         course = classData[i][j];
                         break;
                     }
@@ -63,7 +63,7 @@ router.get('/', function(req, res) {
 
     if (course) {
         res.send(course)
-    } else if (getCourses.length == 0){
+    } else if (getCourses.length === 0){
         res.status(404).send("No courses found");
     } else {
         res.send(getCourses);
@@ -100,14 +100,14 @@ router.get('/ge=:geid', function(req,res) {
     for (var i in classData){
         for (var j in classData[i]){
             for (k in classData[i][j].ge){
-                if (classData[i][j].ge[k] == req.params.geid.toUpperCase()){
+                if (classData[i][j].ge[k] === req.params.geid.toUpperCase()){
                     getCourses.push(classData[i][j]);
                     break;
                 }
             }
         }
     }
-    if (getCourses.length == 0){
+    if (getCourses.length === 0){
         res.status(404).send("No courses found");
     } else {
         res.send(getCourses);
@@ -122,12 +122,12 @@ router.get('/type=:typeid', function(req,res) {
     var getCourses = [];
     for (var i in classData){
         for (var j in classData[i]){
-            if (classData[i][j].type == req.params.typeid.toUpperCase()){
+            if (classData[i][j].type === req.params.typeid.toUpperCase()){
                 getCourses.push(classData[i][j]);
             }
         }
     }
-    if (getCourses.length == 0){
+    if (getCourses.length === 0){
         res.status(404).send("No courses found");
     } else {
         res.send(getCourses);
@@ -138,9 +138,9 @@ router.get('/type=:typeid/ge=:geid', function(req,res) {
     var getCourses = [];
     for (var i in classData){
         for (var j in classData[i]){
-            if (classData[i][j].type == req.params.typeid.toUpperCase()){
+            if (classData[i][j].type === req.params.typeid.toUpperCase()){
                 for (var k in classData[i][j].ge){
-                    if (classData[i][j].ge[k] == req.params.geid.toUpperCase()){
+                    if (classData[i][j].ge[k] === req.params.geid.toUpperCase()){
                         getCourses.push(classData[i][j]);
                         break;
                     }
@@ -148,7 +148,7 @@ router.get('/type=:typeid/ge=:geid', function(req,res) {
             }
         }
     }
-    if (getCourses.length == 0){
+    if (getCourses.length === 0){
         res.status(404).send("No courses found");
     } else {
         res.send(getCourses);
@@ -159,7 +159,7 @@ router.get('/course=:courseId', function(req,res) {
     var course;
     for (var i in classData){
         for (var j in classData[i]){
-            if(classData[i][j].num == req.params.courseId){
+            if(classData[i][j].num === req.params.courseId){
                 course = classData[i][j];
                 break;
             }
