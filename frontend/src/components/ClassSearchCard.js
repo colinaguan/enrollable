@@ -40,8 +40,7 @@ function ClassSearchCard({ classData, isFav, favList, setFavList }) {
 
     // class title (ex: CSE 101-01)
     var classTitle = classData['dep'].toUpperCase() + ' ' + classData['code'];
-    // TODO: will be added when class section is added
-    // if (classData['csection'] !== '') classTitle += '-' + classData['csection'];
+    if (classData['classSection'] !== '01') classTitle += '-' + classData['classSection'];
 
     // class day time info
     var classDay = shortenDays(classData['day']);

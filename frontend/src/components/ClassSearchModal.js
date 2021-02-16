@@ -5,11 +5,11 @@ import '../style/ClassSearchModal.css';
 
 function ClassSearchModal({ classData, show, setShow }) {
     const handleClose = () => setShow(false);
+    console.log(classData);
 
     // class title (ex: CSE 101-01)
     var classTitle = classData['dep'].toUpperCase() + ' ' + classData['code'];
-    // TODO: will be added when class section is added
-    // if (classData['csection'] !== '') classTitle += '-' + classData['csection'];
+    if (classData['classSection'] !== '01') classTitle += ('-' + classData['classSection']);
 
     // class day time info
     var classDay = shortenDays(classData['day']);
@@ -20,7 +20,7 @@ function ClassSearchModal({ classData, show, setShow }) {
         '';
 
     // map section info
-    var sections = classData['section'].map(data => {
+    var sections = classData['sections'].map(data => {
         var secDay = shortenDays(data['day']);
         var secStart = timeToString(data['start']);
         var secEnd = timeToString(data['end']);
