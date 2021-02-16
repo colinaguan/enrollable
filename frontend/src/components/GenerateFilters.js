@@ -1,6 +1,13 @@
 import React from 'react';
 
-function GenerateFilters() {
+function GenerateFilters({
+    minUnits,
+    setMinUnits,
+    maxUnits,
+    setMaxUnits,
+    avoidTimes,
+    setAvoidTimes
+}) {
     return (
         <p>Filters</p>
     );

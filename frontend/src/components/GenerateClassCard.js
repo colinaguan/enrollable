@@ -1,6 +1,6 @@
 import React from 'react';
 
-function GenerateClassCard() {
+function GenerateClassCard({ classData, selectedClasses, setSelectedClasses }) {
     return (
         <p>ClassCard</p>
     );

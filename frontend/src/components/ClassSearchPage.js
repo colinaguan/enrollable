@@ -61,11 +61,10 @@ function ClassSearchPage({ favList, setFavList }) {
         console.log(fFav);
 
         // API filtering
-        var cardData = [];
         fetch('department?dep=' + fDep + '&type=' + fType + '&ge=' + fGE)
         .then(res => res.json())
         .then(courses => {
-            cardData = courses;
+            var cardData = courses;
             // favorite filter
             if (fFav === 'fav') {
                 cardData = cardData.filter(data => favList.includes(data['num']));
