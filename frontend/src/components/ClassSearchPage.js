@@ -2,16 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { Container, Row } from 'react-bootstrap';
 import ClassSearchCard from './ClassSearchCard';
 import ClassSearchFilters from './ClassSearchFilters';
-import { auth, db } from "../firebase";
 import '../style/Pages.css';
 
-function ClassSearchPage() {
+function ClassSearchPage({ favList, setFavList }) {
 
     // list of departments, ge's, and types
     const [dep, setDep] = useState({});
     const [ge, setGE] = useState([]);
     const [type, setType] = useState([]);
-    const [favList, setFavList] = useState([]);
 
     // filters
     const [fDep, setFDep] = useState('any');
@@ -48,23 +46,6 @@ function ClassSearchPage() {
             setType(types)
         })
         .catch((error) => { console.log(error) });
-
-        // get favorites list (copied from AuthContext)
-        var docRef = db.collection("users").doc(auth.currentUser.uid);
-        var list = [];
-        docRef.get().then(function(doc) {
-            if (doc.exists) {
-                console.log("favorites retrieved");
-                list = doc.data().favorList;
-                setFavList(list);
-            } else {
-                console.error("favorites document dne");
-                setFavList([]);
-            }
-        }).catch(() => {
-            console.error("favorites not found");
-            setFavList([]);
-        });
     }, []);
 
     // updates displayed cards after filters are submitted

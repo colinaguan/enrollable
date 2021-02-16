@@ -4,7 +4,7 @@ import Signup from "./Signup"
 import "../style/Login.css"
 import Alert from 'react-bootstrap/Alert';
 
-function LoginPage() {
+function LoginPage({ setFavList }) {
     const [loginActive, setLoginActive] = useState(true);
     const [signupActive, setSignupActive] = useState(false);
     
@@ -27,7 +27,7 @@ function LoginPage() {
                 </div>
               
                 <div className="formBlock">
-                    {loginActive ? <Login setErrorDisplay={setErrorDisplay} errorDisplay={errorDisplay} errorContent={errorContent} setErrorContent={setErrorContent}/> : <Signup setErrorDisplay={setErrorDisplay} errorDisplay={errorDisplay} errorContent={errorContent} setErrorContent={setErrorContent}/>}
+                    {loginActive ? <Login setErrorDisplay={setErrorDisplay} errorDisplay={errorDisplay} errorContent={errorContent} setErrorContent={setErrorContent} setFavList={setFavList}/> : <Signup setErrorDisplay={setErrorDisplay} errorDisplay={errorDisplay} errorContent={errorContent} setErrorContent={setErrorContent}/>}
                 </div>
             </section> 
             
