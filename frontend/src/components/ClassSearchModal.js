@@ -5,7 +5,6 @@ import '../style/ClassSearchModal.css';
 
 function ClassSearchModal({ classData, show, setShow }) {
     const handleClose = () => setShow(false);
-    console.log(classData);
 
     // class title (ex: CSE 101-01)
     var classTitle = classData['dep'].toUpperCase() + ' ' + classData['code'];
