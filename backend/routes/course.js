@@ -159,7 +159,7 @@ router.get('/course=:courseId', function(req,res) {
     var course;
     for (var i in classData){
         for (var j in classData[i]){
-            if(classData[i][j].num === req.params.courseId){
+            if(classData[i][j].num === parseInt(req.params.courseId)){
                 course = classData[i][j];
                 break;
             }
