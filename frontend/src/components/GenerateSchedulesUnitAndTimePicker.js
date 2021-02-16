@@ -1,60 +1,20 @@
-import React,{useState} from 'react';
-import {Card, Form, Row, Button, Col, FormLabel, FormGroup, Modal} from 'react-bootstrap';
-import {Select} from "@material-ui/core";
-import InputLabel from '@material-ui/core/InputLabel';
-import { makeStyles } from '@material-ui/core/styles';
-import MenuItem from '@material-ui/core/MenuItem';
-import TextField from '@material-ui/core/TextField';
-import FormControl from '@material-ui/core/FormControl';
-import Container from '@material-ui/core/Container';
-
-import {Label} from "@material-ui/icons";
-const useStyles = makeStyles((theme) => ({
-    formControl: {
-        margin: theme.spacing(1),
-        minWidth: 120,
-    },
-    selectEmpty: {
-        marginTop: theme.spacing(2),
-    },
-    container: {
-        display: 'flex',
-        flexWrap: 'wrap',
-    },
-    textField: {
-        marginLeft: theme.spacing(1),
-        marginRight: theme.spacing(1),
-        width: 200,
-    },
-}));
-
-
-export default function GenerateSchedulesUnitAndTimePicker() {
-    const classes = useStyles();
-    const [date, setDate,checkUnit] = useState('');
-    const[unit]=useState('')
-    let maxUnit,minUnit;
-    function setMin(e){
-        if(e===''){
-            maxUnit=12;
-        }else{
-            maxUnit=e;
-        }
-    }
-    function setMax(e){
-        if(e===''){
-            minUnit=19;
-        }else{
-            minUnit=e;
-        }
-    }
-
-
-    const handleChange = (event) => {
-        setDate(event.target.value);
-    };
+import React from 'react';
+import { Form, Button, Col, Modal} from 'react-bootstrap';
+ function GenerateSchedulesUnitAndTimePicker({
+                                                               handleFilters,
+                                                               minUnit,
+                                                               maxUnit,
+                                                               setMinUnit,
+                                                               setMaxUnit,
+                                                               date,
+                                                               pickDate,
+                                                               firstTime,
+                                                               pickFirstTime,
+                                                               secondTime,
+                                                               pickSecondTime,
+                                                           }) {
     async function handleSubmit(){
-        if(maxUnit>19||minUnit>19||maxUnit<12||minUnit<12||maxUnit<minUnit)
+        if(firstTime>secondTime)
         {
             handleShow();
         }
@@ -78,107 +38,61 @@ export default function GenerateSchedulesUnitAndTimePicker() {
                     </Button>
                 </Modal.Footer>
             </Modal>
-<Container fixed>
-
-<Row>
-    <Col>
-                <Row>
-
-                    <Col>
-                        <text>Minimum Units</text>
-                    <form className={classes.root} noValidate autoComplete="off">
-                        <input
-                            type="text"
-                            id="outline-basic"
-                            placeholder="12-19"
-                            value={unit}
-                            onChange={setMax(this.target.value())}
-
-                        />
-                    </form>
-                    </Col>
-                    <Col>
-                        <text>Maximum Units</text>
-                        <form className={classes.root} noValidate autoComplete="off">
-                            <input
-                                type="text"
-                                id="outline-basic"
-                                placeholder="12-19"
-                                value={unit}
-                                onChange={setMin(this.target.value())}
-
-                            />
-                        </form>
-                    </Col>
-
-                </Row>
-                <Row>
-                    <Col xs="4">
-                        <FormControl className={classes.formControl}>
-                            <InputLabel id="demo-simple-select-label">Avoid Meeting</InputLabel>
-                            <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                value={date}
-                                onChange={handleChange}
-                            >
-                                <MenuItem value={1}>M</MenuItem>
-                                <MenuItem value={2}>T</MenuItem>
-                                <MenuItem value={3}>TH</MenuItem>
-                                <MenuItem value={4}>W</MenuItem>
-                                <MenuItem value={5}>F</MenuItem>
-                            </Select>
-                        </FormControl>
-                        </Col>
-                    <Col xs="4">
-
-                        <form className={classes.container} noValidate>
-                            <TextField
-                                id="StartTime"
-                                label="From"
-                                type="time"
-                                defaultValue="00:00"
-                                className={classes.textField}
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
-                                inputProps={{
-                                    step: 300, // 5 min
-                                }}
-                            />
-                        </form>
-                    </Col>
-                    <Col xs="4">
-                        <form className={classes.container} noValidate>
-                            <TextField
-                                id="EndTime"
-                                label="To"
-                                type="time"
-                                defaultValue="00:00"
-                                className={classes.textField}
-                                InputLabelProps={{
-                                    shrink: true,
-                                }}
-                                inputProps={{
-                                    step: 300, // 5 min
-                                }}
-                            />
-                        </form>
-                    </Col>
-
-                </Row>
-    </Col>
-    <Col>
-    <Button
-type="submit"
-id="generatePageSearch"
-onClick={handleSubmit}
-    >Search</Button>
-    </Col>
-</Row>
-
-</Container>
+<Form className='filter-form' onSubmit={handleFilters}>
+    <Form.Row>
+    <Form.Row>
+        <Form.Group as={Col} sm={3} controlId="formMinUnit">
+            <Form.Label>MinUnit</Form.Label>
+            <Form.Control className='filter-minUnit-dropdown' as="select" value={minUnit} onChange={(e)=>setMinUnit(e.target.value)}>
+            <option value='12'>12</option>
+            <option value='13'>13</option>
+            <option value='14'>14</option>
+            <option value='15'>15</option>
+            <option value='16'>16</option>
+            <option value='17'>17</option>
+            <option value='18'>18</option>
+            <option value='19'>19</option>
+            </Form.Control>
+        </Form.Group>
+        <Form.Group as={Col} sm={3} controlId="formMaxUnit">
+            <Form.Label>MaxUnit</Form.Label>
+            <Form.Control className='filter-maxUnit-dropdown' as="select" value={maxUnit} onChange={(e)=>setMaxUnit(e.target.value)}>
+            <option value='12'>12</option>
+            <option value='13'>13</option>
+            <option value='14'>14</option>
+            <option value='15'>15</option>
+            <option value='16'>16</option>
+            <option value='17'>17</option>
+            <option value='18'>18</option>
+            <option value='19'>19</option>
+            </Form.Control>
+        </Form.Group>
+    </Form.Row>
+    <Form.Row>
+        <Form.Group as={Col} sm={3} controlId="formDatePick">
+            <Form.Lable>date</Form.Lable>
+            <Form.Control className='filter-date-picker' as="select" value={date} onChange={(e)=>pickDate(e.target.value)}>
+                <option value={1}>M</option>
+                <option value={2}>T</option>
+                <option value={3}>TH</option>
+                <option value={4}>W</option>
+                <option value={5}>F</option>
+            </Form.Control>
+        </Form.Group>
+        <Form.Group as={Col} sm={3} controlId="firstTime">
+            <Form.Label>From</Form.Label>
+            <Form.Control className='first-time-picker' type="time" value={firstTime} onChange={(e)=>pickFirstTime(e.target.value)}/>
+        </Form.Group>
+        <Form.Group as={Col} sm={3} controlId="secondTime">
+            <Form.Label>To</Form.Label>
+            <Form.Control className='second-time-picker' type="time" value={secondTime} onChange={(e)=>pickSecondTime(e.target.value)}/>
+        </Form.Group>
+    </Form.Row>
+        <Button type="submit" onClick={handleSubmit}>Submit</Button>
+    </Form.Row>
+</Form>
 
 
         </>
     )}
+export default GenerateSchedulesUnitAndTimePicker;
