@@ -14,6 +14,18 @@ function GenerateSchedulesPage({ favList, setFavList }) {
     const [maxUnits, setMaxUnits] = useState(19);
     const [avoidTimes, setAvoidTimes] = useState([]);
 
+    /*
+     * @param {string} action
+     * @param {int} classNum
+     * @param {section} boolean
+     * @param {int} sectionNum
+     */
+    const handleSelectedClasses = (action, classNum, classObject) => {
+        console.log(action);
+        console.log(classNum);
+        console.log(classObject);
+    }
+
     useEffect(() => {
         // get class data and pass to cards
         var cards = favList.map(classNum => {
@@ -22,6 +34,8 @@ function GenerateSchedulesPage({ favList, setFavList }) {
                     key={classNum}
                     id={classNum}
                     classNum={classNum}
+                    favList={favList}
+                    setFavList={setFavList}
                 />
             );
         });

@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Row, Col } from 'react-bootstrap';
+import { StarFill, Star } from "react-bootstrap-icons";
 import { shortenDays, timeToString } from '../utils/format';
+// import { useAuth } from '../contexts/AuthContext';
 import GenerateSectionsModal from './GenerateSectionsModal';
+import '../style/GenerateClassCard.css';
 
-function GenerateClassCard({ classNum, handleSelectedClasses }) {
+function GenerateClassCard({ classNum, favList, setFavList, handleSelectedClasses }) {
 
     const [classData, setClassData] = useState({});
 
+    const [favorite, setFav] = useState(true);
     const [show, setShow] = useState(false);
     const handleShow = () => setShow(true);
 
@@ -22,6 +26,33 @@ function GenerateClassCard({ classNum, handleSelectedClasses }) {
             return;
         });       
     }, [classNum]);
+
+    // TODO: fix firestore
+    // const { addToFavorList, removeFromFavorList } = useAuth();
+    const handleFav = () => {
+        var newFavList = []
+        if (favorite) {
+            // make new favorites list
+            newFavList = favList;
+            const index = newFavList.indexOf(classData['num']);
+            if (index > -1) {
+                newFavList.splice(index, 1);
+            }
+            // set values for hooks and firestore
+            setFav(false);
+            // removeFromFavorList(classData['num']);
+            setFavList(newFavList);
+        }
+        else {
+            // make new favorites list
+            newFavList = favList;
+            newFavList.push(classData['num']);
+            // set values for hooks and firestore
+            setFav(true);
+            // addToFavorList(classData['num']);
+            setFavList(newFavList);
+        }
+    };
 
     // check if data has been updated
     if (classData['num']) {
@@ -41,7 +72,13 @@ function GenerateClassCard({ classNum, handleSelectedClasses }) {
         <Card className="class-card">
             <Card.Body className='class-card-body'>
                 <Row>
-                    <Col sm={10}>
+                    <Col sm={1}>
+                        <label className='checkbox-container'>
+                            <input type="checkbox"/>
+                            <span class="checkmark"></span>
+                        </label>
+                    </Col>
+                    <Col sm={9}>
                         <Card.Title>
                             <b>{classTitle}</b> {classData['name']}
                         </Card.Title>
@@ -54,6 +91,12 @@ function GenerateClassCard({ classNum, handleSelectedClasses }) {
                         </Card.Link>
                     </Col>
                     <Col sm={2} className='star-container'>
+                        {favorite &&
+                        <StarFill className='star' width={'40'} height={'40'} onClick={handleFav}/>
+                        }
+                        {!favorite &&
+                        <Star className='star' width={'40'} height={'40'} onClick={handleFav}/>
+                        }
                     </Col>
                 </Row>
             </Card.Body>
