@@ -6,41 +6,43 @@ import '../style/ClassSearchModal.css';
 function ClassSearchModal({ classData, show, setShow }) {
     const handleClose = () => setShow(false);
 
-    // class title (ex: CSE 101-01)
-    var classTitle = classData['dep'].toUpperCase() + ' ' + classData['code'];
-    if (classData['classSection'] !== '01') classTitle += ('-' + classData['classSection']);
+    if (classData['num']) {
+        // class title (ex: CSE 101-01)
+        var classTitle = classData['dep'].toUpperCase() + ' ' + classData['code'];
+        if (classData['classSection'] !== '01') classTitle += ('-' + classData['classSection']);
 
-    // class day time info
-    var classDay = shortenDays(classData['day']);
-    var classStart = timeToString(classData['start']);
-    var classEnd = timeToString(classData['end']);
-    var classDayTime = (classDay && classStart && classEnd) ?
-        classDay + ' ' + classStart + ' - ' + classEnd :
-        '';
-
-    // map section info
-    var sections = classData['sections'].map(data => {
-        var secDay = shortenDays(data['day']);
-        var secStart = timeToString(data['start']);
-        var secEnd = timeToString(data['end']);
-        var secDayTime = (secDay && secStart && secEnd) ?
-            secDay + ' ' + secStart + ' - ' + secEnd :
+        // class day time info
+        var classDay = shortenDays(classData['day']);
+        var classStart = timeToString(classData['start']);
+        var classEnd = timeToString(classData['end']);
+        var classDayTime = (classDay && classStart && classEnd) ?
+            classDay + ' ' + classStart + ' - ' + classEnd :
             '';
-        return (
-            <Row key={data['num']} className='row-bottom-pad'>
-                <Col sm={4}>
-                    {classTitle}-{data['secName']}
-                </Col>
-                <Col sm={4}>
-                    {secDayTime !== '' && secDayTime}
-                    {secDayTime === '' && <i>Not stated</i>}
-                </Col>
-                <Col sm={4}>
-                    {data['instructor']}
-                </Col>
-            </Row>
-        )
-    })
+
+        // map section info
+        var sections = classData['sections'].map(data => {
+            var secDay = shortenDays(data['day']);
+            var secStart = timeToString(data['start']);
+            var secEnd = timeToString(data['end']);
+            var secDayTime = (secDay && secStart && secEnd) ?
+                secDay + ' ' + secStart + ' - ' + secEnd :
+                '';
+            return (
+                <Row key={data['num']} className='row-bottom-pad'>
+                    <Col sm={4}>
+                        {classTitle}-{data['secName']}
+                    </Col>
+                    <Col sm={4}>
+                        {secDayTime !== '' && secDayTime}
+                        {secDayTime === '' && <i>Not stated</i>}
+                    </Col>
+                    <Col sm={4}>
+                        {data['instructor']}
+                    </Col>
+                </Row>
+            )
+        })
+    }
 
     return (
         <Modal show={show} onHide={handleClose} animation={false} dialogClassName="info-modal">
@@ -70,33 +72,61 @@ function ClassSearchModal({ classData, show, setShow }) {
                                             <Row className='row-bottom-pad'>
                                                 <Col className='info-title' sm={4}>Location</Col>
                                                 <Col sm={8}>
-                                                    {classData['location']}
+                                                    {   
+                                                        classData['location'] ?
+                                                        classData['location'] :
+                                                        <i>Not specified</i>
+                                                    }
                                                 </Col>
                                             </Row>
                                             <Row className='row-bottom-pad'>
                                                 <Col className='info-title' sm={4}>Type</Col>
                                                 <Col sm={8}>
-                                                    {toTitleCase(classData['type'])}
+                                                    {
+                                                        classData['type'] ?
+                                                        toTitleCase(classData['type']) :
+                                                        <i>Not specified</i>
+                                                    }
                                                 </Col>
                                             </Row>
                                             <Row className='row-bottom-pad'>
                                                 <Col className='info-title' sm={4}>GE</Col>
                                                 <Col sm={8}>
-                                                    {arrayToString(classData['ge']) || <i>None</i>}
+                                                    {
+                                                        classData['ge'] ?
+                                                        arrayToString(classData['ge']) :
+                                                        <i>None</i>
+                                                    }
                                                 </Col>
                                             </Row>
                                             <Row className='row-bottom-pad'>
                                                 <Col className='info-title' sm={4}>Units</Col>
                                                 <Col sm={8}>
-                                                    {classData['credits']}
+                                                    {
+                                                        classData['credits'] ?
+                                                        classData['credits'] :
+                                                        <i>Not specified</i>
+                                                    }
                                                 </Col>
                                             </Row>
                                         </Col>
                                         <Col>
                                             <Row className='info-title'>Requirements</Row>
-                                            <Row className='require-text'>Lorem ipsum dolor sit amet...</Row>
+                                            <Row className='require-text'>
+                                                {
+                                                    classData['requirements'] ?
+                                                    classData['requirements'] :
+                                                    <i>Not specified</i>
+                                                }
+                                            </Row>
                                             <Row className='info-title'>Description</Row>
-                                            <Row>Lorem ipsum dolor sit amet...</Row>
+                                            <Row>
+                                                {
+                                                    classData['description'] ?
+                                                    classData['description'] :
+                                                    <i>Not specified</i>
+                                                }
+                                            </Row>
                                         </Col>
                                     </Row>
                                 </Container>
