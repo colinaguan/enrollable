@@ -11,8 +11,9 @@ function GenerateSectionsModal({ classData, show, setShow, secChoices }) {
         secChoices(secInclude);
         setShow(false);
     }
+
+    //Change secInclude array after checkbox is changed
     const handleCheckbox = (event) => {
-        //console.log(event.target.id);
         var num = event.target.id;
         var secObj = secInclude.find( obj => {
             if (obj.sec == num){
@@ -23,10 +24,7 @@ function GenerateSectionsModal({ classData, show, setShow, secChoices }) {
             console.log("Sec obj not found");
             return
         }
-        //console.log(secObj);
-        //console.log(num);
         secObj.checked= event.target.checked;
-        //console.log(secInclude);
     }
 
     // check if classData has been updated
@@ -44,6 +42,7 @@ function GenerateSectionsModal({ classData, show, setShow, secChoices }) {
             var secDayTime = (secDay && secStart && secEnd) ?
                 secDay + ' ' + secStart + ' - ' + secEnd :
                 '';
+            //Array of inclusion status for each section
             secInclude.push({sec: data['num'], checked: true});
             return (
                 <Row key={data['num']} className='row-bottom-pad'>
