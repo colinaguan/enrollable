@@ -2,17 +2,32 @@ import React, { useState, useEffect } from 'react';
 import { Container, Row, Button } from 'react-bootstrap';
 import GenerateClassCard from './GenerateClassCard';
 import GenerateFilters from './GenerateFilters';
+import '../style/GenerateSchedulesPage.css';
 
 function GenerateSchedulesPage({ favList, setFavList }) {
-
-    // classes to display
-    const [classCards, setClassCards] = useState([]);
-    const [selectedClasses, setSelectedClasses] = useState([]);
 
     // filters information
     const [minUnits, setMinUnits] = useState(12);
     const [maxUnits, setMaxUnits] = useState(19);
     const [avoidTimes, setAvoidTimes] = useState([]);
+
+     // favorited classes to display
+     const [classCards, setClassCards] = useState([]);
+     const [selectedClasses, setSelectedClasses] = useState([]);
+
+    const handleGenerate = () => {
+        console.log(selectedClasses);
+        var generateRequest = {};
+        generateRequest.minUnits = minUnits;
+        generateRequest.maxUnits = maxUnits;
+        generateRequest.avoidTimes = avoidTimes;
+        generateRequest.classes = selectedClasses;
+        // TODO: implement API generate route
+        // fetch('generate', {
+        //     method: 'GET',
+        //     body: generateRequest
+        // });
+    }
 
     useEffect(() => {
         /*
@@ -94,7 +109,7 @@ function GenerateSchedulesPage({ favList, setFavList }) {
                 }
             </Row>
             <Row>
-                <Button variant="purple" onClick={() => console.log(selectedClasses)}>
+                <Button className='generate-button' variant="purple" onClick={handleGenerate}>
                     Generate
                 </Button>
             </Row>
