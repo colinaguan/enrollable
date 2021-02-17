@@ -48,7 +48,7 @@ function GenerateClassCard({ classNum, favList, setFavList, handleSelectedClasse
             console.error("classNum API call not responding")
             return;
         });
-    }, [classNum]);
+    }, [classNum, priority]);
 
     const handleSelect = () => {
         if (isSelected) {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row } from 'react-bootstrap';
+import { Container, Row, Button } from 'react-bootstrap';
 import GenerateClassCard from './GenerateClassCard';
 import GenerateFilters from './GenerateFilters';
 
@@ -14,16 +14,47 @@ function GenerateSchedulesPage({ favList, setFavList }) {
     const [maxUnits, setMaxUnits] = useState(19);
     const [avoidTimes, setAvoidTimes] = useState([]);
 
-    /*
-     * @param {string} action
-     * @param {object} classObject
-     */
-    const handleSelectedClasses = (action, classObject) => {
-        console.log(action);
-        console.log(classObject);
-    }
-
     useEffect(() => {
+        /*
+        * @param {string} action
+        * @param {object} classObject
+        */
+        const handleSelectedClasses = (action, classObject) => {
+            var tempClasses = selectedClasses;
+            if (action === 'add') {
+                if (selectedClasses.indexOf(classObject) === -1) {
+                    tempClasses.push(classObject);
+                    setSelectedClasses(tempClasses);
+                }
+                else {
+                    console.error('handleSelectedClasses: add: class exists');
+                }
+            }
+            else if (action === 'mod') {
+                const index = selectedClasses.indexOf(classObject);
+                if (index !== -1) {
+                    tempClasses.splice(index, 1);
+                    tempClasses.push(classObject);
+                    setSelectedClasses(tempClasses);
+                }
+                else {
+                    console.error('handleSelectedClasses: mod: nonexistent class')
+                }
+            }
+            else if (action === 'rm') {
+                const index = selectedClasses.indexOf(classObject);
+                if (index !== -1) {
+                    tempClasses.splice(index, 1);
+                    setSelectedClasses(tempClasses);
+                }
+                else {
+                    console.error('handleSelectedClasses: rm: nonexistent class')
+                }
+            }
+            else {
+                console.error('handleSelectedClasses: uncaught action');
+            }
+        }
         // get class data and pass to cards
         var cards = favList.map(classNum => {
             return (
@@ -38,7 +69,7 @@ function GenerateSchedulesPage({ favList, setFavList }) {
             );
         });
         setClassCards(cards);
-    }, [favList]);
+    }, [favList, setFavList, selectedClasses]);
 
     return (
         <Container>
@@ -61,6 +92,11 @@ function GenerateSchedulesPage({ favList, setFavList }) {
                     classCards :
                     <p>No favorites selected, or API is not working</p>
                 }
+            </Row>
+            <Row>
+                <Button variant="purple" onClick={() => console.log(selectedClasses)}>
+                    Generate
+                </Button>
             </Row>
         </Container>
     );
