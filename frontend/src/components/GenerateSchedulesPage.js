@@ -10,8 +10,8 @@ function GenerateSchedulesPage({ favList, setFavList }) {
     const [selectedClasses, setSelectedClasses] = useState([]);
 
     // filters information
-    const [minUnits, setMinUnits] = useState(12);
-    const [maxUnits, setMaxUnits] = useState(19);
+    const [minUnits, setMinUnits] = useState('12');
+    const [maxUnits, setMaxUnits] = useState('19');
     const [avoidTimes, setAvoidTimes] = useState([]);
 
     useEffect(() => {
