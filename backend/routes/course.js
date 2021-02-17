@@ -45,7 +45,7 @@ router.get('/', function(req, res) {
         } else if (queryParameter.course && queryParameter.course !== 'any'){
             for (var i in classData){
                 for (var j in classData[i]){
-                    if(classData[i][j].num === queryParameter.course){
+                    if(classData[i][j].num === parseInt(queryParameter.course)){
                         course = classData[i][j];
                         break;
                     }
