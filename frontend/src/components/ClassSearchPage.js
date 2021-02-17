@@ -22,7 +22,6 @@ function ClassSearchPage({ favList, setFavList }) {
 
     // store lists of filters
     useEffect(() => {
-
         // get departments
         fetch('/department/details')
         .then(res => res.json())
@@ -72,15 +71,16 @@ function ClassSearchPage({ favList, setFavList }) {
             // map cards
             var cards = cardData.map(data => {
                 var isFav = favList.includes(data['num']);
-                return
-                <ClassSearchCard
-                    key={data['num']}
-                    id={data['num']}
-                    classData={data}
-                    isFav={isFav}
-                    favList={favList}
-                    setFavList={setFavList}
-                />;
+                return (
+                    <ClassSearchCard
+                        key={data['num']}
+                        id={data['num']}
+                        classData={data}
+                        isFav={isFav}
+                        favList={favList}
+                        setFavList={setFavList}
+                    />
+                );
             });
             setCards(cards);
         })

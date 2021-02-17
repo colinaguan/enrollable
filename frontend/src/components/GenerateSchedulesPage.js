@@ -17,26 +17,16 @@ function GenerateSchedulesPage({ favList, setFavList }) {
     useEffect(() => {
         // get class data and pass to cards
         var cards = favList.map(classNum => {
-            // TODO: route isn't working right now
-            fetch('course?course=' + classNum)
-            .then(res => res.json())
-            .then(data => {
-                return
+            return (
                 <GenerateClassCard
-                    key={data['num']}
-                    id={data['num']}
-                    classData={data}
-                    selectedClasses={selectedClasses}
-                    setSelectedClasses={setSelectedClasses}
-                />;
-            })
-            .catch(() => {
-                console.error("classNum API call not responding")
-                return;
-            });
+                    key={classNum}
+                    id={classNum}
+                    classNum={classNum}
+                />
+            );
         });
         setClassCards(cards);
-    }, []);
+    }, [favList, handleSelectedClasses]);
 
     return (
         <Container>
