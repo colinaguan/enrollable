@@ -6,9 +6,19 @@ import GenerateSectionsModal from './GenerateSectionsModal';
 function GenerateClassCard({ classNum, handleSelectedClasses }) {
 
     const [classData, setClassData] = useState({});
+    const [sectionPicks, setSecChoices] = useState([]);
 
     const [show, setShow] = useState(false);
     const handleShow = () => setShow(true);
+    const secChoices = (secInclude) => {
+        setSecChoices(secInclude);
+        //console.log("Sec choices");
+        //console.log(sectionPicks);
+    }
+    useEffect(() => {
+        console.log("section choices");
+        console.log(sectionPicks);
+    }, [sectionPicks]);
 
     useEffect(() => {
         // get data from API
@@ -57,7 +67,7 @@ function GenerateClassCard({ classNum, handleSelectedClasses }) {
                     </Col>
                 </Row>
             </Card.Body>
-            <GenerateSectionsModal classData={classData} show={show} setShow={setShow}/>
+            <GenerateSectionsModal classData={classData} show={show} setShow={setShow} secChoices={secChoices}/>
         </Card>
     );
 }

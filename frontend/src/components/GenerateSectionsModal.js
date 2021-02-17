@@ -1,10 +1,33 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Modal, Container, Row, Col, Card } from 'react-bootstrap';
 import { shortenDays, timeToString } from '../utils/format';
 import '../style/ClassSearchModal.css';
 
-function GenerateSectionsModal({ classData, show, setShow }) {
-    const handleClose = () => setShow(false);
+function GenerateSectionsModal({ classData, show, setShow, secChoices }) {
+
+    const secInclude = [];
+
+    const handleClose = () => {
+        secChoices(secInclude);
+        setShow(false);
+    }
+    const handleCheckbox = (event) => {
+        //console.log(event.target.id);
+        var num = event.target.id;
+        var secObj = secInclude.find( obj => {
+            if (obj.sec == num){
+                return obj;
+            }
+        });
+        if (!secObj){
+            console.log("Sec obj not found");
+            return
+        }
+        //console.log(secObj);
+        //console.log(num);
+        secObj.checked= event.target.checked;
+        //console.log(secInclude);
+    }
 
     // check if classData has been updated
     if (classData['num']) {
@@ -21,23 +44,33 @@ function GenerateSectionsModal({ classData, show, setShow }) {
             var secDayTime = (secDay && secStart && secEnd) ?
                 secDay + ' ' + secStart + ' - ' + secEnd :
                 '';
+            secInclude.push({sec: data['num'], checked: true});
             return (
                 <Row key={data['num']} className='row-bottom-pad'>
-                    <Col sm={4}>
+                    <Col sm={1}>
+                        <input  
+                            type="checkbox" 
+                            name="include"
+                            id={data['num']}
+                            defaultChecked="true"
+                            onChange={handleCheckbox}
+                        />
+                    </Col>
+                    <Col sm={3}>
                         {classTitle}-{data['secName']}
                     </Col>
-                    <Col sm={4}>
+                    <Col sm={3}>
                         {secDayTime !== '' && secDayTime}
                         {secDayTime === '' && <i>Not stated</i>}
                     </Col>
-                    <Col sm={4}>
+                    <Col sm={3}>
                         {data['instructor']}
                     </Col>
+                    
                 </Row>
             )
         });
     }
-
     return (
         <Modal show={show} onHide={handleClose} animation={false} dialogClassName="info-modal">
             <Modal.Header closeButton>
@@ -57,9 +90,10 @@ function GenerateSectionsModal({ classData, show, setShow }) {
                                     <Row>
                                         <Col>
                                             <Row className='row-bottom-pad'>
-                                                <Col className='info-title' sm={4}>Section</Col>
-                                                <Col className='info-title' sm={4}>Day and Time</Col>
-                                                <Col className='info-title' sm={4}>Instructor</Col>
+                                                <Col classname='info-title' sm={1}></Col>       
+                                                <Col className='info-title' sm={3}>Section</Col>
+                                                <Col className='info-title' sm={3}>Day and Time</Col>
+                                                <Col className='info-title' sm={3}>Instructor</Col>
                                             </Row>
                                             {sections}
                                         </Col>
