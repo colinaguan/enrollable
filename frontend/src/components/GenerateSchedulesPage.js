@@ -16,13 +16,10 @@ function GenerateSchedulesPage({ favList, setFavList }) {
 
     /*
      * @param {string} action
-     * @param {int} classNum
-     * @param {section} boolean
-     * @param {int} sectionNum
+     * @param {object} classObject
      */
-    const handleSelectedClasses = (action, classNum, classObject) => {
+    const handleSelectedClasses = (action, classObject) => {
         console.log(action);
-        console.log(classNum);
         console.log(classObject);
     }
 
@@ -36,6 +33,7 @@ function GenerateSchedulesPage({ favList, setFavList }) {
                     classNum={classNum}
                     favList={favList}
                     setFavList={setFavList}
+                    handleSelectedClasses={handleSelectedClasses}
                 />
             );
         });

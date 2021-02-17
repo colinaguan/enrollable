@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Row, Col } from 'react-bootstrap';
+import { Card, Row, Col, Form, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { StarFill, Star } from "react-bootstrap-icons";
 import { shortenDays, timeToString } from '../utils/format';
 // import { useAuth } from '../contexts/AuthContext';
@@ -9,6 +9,10 @@ import '../style/GenerateClassCard.css';
 function GenerateClassCard({ classNum, favList, setFavList, handleSelectedClasses }) {
 
     const [classData, setClassData] = useState({});
+    const [classObject, setClassObject] = useState({});
+    const [isSelected, setIsSelected] = useState(false);
+
+    const [priority, setPriority] = useState(1);
 
     const [favorite, setFav] = useState(true);
     const [show, setShow] = useState(false);
@@ -20,12 +24,44 @@ function GenerateClassCard({ classNum, favList, setFavList, handleSelectedClasse
         .then(res => res.json())
         .then(data => {
             setClassData(data);
+            // TODO: make classObject
+            console.log(data)
+            var classObj = {};
+            classObj.num = data['num'];
+            classObj.unit = data['credits'];
+            classObj.days = data['day'];
+            classObj.start = data['start'];
+            classObj.end = data['end'];
+            classObj.priority = priority;
+            setClassObject(classObj);
         })
         .catch(() => {
             console.error("classNum API call not responding")
             return;
-        });       
+        });
     }, [classNum]);
+
+    const handleSelect = () => {
+        if (isSelected) {
+            setIsSelected(false);
+            handleSelectedClasses('rm', classObject);
+        }
+        else {
+            setIsSelected(true);
+            handleSelectedClasses('add', classObject);
+        }
+    }
+
+    const handlePriority = (e) => {
+        var numPriority = parseInt(e.target.value, 10);
+        setPriority(numPriority);
+        if (isSelected) {
+            var classObj = classObject;
+            classObj.priority = numPriority;
+            setClassObject(classObj);
+            handleSelectedClasses('mod', classObj);
+        }
+    }
 
     // TODO: fix firestore
     // const { addToFavorList, removeFromFavorList } = useAuth();
@@ -75,10 +111,10 @@ function GenerateClassCard({ classNum, favList, setFavList, handleSelectedClasse
                     <Col sm={1}>
                         <label className='checkbox-container'>
                             <input type="checkbox"/>
-                            <span class="checkmark"></span>
+                            <span className="checkmark" onClick={handleSelect}></span>
                         </label>
                     </Col>
-                    <Col sm={9}>
+                    <Col sm={7}>
                         <Card.Title>
                             <b>{classTitle}</b> {classData['name']}
                         </Card.Title>
@@ -89,6 +125,25 @@ function GenerateClassCard({ classNum, favList, setFavList, handleSelectedClasse
                         <Card.Link onClick={handleShow} className='more-class-info'>
                             Choose sections...
                         </Card.Link>
+                    </Col>
+                    <Col sm={2} className='priority-container'>
+                        {/* TODO: findDOMNode warning */}
+                        <OverlayTrigger
+                            placement='top'
+                            overlay={
+                                <Tooltip>
+                                    Priority: 1 (highest) - 5 (lowest)
+                                </Tooltip>
+                            }
+                        >
+                            <Form.Control className='priority-dropdown' as="select" value={priority} onChange={handlePriority}>
+                                <option value={1}>1</option>
+                                <option value={2}>2</option>
+                                <option value={3}>3</option>
+                                <option value={4}>4</option>
+                                <option value={5}>5</option>
+                            </Form.Control>
+                        </OverlayTrigger>
                     </Col>
                     <Col sm={2} className='star-container'>
                         {favorite &&
