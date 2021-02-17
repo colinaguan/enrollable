@@ -26,7 +26,7 @@ function GenerateSchedulesPage({ favList, setFavList }) {
             );
         });
         setClassCards(cards);
-    }, [favList, handleSelectedClasses]);
+    }, [favList]);
 
     return (
         <Container>
