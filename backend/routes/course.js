@@ -51,7 +51,14 @@ router.get('/', function(req, res) {
                     }
                 }
             }
-        }
+        // if all parameters are 'any' or no input
+        } else {
+            for (var i in classData){
+                for (var j in classData[i]){
+                    getCourses.push(classData[i][j]);
+                }
+            }
+        }    
     // if no parameter entered return entire course list
     } else {
         for (var i in classData){

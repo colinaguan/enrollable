@@ -78,10 +78,17 @@ router.get("/", function (req, res) {
               }
           }
       }
-    // if no parameter
+    // if all parameters are 'any' or no parameter
     } else {
-      dep = Object.keys(classData);
+      for (var i in classData){
+        for (var j in classData[i]){
+            getCourses.push(classData[i][j]);
+        }
+      }
     }
+  // if no parameter entered return all departments
+  } else {
+    dep = Object.keys(classData);
   }
   
   if (dep) {
