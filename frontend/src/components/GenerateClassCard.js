@@ -24,7 +24,7 @@ function GenerateClassCard({ classNum, favList, setFavList, handleSelectedClasse
         .then(res => res.json())
         .then(data => {
             setClassData(data);
-            // TODO: make classObject
+            // make classObject
             console.log(data)
             var classObj = {};
             classObj.num = data['num'];
@@ -33,6 +33,15 @@ function GenerateClassCard({ classNum, favList, setFavList, handleSelectedClasse
             classObj.start = data['start'];
             classObj.end = data['end'];
             classObj.priority = priority;
+            var sections = data['sections'].map(section => {
+                var sectionObj = {};
+                sectionObj.num = parseInt(section['num'], 10);
+                sectionObj.days = section['day'];
+                sectionObj.start = section['start'];
+                sectionObj.end = section['end'];
+                return sectionObj;
+            });
+            classObj.sections = sections;
             setClassObject(classObj);
         })
         .catch(() => {
@@ -127,7 +136,7 @@ function GenerateClassCard({ classNum, favList, setFavList, handleSelectedClasse
                         </Card.Link>
                     </Col>
                     <Col sm={2} className='priority-container'>
-                        {/* TODO: findDOMNode warning */}
+                        {/* note: findDOMNode warning is in the react-bootstrap library */}
                         <OverlayTrigger
                             placement='top'
                             overlay={
