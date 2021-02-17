@@ -9,12 +9,9 @@ import '../style/GenerateClassCard.css';
 function GenerateClassCard({ classNum, favList, setFavList, handleSelectedClasses }) {
 
     const [classData, setClassData] = useState({});
-<<<<<<< HEAD
     const [sectionPicks, setSecChoices] = useState([]);
-=======
     const [classObject, setClassObject] = useState({});
     const [isSelected, setIsSelected] = useState(false);
->>>>>>> 34f06bada9cc1c896879a7f37818e28fbd6cf1f6
 
     const [priority, setPriority] = useState(1);
 
