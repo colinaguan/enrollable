@@ -44,6 +44,10 @@ function GenerateClassCard({ classNum, favList, setFavList, handleSelectedClasse
             });
             classObj.sections = sections;
             setClassObject(classObj);
+            var sectionNums = data['sections'].map(section => {
+                return parseInt(section['num'], 10);
+            });
+            setSecChoices(sectionNums);
         })
         .catch(() => {
             console.error("classNum API call not responding")
@@ -67,10 +71,10 @@ function GenerateClassCard({ classNum, favList, setFavList, handleSelectedClasse
     const handlePriority = (e) => {
         var numPriority = parseInt(e.target.value, 10);
         setPriority(numPriority);
+        var classObj = classObject;
+        classObj.priority = numPriority;
+        setClassObject(classObj);
         if (isSelected) {
-            var classObj = classObject;
-            classObj.priority = numPriority;
-            setClassObject(classObj);
             handleSelectedClasses('mod', classObj);
         }
     }
@@ -78,6 +82,16 @@ function GenerateClassCard({ classNum, favList, setFavList, handleSelectedClasse
     // updates sections in class object
     const handleSections = (sections) => {
         setSecChoices(sections);
+        // filter sections in class object
+        var classObj = classObject;
+        var cSections = classObj.sections;
+        cSections = cSections.filter(section => sections.indexOf(section['num']) !== -1);
+        classObj.sections = cSections;
+        setClassObject(classObj);
+        // update selected classes
+        if (isSelected) {
+            handleSelectedClasses('mod', classObj);
+        }
     }
 
     // TODO: fix firestore
@@ -172,7 +186,7 @@ function GenerateClassCard({ classNum, favList, setFavList, handleSelectedClasse
                     </Col>
                 </Row>
             </Card.Body>
-            <GenerateSectionsModal classData={classData} show={show} setShow={setShow} handleSections={handleSections}/>
+            <GenerateSectionsModal classData={classData} show={show} setShow={setShow} sectionPicks={sectionPicks} handleSections={handleSections}/>
         </Card>
     );
 }

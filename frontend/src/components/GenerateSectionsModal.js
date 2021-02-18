@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
+import React from 'react';
 import { Modal, Container, Row, Col, Card } from 'react-bootstrap';
 import { shortenDays, timeToString } from '../utils/format';
 import '../style/ClassSearchModal.css';
 
-function GenerateSectionsModal({ classData, show, setShow, handleSections }) {
+function GenerateSectionsModal({ classData, show, setShow, sectionPicks, handleSections }) {
 
     const secInclude = [];
 
@@ -14,17 +14,14 @@ function GenerateSectionsModal({ classData, show, setShow, handleSections }) {
 
     //Change secInclude array after checkbox is changed
     const handleCheckbox = (event) => {
-        var num = event.target.id;
-        var secObj = secInclude.find( obj => {
-            if (obj.sec == num){
-                return obj;
-            }
-        });
-        if (!secObj){
-            console.log("Sec obj not found");
-            return
-        }
-        secObj.checked= event.target.checked;
+        // set checked
+        // if (event.target.checked) event.target.checked = false;
+        // else event.target.checked = true;
+        // update secInclude
+        var num = parseInt(event.target.id, 10);
+        var index = secInclude.indexOf(num);
+        if (index === -1) secInclude.push(num);
+        else secInclude.splice(index, 1);
     }
 
     // check if classData has been updated
@@ -42,18 +39,31 @@ function GenerateSectionsModal({ classData, show, setShow, handleSections }) {
             var secDayTime = (secDay && secStart && secEnd) ?
                 secDay + ' ' + secStart + ' - ' + secEnd :
                 '';
-            //Array of inclusion status for each section
-            secInclude.push({sec: data['num'], checked: true});
+            // Array of inclusion status for each section
+            var checked = sectionPicks.indexOf(parseInt(data['num'], 10)) !== -1;
+            if (checked) secInclude.push(parseInt(data['num'], 10));
             return (
                 <Row key={data['num']} className='row-bottom-pad'>
                     <Col sm={1}>
-                        <input  
-                            type="checkbox" 
-                            name="include"
-                            id={data['num']}
-                            defaultChecked="true"
-                            onChange={handleCheckbox}
-                        />
+                        {
+                            checked &&
+                            <input  
+                                type="checkbox" 
+                                name="include"
+                                id={data['num']}
+                                onChange={handleCheckbox}
+                                defaultChecked="true"
+                            />
+                        }
+                        {
+                            !checked &&
+                            <input  
+                                type="checkbox" 
+                                name="include"
+                                id={data['num']}
+                                onChange={handleCheckbox}
+                            />
+                        }
                     </Col>
                     <Col sm={3}>
                         {classTitle}-{data['secName']}
@@ -89,7 +99,7 @@ function GenerateSectionsModal({ classData, show, setShow, handleSections }) {
                                     <Row>
                                         <Col>
                                             <Row className='row-bottom-pad'>
-                                                <Col classname='info-title' sm={1}></Col>       
+                                                <Col className='info-title' sm={1}></Col>       
                                                 <Col className='info-title' sm={3}>Section</Col>
                                                 <Col className='info-title' sm={3}>Day and Time</Col>
                                                 <Col className='info-title' sm={3}>Instructor</Col>
