@@ -14,19 +14,10 @@ function GenerateClassCard({ classNum, favList, setFavList, handleSelectedClasse
     const [isSelected, setIsSelected] = useState(false);
 
     const [priority, setPriority] = useState(1);
-
     const [favorite, setFav] = useState(true);
     const [show, setShow] = useState(false);
+    
     const handleShow = () => setShow(true);
-    const secChoices = (secInclude) => {
-        setSecChoices(secInclude);
-        //console.log("Sec choices");
-        //console.log(sectionPicks);
-    }
-    useEffect(() => {
-        console.log("section choices");
-        console.log(sectionPicks);
-    }, [sectionPicks]);
 
     useEffect(() => {
         // get data from API
@@ -60,6 +51,7 @@ function GenerateClassCard({ classNum, favList, setFavList, handleSelectedClasse
         });
     }, [classNum, priority]);
 
+    // updates selected classes
     const handleSelect = () => {
         if (isSelected) {
             setIsSelected(false);
@@ -71,6 +63,7 @@ function GenerateClassCard({ classNum, favList, setFavList, handleSelectedClasse
         }
     }
 
+    // updates class object when priority is updated
     const handlePriority = (e) => {
         var numPriority = parseInt(e.target.value, 10);
         setPriority(numPriority);
@@ -80,6 +73,11 @@ function GenerateClassCard({ classNum, favList, setFavList, handleSelectedClasse
             setClassObject(classObj);
             handleSelectedClasses('mod', classObj);
         }
+    }
+
+    // updates sections in class object
+    const handleSections = (sections) => {
+        setSecChoices(sections);
     }
 
     // TODO: fix firestore
@@ -174,7 +172,7 @@ function GenerateClassCard({ classNum, favList, setFavList, handleSelectedClasse
                     </Col>
                 </Row>
             </Card.Body>
-            <GenerateSectionsModal classData={classData} show={show} setShow={setShow} secChoices={secChoices}/>
+            <GenerateSectionsModal classData={classData} show={show} setShow={setShow} handleSections={handleSections}/>
         </Card>
     );
 }
