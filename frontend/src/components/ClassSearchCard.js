@@ -3,7 +3,7 @@ import { Card, Row, Col } from 'react-bootstrap';
 import { StarFill, Star } from "react-bootstrap-icons";
 import ClassSearchModal from './ClassSearchModal';
 import { shortenDays, timeToString } from '../utils/format';
-import { useAuth } from '../contexts/AuthContext';
+// import { useAuth } from '../contexts/AuthContext';
 import '../style/ClassSearchCard.css';
 
 function ClassSearchCard({ classData, isFav, favList, setFavList }) {
@@ -12,7 +12,8 @@ function ClassSearchCard({ classData, isFav, favList, setFavList }) {
     const [show, setShow] = useState(false);
     const handleShow = () => setShow(true);
 
-    const { addToFavorList, removeFromFavorList } = useAuth();
+    // TODO: fix firestore
+    // const { addToFavorList, removeFromFavorList } = useAuth();
     const handleFav = () => {
         var newFavList = []
         if (favorite) {
@@ -24,7 +25,7 @@ function ClassSearchCard({ classData, isFav, favList, setFavList }) {
             }
             // set values for hooks and firestore
             setFav(false);
-            removeFromFavorList(classData['num']);
+            // removeFromFavorList(classData['num']);
             setFavList(newFavList);
         }
         else {
@@ -33,15 +34,14 @@ function ClassSearchCard({ classData, isFav, favList, setFavList }) {
             newFavList.push(classData['num']);
             // set values for hooks and firestore
             setFav(true);
-            addToFavorList(classData['num']);
+            // addToFavorList(classData['num']);
             setFavList(newFavList);
         }
     };
 
     // class title (ex: CSE 101-01)
     var classTitle = classData['dep'].toUpperCase() + ' ' + classData['code'];
-    // TODO: will be added when class section is added
-    // if (classData['csection'] !== '') classTitle += '-' + classData['csection'];
+    if (classData['classSection'] !== '01') classTitle += '-' + classData['classSection'];
 
     // class day time info
     var classDay = shortenDays(classData['day']);

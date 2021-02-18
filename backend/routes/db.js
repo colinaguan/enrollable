@@ -75,7 +75,7 @@ function parsedata() {
       var newClass = {};
       //Parse class data from slugsurvival/terms
       newClass.code = course[1].c;
-      newClass.clasSection = course[1].s;
+      newClass.classSection = course[1].s;
       newClass.name = course[1].n;
       newClass.num = course[1].num;
       newClass.dep = department[0];

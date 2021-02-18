@@ -45,13 +45,20 @@ router.get('/', function(req, res) {
         } else if (queryParameter.course && queryParameter.course !== 'any'){
             for (var i in classData){
                 for (var j in classData[i]){
-                    if(classData[i][j].num === queryParameter.course){
+                    if(classData[i][j].num === parseInt(queryParameter.course)){
                         course = classData[i][j];
                         break;
                     }
                 }
             }
-        }
+        // if all parameters are 'any' or no input
+        } else {
+            for (var i in classData){
+                for (var j in classData[i]){
+                    getCourses.push(classData[i][j]);
+                }
+            }
+        }    
     // if no parameter entered return entire course list
     } else {
         for (var i in classData){
@@ -159,7 +166,7 @@ router.get('/course=:courseId', function(req,res) {
     var course;
     for (var i in classData){
         for (var j in classData[i]){
-            if(classData[i][j].num === req.params.courseId){
+            if(classData[i][j].num === parseInt(req.params.courseId)){
                 course = classData[i][j];
                 break;
             }
