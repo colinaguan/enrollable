@@ -38,9 +38,14 @@ function GenerateFilters({
     // if min < max: setShow(true)
     // else: setShow(false)
     // use the react-bootstrap Alert component instead of a modal for the error message
-    function onMinMaxUnitChange(){
-
-        if(maxUnits<minUnits||maxUnits>25||minUnits>25||maxUnits<12||maxUnits<12){handleShow();}
+    function onMinUnitChange(e){
+        setMinUnits(e.target.value)
+        if(maxUnits<minUnits||maxUnits>25||minUnits>25||maxUnits<12||minUnits<12){handleShow();setMinUnits(12)}
+        else{handleClose();}
+    }
+    function onMaxUnitChange(e){
+        setMaxUnits(e.target.value)
+        if(maxUnits<minUnits||maxUnits>25||minUnits>25||maxUnits<12||minUnits<12){handleShow();setMaxUnits(25)}
         else{handleClose();}
     }
     return(
@@ -49,12 +54,12 @@ function GenerateFilters({
                 <Form.Group as={Col} sm={6} controlId="formMinUnit">
                     <Form.Label>Minimum Units</Form.Label>
                     {/* make the input type "text" so user can manually input numbers (can check if input is a number in onMinMaxUnitChange() function) */}
-                    <Form.Control className='filter-minUnit-dropdown' as="text" value={minUnits} defaultValue="12"  onChange={onMinMaxUnitChange()}>
+                    <Form.Control className='filter-minUnit-dropdown' type="text" value={minUnits}  onChange={onMinUnitChange}>
                     </Form.Control>
                 </Form.Group>
                 <Form.Group as={Col} sm={6} controlId="formMaxUnit">
                     <Form.Label>Maximum Units</Form.Label>
-                    <Form.Control className='filter-maxUnit-dropdown' as="text" value={maxUnits} defaultValue="25" onChange={onMinMaxUnitChange()}>
+                    <Form.Control className='filter-maxUnit-dropdown' type="text" value={maxUnits} onChange={onMaxUnitChange}>
                     </Form.Control>
                 </Form.Group>
             </Form.Row>
@@ -94,7 +99,7 @@ function GenerateFilters({
             <Form.Row>
             </Form.Row>
             {/* use the react-bootstrap Alert component instead of a modal */}
-            <Alert show={show} variant="success">
+            <Alert show={show} variant="danger">
                 <Alert.Heading>Please type in number again</Alert.Heading>
                 <p>
                     Please make sure the number you type in should between 12 to 25, and max unit should larger or equal to
