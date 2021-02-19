@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row, Button } from 'react-bootstrap';
 import GenerateClassCard from './GenerateClassCard';
+import GenerateScheduleCard from './GenerateScheduleCard';
 import GenerateFilters from './GenerateFilters';
 import '../style/GenerateSchedulesPage.css';
 
@@ -15,6 +16,8 @@ function GenerateSchedulesPage({ favList, setFavList }) {
      const [classCards, setClassCards] = useState([]);
      const [selectedClasses, setSelectedClasses] = useState([]);
 
+    const [scheduleCards, setScheduleCards] = useState([]); 
+
     const handleGenerate = () => {
         console.log(selectedClasses);
         var generateRequest = {};
@@ -27,6 +30,33 @@ function GenerateSchedulesPage({ favList, setFavList }) {
         //     method: 'GET',
         //     body: generateRequest
         // });
+
+        //Output Result from API generate route
+        //Currently outputs all selected classes to test schedules card
+        /*
+        var cards = selectedClasses.map(classObject => {
+            return (
+                <GenerateScheduleCard
+                    key={classObject.num}
+                    id={classObject.num}
+                    classNum={classObject.num}
+                />
+            );
+        });
+        */
+
+        //Current list of generate schedules is all selected classes
+        //until schedule generation is done
+        var generatedSchedules = [selectedClasses];
+        var sCards = generatedSchedules.map(schedule => {
+            return (<GenerateScheduleCard
+                        key={1}
+                        id={1}
+                        classList={selectedClasses}
+                    />  
+            );
+        });                    
+        setScheduleCards(sCards);
     }
 
     useEffect(() => {
@@ -112,6 +142,13 @@ function GenerateSchedulesPage({ favList, setFavList }) {
                 <Button className='generate-button' variant="purple" onClick={handleGenerate}>
                     Generate
                 </Button>
+            </Row>
+            <Row>
+                {
+                    scheduleCards && scheduleCards.length > 0 ?
+                    scheduleCards :
+                    <p>No schedules generated</p>
+                }
             </Row>
         </Container>
     );
