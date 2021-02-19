@@ -21,7 +21,9 @@ function GenerateFilters({
 
     // undefined variables (these should be declared in this function, not in the props):
     // date, pickDate, firstTime, pickFirstTime, secondTime, pickSecondTime
-    const [date,pickDate,firstTime,pickFirstTime,secondTime,pickSecondTime]=useState('');
+    const [date,pickDate]=useState('');
+    const [firstTime,pickFirstTime]=useState('');
+    const [secondTime,pickSecondTime]=useState('');
     const handleSubmit = (e) => {
         e.preventDefault();
 
