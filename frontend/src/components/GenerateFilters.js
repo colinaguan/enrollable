@@ -40,12 +40,12 @@ function GenerateFilters({
     // use the react-bootstrap Alert component instead of a modal for the error message
     function onMinUnitChange(e){
         setMinUnits(e.target.value)
-        if(maxUnits<minUnits||maxUnits>25||minUnits>25||maxUnits<12||minUnits<12){handleShow();setMinUnits(12)}
+        if(maxUnits<minUnits){handleShow();setMinUnits(12)}
         else{handleClose();}
     }
     function onMaxUnitChange(e){
         setMaxUnits(e.target.value)
-        if(maxUnits<minUnits||maxUnits>25||minUnits>25||maxUnits<12||minUnits<12){handleShow();setMaxUnits(25)}
+        if(maxUnits<minUnits){handleShow();setMaxUnits(25)}
         else{handleClose();}
     }
     return(
@@ -102,14 +102,7 @@ function GenerateFilters({
             <Alert show={show} variant="danger">
                 <Alert.Heading>Please type in number again</Alert.Heading>
                 <p>
-                    Please make sure the number you type in should between 12 to 25, and max unit should larger or equal to
-                    min unit.
-                    <hr/>
-                    <div className="d-flex justify-content-end" >
-                        <Button onClick={()=>setShow(false)} variant="outline-success">
-                            close
-                        </Button>
-                    </div>
+                    Invalid Min and Max Units: minimum units should be less than or equal to the maximum units
                 </p>
             </Alert>
         </Form>
