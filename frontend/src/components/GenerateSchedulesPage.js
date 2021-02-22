@@ -11,9 +11,12 @@ function GenerateSchedulesPage({ favList, setFavList }) {
     const [maxUnits, setMaxUnits] = useState(19);
     const [avoidTimes, setAvoidTimes] = useState([]);
 
-     // favorited classes to display
-     const [classCards, setClassCards] = useState([]);
-     const [selectedClasses, setSelectedClasses] = useState([]);
+    // favorited classes to display
+    const [classCards, setClassCards] = useState([]);
+    const [selectedClasses, setSelectedClasses] = useState([]);
+
+    // schedules to display
+    const [schedules, setSchedules] = useState([]);
 
     const handleGenerate = () => {
         console.log(selectedClasses);
@@ -26,6 +29,10 @@ function GenerateSchedulesPage({ favList, setFavList }) {
         // fetch('generate', {
         //     method: 'GET',
         //     body: generateRequest
+        // })
+        // .then(res => res.json())
+        // .then(schedules => {
+        //     console.log(schedules);
         // });
     }
 
