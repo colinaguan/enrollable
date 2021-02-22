@@ -45,17 +45,21 @@ function GenerateSchedulesPage({ favList, setFavList }) {
         });
         */
 
-        //Current list of generate schedules is all selected classes
-        //until schedule generation is done
-        var generatedSchedules = [selectedClasses];
+        //Current list of generated schedules is 
+        //a signle schedule containing all selected classes
+        //until schedule generation is complete
+        var generatedSchedules = [];
+        generatedSchedules[0] = selectedClasses;
+        generatedSchedules[1] = selectedClasses;
         var sCards = generatedSchedules.map(schedule => {
-            return (<GenerateScheduleCard
-                        key={1}
-                        id={1}
-                        classList={selectedClasses}
-                    />  
+            return (
+                <GenerateScheduleCard
+                    key={1}
+                    id={1}
+                    classList={schedule}
+                />  
             );
-        });                    
+        }); 
         setScheduleCards(sCards);
     }
 
