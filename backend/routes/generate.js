@@ -6,9 +6,9 @@ var classData = database.classData;
 
 var conflictPairs = [];
 
-router.post('/generate', function(req, res) {
+router.post('/', function(req, res) {
     var generateRequest = req.body;
-    console.log(generateRequest);
+    //console.log(generateRequest);
     var generateResult = generateSchedules(generateRequest);
     console.log(generateResult);
     res.send(generateResult);
@@ -92,9 +92,9 @@ function getNoConflictSchedules(classesList) {
     // go through all courses except the last course
     for (var i=0; i<classesList.length-1; i++) {
         var course = classesList[i];
-        var newStack = new stack();
+        var newStack = [];
         newStack.push([course]);
-        while (!newStack.isEmpty()) {
+        while (!newStack.length) {
             schedule = newStack.pop();
             for (newClass in successor(schedule, classesList)) {
                 if (!checkTimeConflict(schedule, newClass)) {
