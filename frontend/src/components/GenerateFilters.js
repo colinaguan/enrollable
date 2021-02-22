@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Form, Button, Col, Modal } from 'react-bootstrap';
+import {Form, Button, Col, Modal, ButtonGroup} from 'react-bootstrap';
 import '../style/GenerateFilters.css'
 import Alert from "react-bootstrap/Alert";
 import {useFormControl} from "@material-ui/core";
@@ -26,14 +26,11 @@ function GenerateFilters({
     const [secondTime,pickSecondTime]=useState('');
     const handleSubmit = (e) => {
         e.preventDefault();
-
     }
-
     const [show, setShow] = React.useState(false);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-
     // should make a function called onMinMaxUnitChange()
     // if min < max: setShow(true)
     // else: setShow(false)
@@ -47,6 +44,13 @@ function GenerateFilters({
         setMaxUnits(e.target.value)
         if(maxUnits<minUnits){handleShow();setMaxUnits(25)}
         else{handleClose();}
+    }
+    function newLabel(){
+        let x;
+        if(date===0){x="Sunday"}if(date===1){x="Monday"}if(date===2){x="Tuesday"}if(date===3){x="Wednesday"}if(date===4){x="Thursday"}if(date===5){x="Friday"}if(date===6){x="Saturday"}
+        return(
+            <Button>{x} {firstTime}--{secondTime}</Button>
+        )
     }
     return(
         <Form className='filter-form' onSubmit={handleSubmit}>
@@ -96,9 +100,11 @@ function GenerateFilters({
                 {/* need to display avoidTimes as labels (see mockup for example) */}
                 {/*its looks like we should add small card?*/}
             </Form.Row>
-            <Form.Row>
-            </Form.Row>
-            {/* use the react-bootstrap Alert component instead of a modal */}
+          <Form.Row>
+              <ButtonGroup>
+
+              </ButtonGroup>
+          </Form.Row>
             <Alert show={show} variant="danger">
                 <Alert.Heading>Please type in number again</Alert.Heading>
                 <p>
