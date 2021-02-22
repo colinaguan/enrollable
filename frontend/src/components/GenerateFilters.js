@@ -49,7 +49,7 @@ function GenerateFilters({
         let x;
         if(date===0){x="Sunday"}if(date===1){x="Monday"}if(date===2){x="Tuesday"}if(date===3){x="Wednesday"}if(date===4){x="Thursday"}if(date===5){x="Friday"}if(date===6){x="Saturday"}
         return(
-            <Button>{x} {firstTime}--{secondTime}</Button>
+            <Button variant="outline-light">{x} {firstTime}--{secondTime}</Button>
         )
     }
     return(
