@@ -1,21 +1,60 @@
 import React from 'react';
-import { Navbar, Nav } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Navbar, Nav, Container } from 'react-bootstrap';
+import { Link, useHistory } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 import '../style/Header.css'
 
 function Header() {
+    const { currentUser, logout } = useAuth();
+    const history = useHistory()
+
+    async function handleSignOut() {
+        try {
+            await logout();
+            history.push("/");
+        } catch (error) {
+            console.log(error);
+        }
+
+    }
+
+
     return (
         <Navbar className='header' bg="light" variant="light">
             <Nav className="mr-auto">
                 <Navbar.Brand>
                     <Link className='nav-link' to="/home">Enrollable</Link>
                 </Navbar.Brand>
-                <Link className='nav-link' to="/search">Class Search</Link>
-                <Link className='nav-link' to="/generate">Generate Schedules</Link>
-                <Link className='nav-link' to="/saved">Saved Schedules</Link>
+                <Container>
+                    {
+                        currentUser ?
+                        <Link className='nav-link' to="/search">Class Search</Link> :
+                        <div></div>
+                    }
+                </Container>
+                <Container>
+                    {
+                        currentUser ?
+                        <Link className='nav-link' to="/generate">Generate Schedules</Link> :
+                        <div></div>
+                    }
+                </Container>
+                <Container>
+                    {
+                        currentUser ?
+                        <Link className='nav-link' to="/saved">Saved Schedules</Link> :
+                        <div></div>
+                    }
+                </Container>
             </Nav>
             <Nav>
-                <Link className='nav-link' to="/">Login</Link>
+                <Container>
+                    {
+                        currentUser ?
+                        <button onClick={handleSignOut}>Sign Out</button> :
+                        <Link className='nav-link' to="/">Login</Link>
+                    }
+                </Container>
             </Nav>
         </Navbar>
     );
