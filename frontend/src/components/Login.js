@@ -1,4 +1,4 @@
-import React, { useState} from 'react'
+import React, { useState } from 'react'
 import { useAuth } from "../contexts/AuthContext";
 import { useHistory } from "react-router-dom";
 import { auth, db } from "../firebase";
@@ -10,16 +10,13 @@ function Login({setErrorDisplay, setErrorContent, setFavList}) {
     const [loading, setLoading] = useState(false)
     const history = useHistory()
 
-    async function handleSubmit(e) {
+    const handleSubmit = (e) => {
         e.preventDefault();
 
-        try {
-            setErrorDisplay(false);
-            setErrorContent('');
-            setLoading(true);
-            await login(email, password);
+        setErrorDisplay(false);
+        setLoading(true);
+        login(email, password).then(() => {
             history.push("/search");
-
             // get favorites list (copied from AuthContext)
             var docRef = db.collection("users").doc(auth.currentUser.uid);
             var list = [];
@@ -36,11 +33,11 @@ function Login({setErrorDisplay, setErrorContent, setFavList}) {
                 console.error("favorites not found");
                 setFavList([]);
             });
-
-        } catch (error) {
+        })
+        .catch(error => {
             setErrorDisplay(true);
             setErrorContent(error.message);
-        }
+        });
         setLoading(false);
     }
 

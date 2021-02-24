@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navbar, Nav, Container } from 'react-bootstrap';
+import { Navbar, Nav } from 'react-bootstrap';
 import { Link, useHistory } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import '../style/Header.css'
@@ -39,13 +39,11 @@ function Header() {
                 }
             </Nav>
             <Nav>
-                <Container>
-                    {
-                        currentUser ?
-                        <p className='nav-link' onClick={handleSignOut}>Sign Out</p> :
-                        <Link className='nav-link' to="/">Login</Link>
-                    }
-                </Container>
+                {
+                    currentUser ?
+                    <div className='nav-link' onClick={handleSignOut}>Sign Out</div> :
+                    <Link className='nav-link' to="/">Login</Link>
+                }
             </Nav>
         </Navbar>
     );
