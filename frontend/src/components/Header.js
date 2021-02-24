@@ -23,35 +23,26 @@ function Header() {
         <Navbar className='header' bg="light" variant="light">
             <Nav className="mr-auto">
                 <Navbar.Brand>
-                    <Link className='nav-link' to="/home">Enrollable</Link>
+                    <Link className='nav-link' to="/saved">Enrollable</Link>
                 </Navbar.Brand>
-                <Container>
-                    {
-                        currentUser ?
-                        <Link className='nav-link' to="/search">Class Search</Link> :
-                        <div></div>
-                    }
-                </Container>
-                <Container>
-                    {
-                        currentUser ?
-                        <Link className='nav-link' to="/generate">Generate Schedules</Link> :
-                        <div></div>
-                    }
-                </Container>
-                <Container>
-                    {
-                        currentUser ?
-                        <Link className='nav-link' to="/saved">Saved Schedules</Link> :
-                        <div></div>
-                    }
-                </Container>
+                {
+                    currentUser &&
+                    <Link className='nav-link' to="/search">Class Search</Link>
+                }
+                {
+                    currentUser &&
+                    <Link className='nav-link' to="/generate">Generate Schedules</Link>
+                }
+                {
+                    currentUser &&
+                    <Link className='nav-link' to="/saved">Saved Schedules</Link>
+                }
             </Nav>
             <Nav>
                 <Container>
                     {
                         currentUser ?
-                        <button onClick={handleSignOut}>Sign Out</button> :
+                        <p className='nav-link' onClick={handleSignOut}>Sign Out</p> :
                         <Link className='nav-link' to="/">Login</Link>
                     }
                 </Container>
