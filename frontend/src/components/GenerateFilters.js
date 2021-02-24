@@ -3,6 +3,7 @@ import {Form, Button, Col, Modal, ButtonGroup} from 'react-bootstrap';
 import '../style/GenerateFilters.css'
 import Alert from "react-bootstrap/Alert";
 import {useFormControl} from "@material-ui/core";
+import {shortenDays} from "../utils/format";
 
 function GenerateFilters({
                              minUnits,
@@ -24,8 +25,15 @@ function GenerateFilters({
     const [date,pickDate]=useState('');
     const [firstTime,pickFirstTime]=useState('');
     const [secondTime,pickSecondTime]=useState('');
+    const [constraintLabels,setConstraintLabels]=useState([date,firstTime,secondTime]);
+
+    // const avoidTimes=[date,firstTime,secondTime];
     const handleSubmit = (e) => {
         e.preventDefault();
+        setConstraintLabels(date,firstTime,secondTime);
+        setAvoidTimes(constraintLabels);
+        newLabel(constraintLabels);
+        return(avoidTimes);
     }
     const [show, setShow] = React.useState(false);
 
@@ -47,7 +55,7 @@ function GenerateFilters({
     }
     function newLabel(){
         let x;
-        if(date===0){x="Sunday"}if(date===1){x="Monday"}if(date===2){x="Tuesday"}if(date===3){x="Wednesday"}if(date===4){x="Thursday"}if(date===5){x="Friday"}if(date===6){x="Saturday"}
+        x=shortenDays(date);
         return(
             <Button variant="outline-light">{x} {firstTime}--{secondTime}</Button>
         )
@@ -101,9 +109,7 @@ function GenerateFilters({
                 {/*its looks like we should add small card?*/}
             </Form.Row>
           <Form.Row>
-              <ButtonGroup>
-
-              </ButtonGroup>
+        <newLabel/>
           </Form.Row>
             <Alert show={show} variant="danger">
                 <Alert.Heading>Please type in number again</Alert.Heading>
