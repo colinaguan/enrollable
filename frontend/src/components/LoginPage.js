@@ -27,7 +27,7 @@ function LoginPage({ setFavList }) {
                 </div>
               
                 <div className="formBlock">
-                    {loginActive ? <Login setErrorDisplay={setErrorDisplay} errorDisplay={errorDisplay} errorContent={errorContent} setErrorContent={setErrorContent} setFavList={setFavList}/> : <Signup setErrorDisplay={setErrorDisplay} errorDisplay={errorDisplay} errorContent={errorContent} setErrorContent={setErrorContent}/>}
+                    {loginActive ? <Login setErrorDisplay={setErrorDisplay} setErrorContent={setErrorContent} setFavList={setFavList}/> : <Signup setErrorDisplay={setErrorDisplay} errorDisplay={errorDisplay} errorContent={errorContent} setErrorContent={setErrorContent}/>}
                 </div>
             </section> 
             

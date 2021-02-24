@@ -3,7 +3,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { useHistory } from "react-router-dom";
 import { auth, db } from "../firebase";
 
-function Login(props) {
+function Login({setErrorDisplay, setErrorContent, setFavList}) {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const { login } = useAuth()
@@ -11,36 +11,37 @@ function Login(props) {
     const history = useHistory()
 
     async function handleSubmit(e) {
-        e.preventDefault()
+        e.preventDefault();
 
         try {
-            props.setErrorDisplay(false);
-            props.setErrorContent('');
-            setLoading(true)
-            await login(email, password) 
-            history.push("/search")
+            setErrorDisplay(false);
+            setErrorContent('');
+            setLoading(true);
+            await login(email, password);
+            history.push("/search");
+
+            // get favorites list (copied from AuthContext)
+            var docRef = db.collection("users").doc(auth.currentUser.uid);
+            var list = [];
+            docRef.get().then(function(doc) {
+                if (doc.exists) {
+                    console.log("favorites retrieved");
+                    list = doc.data().favorList;
+                    setFavList(list);
+                } else {
+                    console.error("favorites document dne");
+                    setFavList([]);
+                }
+            }).catch(() => {
+                console.error("favorites not found");
+                setFavList([]);
+            });
+
         } catch (error) {
-            props.setErrorDisplay(true);
-            props.setErrorContent(error.message);
+            setErrorDisplay(true);
+            setErrorContent(error.message);
         }
         setLoading(false);
-
-        // get favorites list (copied from AuthContext)
-        var docRef = db.collection("users").doc(auth.currentUser.uid);
-        var list = [];
-        docRef.get().then(function(doc) {
-            if (doc.exists) {
-                console.log("favorites retrieved");
-                list = doc.data().favorList;
-                props.setFavList(list);
-            } else {
-                console.error("favorites document dne");
-                props.setFavList([]);
-            }
-        }).catch(() => {
-            console.error("favorites not found");
-            props.setFavList([]);
-        });
     }
 
     return (
