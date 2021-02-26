@@ -37,7 +37,8 @@ function GenerateSchedulesPage({ favList, setFavList }) {
         }
         else {
             setFilterError(false);
-            console.log(selectedClasses);
+            console.log("in generate");
+            console.log(avoidTimes);
             var generateRequest = {};
             generateRequest.minUnits = minUnits;
             generateRequest.maxUnits = maxUnits;
@@ -115,13 +116,15 @@ function GenerateSchedulesPage({ favList, setFavList }) {
     // for constraints: remove constraint when constraint is clicked
     const removeConstraint = (days, start, end) => {
         // remove given constraint
-        var newAvoidTimes = avoidTimes;
-        newAvoidTimes = newAvoidTimes.filter(constraint => {
+        console.log("removeConstraint");
+        console.log(avoidTimes);
+        const newAvoidTimes = avoidTimes.filter(constraint => {
             const sameDay = constraint.days === days;
             const sameStart = constraint.start === start;
             const sameEnd = constraint.end === end;
             return !(sameDay && sameStart && sameEnd);
         });
+        console.log(newAvoidTimes);
         // update constraint labels
         var newConstraintLabels = newAvoidTimes.map((constraint, index) => {
             return (
