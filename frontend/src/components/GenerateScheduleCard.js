@@ -1,82 +1,61 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, handleClick, Button, Menu, handleClose, MenuItem } from 'react';
 import { Card, Row, Col} from 'react-bootstrap';
-//import { StarFill, Star } from "react-bootstrap-icons";
 import { shortenDays, timeToString } from '../utils/format';
-// import { useAuth } from '../contexts/AuthContext';
-//import GenerateSectionsModal from './GenerateSectionsModal';
-//import '../style/GenerateClassCard.css';
-//import '../style/GenerateScheduleCard.css';
-import '../style/ClassSearchCard.css';
+import GenerateScheduleModal from './GenerateScheduleModal';
+import '../style/GenerateScheduleCard.css';
 
-function GenerateScheduleCard({ classList}) {
+function GenerateScheduleCard({ classList, scheduleNumber}) {
 
-    console.log("generate Schedules card entered");
-    console.log(classList);
+    const [show, setShow] = useState(false);
+    const [title, setTitle] = useState("Schedule " + scheduleNumber);
 
-    const [classObject, setClassObject] = useState([]);
-
-    useEffect(() => {
-        // get d)ata from API
-        var scheduleList = classList.map(thisClass => {
-            var classObj = {}
-            fetch('course/course=' + thisClass.num)
-            .then(res => res.json())
-            .then(data => {
-                classObj.name = data['dep'].toUpperCase() + ' ' + data['code'];
-                classObj.num = data['num'];
-                classObj.unit = data['credits'];
-                classObj.days = shortenDays(data['day']);
-                classObj.start = timeToString(data['start']);
-                classObj.end = timeToString(data['end']);
-                classObj.dayTime = (classObj.days && classObj.start && classObj.end) ?
-                                    classObj.days + ' ' + classObj.start + ' - ' + classObj.end :
-                                    ' ';                
-                var sections = data['sections'].map(section => {
-                    var sectionObj = {};
-                    sectionObj.num = parseInt(section['num'], 10);
-                    sectionObj.days = section['day'];
-                    sectionObj.start = section['start'];
-                    sectionObj.end = section['end'];
-                    return sectionObj;
-                });
-                
-                classObj.sections = sections;
-                //test if classObj already exists in classObject
-                setClassObject([...classObject, classObj]);
-                //return (classObj);
-            })
-            .catch(() => {
-                console.error("classNum API call not responding")
-                return;
-            })   
-        })
-    }, [classList]);
+    const handleShow = () => setShow(true);
 
     return (
+        //All of this formatting needs work
+        <Col xs={12}>
         <Card classname="class-card">
             <Card.Body classname='class-card-body'>
-                <Col xs={6}>
-                <Card.Title>
-                Schedule 1
-                </Card.Title>
                 <Row>
-                      
-                    {classObject.map(thisClass => {
-                        return(
-                                <Row>
-                                    
-                                    <Col xs={4}>{thisClass.name}</Col>
-                                    <Col xs={4}>{thisClass.dayTime}</Col>
-                                    <Col xs={4}>{thisClass.sections[0].num}</Col>
-                                    
-                                </Row>
-                        );
-                    })}
+                    <Col>
+                <Card.Title>
+                    <b>{title}</b>
+                </Card.Title>
+                <Card.Text>
+                    {
+                    classList.map(thisClass => {
+                        return (
+                            <Col>
+                            <Row>
+                            {thisClass.title + ' ' + thisClass.dayTime} 
+                            </Row>
+                            {console.log(thisClass.sections)}
+                            {thisClass.sections.map(thisSection => {
+                                return (
+                                    <Row>
+                                        <Col offset={1}>
+                                    {thisClass.title + '-' + thisSection.title + ' ' + thisSection.dayTime}
+                                        </Col>
+                                    </Row>
+                                )
+                            })}
+                            </Col>
+                        )
+                    })
+                    }
+                </Card.Text>
+                <Card.Link onClick={handleShow}>
+                    View Schedule
+                </Card.Link>
+                    </Col>
                 </Row>
-                </Col>
             </Card.Body>
-            <p>View Schedule Modal</p>
+            <Col textAlign="center">
+            <GenerateScheduleModal classList={classList} scheduleTitle={"Schedule " + scheduleNumber} 
+                show={show} setShow={setShow} setCardTitle={setTitle}/>
+            </Col>
         </Card>
+        </Col>
     );
 }
 

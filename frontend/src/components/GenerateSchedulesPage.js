@@ -46,17 +46,21 @@ function GenerateSchedulesPage({ favList, setFavList }) {
         */
 
         //Current list of generated schedules is 
-        //a signle schedule containing all selected classes
+        //a single schedule containing all selected classes
+        //repeated twice to show multiple schedules
         //until schedule generation is complete
         var generatedSchedules = [];
         generatedSchedules[0] = selectedClasses;
         generatedSchedules[1] = selectedClasses;
+        var scheduleNumber = 0;
         var sCards = generatedSchedules.map(schedule => {
+            scheduleNumber += 1;
             return (
                 <GenerateScheduleCard
                     key={1}
                     id={1}
                     classList={schedule}
+                    scheduleNumber={scheduleNumber}
                 />  
             );
         }); 
