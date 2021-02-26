@@ -9,6 +9,7 @@ nav.header {
 
 .nav-link:hover {
     color: #673ab7 !important;
+    cursor: pointer;
 }
 
 .nav-link:active {
