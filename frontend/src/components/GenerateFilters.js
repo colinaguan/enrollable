@@ -6,28 +6,25 @@ import {useFormControl} from "@material-ui/core";
 import {shortenDays} from "../utils/format";
 
 function GenerateFilters({
-                             minUnits,
-                             setMinUnits,
-                             maxUnits,
-                             setMaxUnits,
-                             avoidTimes,
-                             setAvoidTimes,
-                             // date,
-                             // pickDate,
-                             // firstTime,
-                             // pickFirstTime,
-                             // secondTime,
-                             // pickSecondTime
-                         }) {
+        minUnits,
+        setMinUnits,
+        maxUnits,
+        setMaxUnits,
+        avoidTimes,
+        setAvoidTimes,
+        // date,
+        // pickDate,
+        // firstTime,
+        // pickFirstTime,
+        // secondTime,
+        // pickSecondTime
+    }) {
 
-    // undefined variables (these should be declared in this function, not in the props):
-    // date, pickDate, firstTime, pickFirstTime, secondTime, pickSecondTime
-    const [date,pickDate]=useState('');
-    const [firstTime,pickFirstTime]=useState('');
-    const [secondTime,pickSecondTime]=useState('');
-    const [constraintLabels,setConstraintLabels]=useState([date,firstTime,secondTime]);
+    const [date, pickDate] = useState('');
+    const [firstTime, pickFirstTime] = useState('');
+    const [secondTime, pickSecondTime] = useState('');
+    const [constraintLabels, setConstraintLabels] = useState([date, firstTime, secondTime]);
 
-    // const avoidTimes=[date,firstTime,secondTime];
     const handleSubmit = (e) => {
         e.preventDefault();
         setConstraintLabels(date,firstTime,secondTime);
@@ -39,20 +36,32 @@ function GenerateFilters({
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-    // should make a function called onMinMaxUnitChange()
-    // if min < max: setShow(true)
-    // else: setShow(false)
-    // use the react-bootstrap Alert component instead of a modal for the error message
+    
+    // TODO: checking min and max unit constraints on change needs to be removed
+    // ex: if I want to type in "10" for max, and "12" is min,
+    //   - type in "1"
+    //   - error shows
+    //   - cannot type anymore
     function onMinUnitChange(e){
-        setMinUnits(e.target.value)
-        if(maxUnits<minUnits){handleShow();setMinUnits(12)}
-        else{handleClose();}
+        if(maxUnits < minUnits) {
+            handleShow();
+        }
+        else{
+            handleClose();
+            setMinUnits(parseInt(e.target.value, 10));
+        }
     }
+
     function onMaxUnitChange(e){
-        setMaxUnits(e.target.value)
-        if(maxUnits<minUnits){handleShow();setMaxUnits(25)}
-        else{handleClose();}
+        if (maxUnits < minUnits) {
+            handleShow();
+        }
+        else {
+            handleClose();
+            setMaxUnits(parseInt(e.target.value, 10));
+        }
     }
+
     function newLabel(){
         let x;
         x=shortenDays(date);
@@ -65,7 +74,6 @@ function GenerateFilters({
             <Form.Row>
                 <Form.Group as={Col} sm={6} controlId="formMinUnit">
                     <Form.Label>Minimum Units</Form.Label>
-                    {/* make the input type "text" so user can manually input numbers (can check if input is a number in onMinMaxUnitChange() function) */}
                     <Form.Control className='filter-minUnit-dropdown' type="text" value={minUnits}  onChange={onMinUnitChange}>
                     </Form.Control>
                 </Form.Group>
@@ -78,7 +86,6 @@ function GenerateFilters({
             <Form.Row>
                 <Form.Group as={Col} sm={5} controlId="formDatePick">
                     <Form.Label>Date</Form.Label>
-                    {/* <Form.Control className='filter-date-picker' as="select" value={date} onChange={(e)=>pickDate(e.target.value)}> */}
                     <Form.Control className='filter-date-picker' as="select" value={date} onChange={(e)=>pickDate(e.target.value)}>
                         <option value={0}>Sunday</option>
                         <option value={1}>Monday</option>
@@ -91,12 +98,10 @@ function GenerateFilters({
                 </Form.Group>
                 <Form.Group as={Col} sm={3} controlId="firstTime">
                     <Form.Label>From</Form.Label>
-                    {/* <Form.Control className='first-time-picker' type="time" value={firstTime} onChange={(e)=>pickFirstTime(e.target.value)}/> */}
                     <Form.Control className='first-time-picker' type="time" value={firstTime} onChange={(e)=>pickFirstTime(e.target.value)}/>
                 </Form.Group>
                 <Form.Group as={Col} sm={3} controlId="secondTime">
                     <Form.Label>To</Form.Label>
-                    {/* <Form.Control className='second-time-picker' type="time" value={secondTime} onChange={(e)=>pickSecondTime(e.target.value)}/> */}
                     <Form.Control className='second-time-picker' type="time" value={secondTime} onChange={(e)=>pickSecondTime(e.target.value)}/>
                 </Form.Group>
                 {/* clicking "add" should add the day/time constraint to avoidTimes */}
