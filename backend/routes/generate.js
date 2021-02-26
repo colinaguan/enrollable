@@ -7,6 +7,7 @@ var classData = database.classData;
 var conflictPairs = [];
 
 router.post('/', function(req, res) {
+    conflictPairs = [];
     var generateRequest = req.body;
     //console.log(generateRequest);
     var generateResult = generateSchedules(generateRequest);
@@ -19,7 +20,8 @@ function generateSchedules(requestObject) {
     priorityScores = [];
     console.log(requestObject.classes);
     possibleSchedules = getNoConflictSchedules(requestObject.classes);
-    if (!possibleSchedules) {
+    if (possibleSchedules.length === 0) {
+        console.log("conflictPairs",conflictPairs)
         result.successful = false;
         result.schedules = conflictPairs;
         return result;
@@ -92,53 +94,30 @@ function getNoConflictSchedules(classesList) {
     // go through all courses except the last course
     for (var i=0; i<classesList.length-1; i++) {
         var course = classesList[i];
-        console.log("course root")
-        console.log(course)
+        console.log("course root: ", course);
         var newStack = [];
-        newStack.push(course);// newStack.push([course]);
-        console.log("stack")
-        console.log(newStack)
+        newStack.push([course]);// newStack.push([course]);
+        console.log("stack: ", newStack);
         while (newStack.length) { //
-            console.log("enter")
+            console.log("enter");
             schedule = newStack.pop();
-            console.log("pop")
-            console.log(schedule)
+            console.log("pop: ", schedule);
             successors = successor(schedule, classesList)
             if(successors.length !== 0){
                 successors.forEach(newClass=>{
-                    console.log("newClass")
-                    console.log(newClass)
-                    // conflict = true
-                    conflict = checkTimeConflict(schedule, newClass) // always return false? even the function returns true
+                    console.log("newClass: ", newClass);
+                    conflict = checkTimeConflict(schedule, newClass)
                     console.log("conflict", conflict)
                     if (!conflict) {
                         console.log("no conflict pass")
-                        if(typeof(schedule) === 'object') { //case when schdule is a single course
-                            console.log("object?")
-                            schedule = [schedule]
-                        }
                         schedule.push(newClass);
-                        console.log("schedule")
-                        console.log(schedule)
+                        console.log("schedule: ", schedule);
                         possibleSchedules.push(schedule);
                         newStack.push(schedule);
                     }
                     console.log("possible schdule", possibleSchedules)
-    
-    
                 })
-                
             }
-            
-            // for (newClass in successor(schedule, classesList)) {
-            //     console.log("newClass")
-            //     console.log(newClass)
-            //     if (!checkTimeConflict(schedule, newClass)) {
-            //         schedule.append(newClass);
-            //         possibleSchedules.append(schedule);
-            //         newStack.push(schedule);
-            //     }
-            // }
         }	
     }
 
@@ -146,26 +125,22 @@ function getNoConflictSchedules(classesList) {
 }
 
 function successor(schedule, classesList) {
-    console.log("length")
-    // console.log(schedule)  printed not an array
-    console.log(schedule.length)
-    console.log(typeof(schedule))
     // note: can't use type of(), because it will return "object" for array of objects 
-    if(!Array.isArray(schedule)) {// if(typeof(schedule) === 'object') { //case when schdule is a single course
-        console.log("not array")
-        index = 0
-        lastCourse = schedule
-    }else{
-        console.log("is array")
-        index = schedule.length-1
-        lastCourse = schedule[index];
-    }
-    
-    console.log("last course")
-    console.log(lastCourse)
+    // if(!Array.isArray(schedule)) {// if(typeof(schedule) === 'object') { //case when schdule is a single course
+    //     console.log("not array")
+    //     index = 0
+    //     lastCourse = schedule
+    // }else{
+    //     console.log("is array")
+    //     index = schedule.length-1
+    //     lastCourse = schedule[index];
+    // }
+    index = schedule.length-1;
+    lastCourse = schedule[index];
+
+    console.log("last course: ", lastCourse);
 	successors = [];
 	for (var i=classesList.indexOf(lastCourse)+1; i<classesList.length; i++) {
-        console.log("i",i)
         if (i >= classesList.length) {
             return successors; 
         }
@@ -179,15 +154,12 @@ function successor(schedule, classesList) {
 }
 
 function checkTimeConflict(schedule, newClass) {
-    // forEach(newClass=>{
-    if(typeof(schedule) === 'object') { //case when schdule is a single course
-        schedule = [schedule]
-    }
-    schedule.forEach(classData=>{
+    for (var i = 0; i < schedule.length; i++) {
+        classData = schedule[i];
         classDate = classData.days;
         courseDate = newClass.days;
         intersectDate = intersect(classDate, courseDate);
-        console.log("intersect", intersectDate)
+        console.log("intersect", intersectDate);
         if (intersectDate.length !== 0) {
              // check overlap
             console.log("classData.start", classData.start)
@@ -200,21 +172,20 @@ function checkTimeConflict(schedule, newClass) {
             if (classData.start<=newClass.end && classData.end>=newClass.start){
                 console.log("detected conflcit")
                 // if the conflict pair was not recorded, append to the list
-                if (conflictPairs.indexOf((newClass, classData)) === -1) {
-                    conflictPairs.push((newClass, classData));
+                conflictPair = [newClass, classData];
+                if (conflictPairs.indexOf([newClass, classData]) === -1) {
+                    conflictPairs.push(conflictPair);
                 }
-                console.log("conflictPairs",conflictPairs)
+
                 return true;
             }
         }
-       
-
-    })
+    }
     return false;
 }
 
-function conflictAvoidTime(avoidTime, newClass) {
-    for (time in avoidTimes) {
+function conflictAvoidTime(avoidTimes, newClass) {
+    for (var avoidTime of avoidTimes) {
         classDates = newClass.days;
         avoidTimeDates = avoidTime.days;
         intersectDates = intersect(classDates, avoidTimeDates);
