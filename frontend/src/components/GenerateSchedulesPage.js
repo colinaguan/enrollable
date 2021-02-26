@@ -3,6 +3,7 @@ import { Container, Row, Button } from 'react-bootstrap';
 import GenerateClassCard from './GenerateClassCard';
 import GenerateFilters from './GenerateFilters';
 import GenerateAvoidTimeLabel from './GenerateAvoidTimeLabel';
+import GeneratePagePills from './GeneratePagePills';
 import '../style/GenerateSchedulesPage.css';
 
 function GenerateSchedulesPage({ favList, setFavList }) {
@@ -14,9 +15,20 @@ function GenerateSchedulesPage({ favList, setFavList }) {
     const [constraintLabels, setConstraintLabels] = useState([]);
     const [filterError, setFilterError] = useState(false);
 
-     // favorited classes to display
-     const [classCards, setClassCards] = useState([]);
-     const [selectedClasses, setSelectedClasses] = useState([]);
+    // favorited classes to display
+    const [classCards, setClassCards] = useState([]);
+    const [selectedClasses, setSelectedClasses] = useState([]);
+
+    // schedules to display
+    const [schedules, setSchedules] = useState([]);
+    const [pagePills, setPagePills] = useState([]);
+    const [scheduleCards, setScheduleCards] = useState([]);
+
+    const onPillClick = (start, end) => {
+        // TODO: post-generation setup; update scheduleCards
+        console.log(start);
+        console.log(end);
+    }
 
     const handleGenerate = () => {
         if (parseInt(maxUnits, 10) < parseInt(minUnits, 10)) {
@@ -24,7 +36,6 @@ function GenerateSchedulesPage({ favList, setFavList }) {
             return;
         }
         else {
-            setFilterError(false);
             console.log(selectedClasses);
             var generateRequest = {};
             generateRequest.minUnits = minUnits;
@@ -35,15 +46,19 @@ function GenerateSchedulesPage({ favList, setFavList }) {
             // fetch('generate', {
             //     method: 'GET',
             //     body: generateRequest
+            // })
+            // .then(res => res.json())
+            // .then(schedules => {
+            //     console.log(schedules);
             // });
+            // TODO: will be moved to .then statement and modified when API call is fixed
+            setPagePills(<GeneratePagePills numPages={4} onPillClick={onPillClick}/>);
         }
     }
 
+    // render cards from favorites
     useEffect(() => {
-        /*
-        * @param {string} action
-        * @param {object} classObject
-        */
+        // updates class data
         const handleSelectedClasses = (action, classObject) => {
             var tempClasses = selectedClasses;
             if (action === 'add') {
@@ -178,6 +193,10 @@ function GenerateSchedulesPage({ favList, setFavList }) {
                 <Button className='generate-button' variant="purple" onClick={handleGenerate}>
                     Generate
                 </Button>
+            </Row>
+            {pagePills}
+            <Row>
+                {scheduleCards}
             </Row>
         </Container>
     );
