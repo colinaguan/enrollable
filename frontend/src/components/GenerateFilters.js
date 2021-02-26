@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Button, Col, Row } from 'react-bootstrap';
+import { Form, Button, Col } from 'react-bootstrap';
 import '../style/GenerateFilters.css'
 import Alert from "react-bootstrap/Alert";
 
@@ -11,7 +11,7 @@ function GenerateFilters({
         addConstraint
     }) {
 
-    const [date, pickDate] = useState('Sunday');
+    const [date, pickDate] = useState('Monday');
     const [firstTime, pickFirstTime] = useState('');
     const [secondTime, pickSecondTime] = useState('');
 
@@ -68,13 +68,13 @@ function GenerateFilters({
                 <Form.Group as={Col} sm={5} controlId="formDatePick">
                     <Form.Label>Avoid Times on Day</Form.Label>
                     <Form.Control className='filter-date-picker' as="select" value={date} onChange={(e)=>pickDate(e.target.value)}>
-                        <option value="Sunday">Sunday</option>
                         <option value="Monday">Monday</option>
                         <option value="Tuesday">Tuesday</option>
                         <option value="Wednesday">Wednesday</option>
                         <option value="Thursday">Thursday</option>
                         <option value="Friday">Friday</option>
                         <option value="Saturday">Saturday</option>
+                        <option value="Sunday">Sunday</option>
                     </Form.Control>
                 </Form.Group>
                 <Form.Group as={Col} sm={3} controlId="firstTime">

@@ -31,16 +31,17 @@ function GenerateSchedulesPage({ favList, setFavList }) {
         setClassCards(cards);
     }, [favList]);
 
-    const addConstraint = (day, start, end) => {
-        console.log("add constraint: " + day + " " + start + " " + end);
-        // add avoid time object
-        var avoidTime = {};
-        avoidTime.days = [day];
-        avoidTime.start = start;
-        avoidTime.end = end;
+    // for constraints: remove constraint when constraint is clicked
+    const removeConstraint = (days, start, end) => {
+        // remove given constraint
         var newAvoidTimes = avoidTimes;
-        newAvoidTimes.push(avoidTime);
-        console.log(newAvoidTimes);
+        newAvoidTimes = newAvoidTimes.filter(constraint => {
+            const sameDay = constraint.days === days;
+            const sameStart = constraint.start === start;
+            const sameEnd = constraint.end === end;
+            return !(sameDay && sameStart && sameEnd);
+        });
+        // update constraint labels
         var newConstraintLabels = newAvoidTimes.map((constraint, index) => {
             return (
                 <GenerateAvoidTimeLabel
@@ -48,9 +49,37 @@ function GenerateSchedulesPage({ favList, setFavList }) {
                     days={constraint.days}
                     start={constraint.start}
                     end={constraint.end}
+                    removeConstraint={removeConstraint}
                 />
             );
         });
+        // update states
+        setAvoidTimes(newAvoidTimes);
+        setConstraintLabels(newConstraintLabels);
+    }
+
+    // for filters: adds a time constraint label and avoid time object
+    const addConstraint = (day, start, end) => {
+        // add avoid time object
+        var avoidTime = {};
+        avoidTime.days = [day];
+        avoidTime.start = start;
+        avoidTime.end = end;
+        var newAvoidTimes = avoidTimes;
+        newAvoidTimes.push(avoidTime);
+        // set new constraint labels
+        var newConstraintLabels = newAvoidTimes.map((constraint, index) => {
+            return (
+                <GenerateAvoidTimeLabel
+                    key={index}
+                    days={constraint.days}
+                    start={constraint.start}
+                    end={constraint.end}
+                    removeConstraint={removeConstraint}
+                />
+            );
+        });
+        // update states
         setAvoidTimes(newAvoidTimes);
         setConstraintLabels(newConstraintLabels);
     }
