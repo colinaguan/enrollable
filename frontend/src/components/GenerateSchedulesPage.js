@@ -22,6 +22,7 @@ function GenerateSchedulesPage({ favList, setFavList }) {
     const [scheduleCards, setScheduleCards] = useState([]);
 
     const onPillClick = (start, end) => {
+        // TODO: post-generation setup; update scheduleCards
         console.log(start);
         console.log(end);
     }
@@ -42,14 +43,13 @@ function GenerateSchedulesPage({ favList, setFavList }) {
         // .then(schedules => {
         //     console.log(schedules);
         // });
+        // TODO: will be moved to .then statement and modified when API call is fixed
         setPagePills(<GeneratePagePills numPages={4} onPillClick={onPillClick}/>);
     }
 
+    // render cards from favorites
     useEffect(() => {
-        /*
-        * @param {string} action
-        * @param {object} classObject
-        */
+        // updates class data
         const handleSelectedClasses = (action, classObject) => {
             var tempClasses = selectedClasses;
             if (action === 'add') {
