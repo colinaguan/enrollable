@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, Button, Col } from 'react-bootstrap';
 import '../style/GenerateFilters.css'
 import Alert from "react-bootstrap/Alert";
@@ -8,47 +8,23 @@ function GenerateFilters({
         setMinUnits,
         maxUnits,
         setMaxUnits,
-        addConstraint
+        addConstraint,
+        filterError
     }) {
 
     const [date, pickDate] = useState('Monday');
     const [firstTime, pickFirstTime] = useState('');
     const [secondTime, pickSecondTime] = useState('');
 
-    const [show, setShow] = React.useState(false);
+    const [show, setShow] = useState(false);
 
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    useEffect(() => {
+        setShow(filterError);
+    }, [filterError]);
 
     const onSubmit = (e) => {
         e.preventDefault();
         addConstraint(date, firstTime, secondTime);
-    }
-    
-    // TODO: checking min and max unit constraints on change needs to be removed
-    // (will be done after merging with pre-generation components)
-    // ex: if I want to type in "10" for max, and "12" is min,
-    //   - type in "1"
-    //   - error shows
-    //   - cannot type anymore
-    function onMinUnitChange(e){
-        if(maxUnits < minUnits) {
-            handleShow();
-        }
-        else{
-            handleClose();
-            setMinUnits(parseInt(e.target.value, 10));
-        }
-    }
-
-    function onMaxUnitChange(e){
-        if (maxUnits < minUnits) {
-            handleShow();
-        }
-        else {
-            handleClose();
-            setMaxUnits(parseInt(e.target.value, 10));
-        }
     }
 
     return (
@@ -56,12 +32,12 @@ function GenerateFilters({
             <Form.Row>
                 <Form.Group as={Col} sm={6} controlId="formMinUnit">
                     <Form.Label>Minimum Units</Form.Label>
-                    <Form.Control className='filter-minUnit-dropdown' type="text" value={minUnits}  onChange={onMinUnitChange}>
+                    <Form.Control className='filter-minUnit-dropdown' type="text" value={minUnits} onChange={(e)=>setMinUnits(e.target.value)}>
                     </Form.Control>
                 </Form.Group>
                 <Form.Group as={Col} sm={6} controlId="formMaxUnit">
                     <Form.Label>Maximum Units</Form.Label>
-                    <Form.Control className='filter-maxUnit-dropdown' type="text" value={maxUnits} onChange={onMaxUnitChange}>
+                    <Form.Control className='filter-maxUnit-dropdown' type="text" value={maxUnits} onChange={(e)=>setMaxUnits(e.target.value)}>
                     </Form.Control>
                 </Form.Group>
             </Form.Row>

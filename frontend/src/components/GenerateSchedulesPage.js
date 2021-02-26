@@ -12,23 +12,31 @@ function GenerateSchedulesPage({ favList, setFavList }) {
     const [maxUnits, setMaxUnits] = useState('25');
     const [avoidTimes, setAvoidTimes] = useState([]);
     const [constraintLabels, setConstraintLabels] = useState([]);
+    const [filterError, setFilterError] = useState(false);
 
      // favorited classes to display
      const [classCards, setClassCards] = useState([]);
      const [selectedClasses, setSelectedClasses] = useState([]);
 
     const handleGenerate = () => {
-        console.log(selectedClasses);
-        var generateRequest = {};
-        generateRequest.minUnits = minUnits;
-        generateRequest.maxUnits = maxUnits;
-        generateRequest.avoidTimes = avoidTimes;
-        generateRequest.classes = selectedClasses;
-        // TODO: implement API generate route
-        // fetch('generate', {
-        //     method: 'GET',
-        //     body: generateRequest
-        // });
+        if (parseInt(maxUnits, 10) < parseInt(minUnits, 10)) {
+            setFilterError(true);
+            return;
+        }
+        else {
+            setFilterError(false);
+            console.log(selectedClasses);
+            var generateRequest = {};
+            generateRequest.minUnits = minUnits;
+            generateRequest.maxUnits = maxUnits;
+            generateRequest.avoidTimes = avoidTimes;
+            generateRequest.classes = selectedClasses;
+            // TODO: implement API generate route
+            // fetch('generate', {
+            //     method: 'GET',
+            //     body: generateRequest
+            // });
+        }
     }
 
     useEffect(() => {
@@ -153,6 +161,7 @@ function GenerateSchedulesPage({ favList, setFavList }) {
                     maxUnits={maxUnits}
                     setMaxUnits={setMaxUnits}
                     addConstraint={addConstraint}
+                    filterError={filterError}
                 />
             </Row>
             <Row className='constraint-row'>
