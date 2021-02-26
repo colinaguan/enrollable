@@ -9,7 +9,8 @@ function GenerateFilters({
         maxUnits,
         setMaxUnits,
         addConstraint,
-        filterError
+        filterError,
+        filterErrMessage
     }) {
 
     const [date, pickDate] = useState('Monday');
@@ -69,9 +70,9 @@ function GenerateFilters({
                 </Form.Group>
             </Form.Row>
             <Alert show={show} variant="danger">
-                <Alert.Heading>Please type in number again</Alert.Heading>
+                <Alert.Heading>Error</Alert.Heading>
                 <p>
-                    Invalid Min and Max Units: minimum units should be less than or equal to the maximum units
+                    {filterErrMessage}
                 </p>
             </Alert>
         </Form>

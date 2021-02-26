@@ -14,6 +14,7 @@ function GenerateSchedulesPage({ favList, setFavList }) {
     const [avoidTimes, setAvoidTimes] = useState([]);
     const [constraintLabels, setConstraintLabels] = useState([]);
     const [filterError, setFilterError] = useState(false);
+    const [filterErrMessage, setFilterErrMessage] = useState('');
 
     // favorited classes to display
     const [classCards, setClassCards] = useState([]);
@@ -31,8 +32,12 @@ function GenerateSchedulesPage({ favList, setFavList }) {
     }
 
     const handleGenerate = () => {
-        if (parseInt(maxUnits, 10) < parseInt(minUnits, 10)) {
+        if (filterError) {
+            return;
+        }
+        else if (parseInt(maxUnits, 10) < parseInt(minUnits, 10)) {
             setFilterError(true);
+            setFilterErrMessage('Maximum units must be greater than or equal to minimum units.');
             return;
         }
         else {
@@ -144,28 +149,37 @@ function GenerateSchedulesPage({ favList, setFavList }) {
 
     // for filters: adds a time constraint label and avoid time object
     const addConstraint = (day, start, end) => {
-        // add avoid time object
-        var avoidTime = {};
-        avoidTime.days = [day];
-        avoidTime.start = start;
-        avoidTime.end = end;
-        var newAvoidTimes = avoidTimes.slice();
-        newAvoidTimes.push(avoidTime);
-        // set new constraint labels
-        var newConstraintLabels = newAvoidTimes.map((constraint, index) => {
-            return (
-                <GenerateAvoidTimeLabel
-                    key={index}
-                    days={constraint.days}
-                    start={constraint.start}
-                    end={constraint.end}
-                    removeConstraint={removeConstraint}
-                />
-            );
-        });
-        // update states
-        setAvoidTimes(newAvoidTimes);
-        setConstraintLabels(newConstraintLabels);
+        if (end < start) {
+            setFilterError(true);
+            setFilterErrMessage('The end time for an avoided time should be after the start time.');
+            return;
+        }
+        else {
+            setFilterError(false);
+            // create new avoid time object
+            var avoidTime = {};
+            avoidTime.days = [day];
+            avoidTime.start = start;
+            avoidTime.end = end;
+            // add avoid time object
+            var newAvoidTimes = avoidTimes.slice();
+            newAvoidTimes.push(avoidTime);
+            // set new constraint labels
+            var newConstraintLabels = newAvoidTimes.map((constraint, index) => {
+                return (
+                    <GenerateAvoidTimeLabel
+                        key={index}
+                        days={constraint.days}
+                        start={constraint.start}
+                        end={constraint.end}
+                        removeConstraint={removeConstraint}
+                    />
+                );
+            });
+            // update states
+            setAvoidTimes(newAvoidTimes);
+            setConstraintLabels(newConstraintLabels);
+        }
     }
     
     return (
@@ -181,6 +195,7 @@ function GenerateSchedulesPage({ favList, setFavList }) {
                     setMaxUnits={setMaxUnits}
                     addConstraint={addConstraint}
                     filterError={filterError}
+                    filterErrMessage={filterErrMessage}
                 />
             </Row>
             <Row className='constraint-row'>
