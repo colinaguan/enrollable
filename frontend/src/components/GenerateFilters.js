@@ -1,41 +1,29 @@
-import React, {useState} from 'react';
-import {Form, Button, Col, Modal, ButtonGroup} from 'react-bootstrap';
+import React, { useState } from 'react';
+import { Form, Button, Col, Row } from 'react-bootstrap';
 import '../style/GenerateFilters.css'
 import Alert from "react-bootstrap/Alert";
-import {useFormControl} from "@material-ui/core";
-import {shortenDays} from "../utils/format";
 
 function GenerateFilters({
         minUnits,
         setMinUnits,
         maxUnits,
         setMaxUnits,
-        avoidTimes,
-        setAvoidTimes,
-        // date,
-        // pickDate,
-        // firstTime,
-        // pickFirstTime,
-        // secondTime,
-        // pickSecondTime
+        addConstraint
     }) {
 
-    const [date, pickDate] = useState('');
+    const [date, pickDate] = useState('Sunday');
     const [firstTime, pickFirstTime] = useState('');
     const [secondTime, pickSecondTime] = useState('');
-    const [constraintLabels, setConstraintLabels] = useState([date, firstTime, secondTime]);
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        setConstraintLabels(date,firstTime,secondTime);
-        setAvoidTimes(constraintLabels);
-        newLabel(constraintLabels);
-        return(avoidTimes);
-    }
     const [show, setShow] = React.useState(false);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+    const onSubmit = (e) => {
+        e.preventDefault();
+        addConstraint(date, firstTime, secondTime);
+    }
     
     // TODO: checking min and max unit constraints on change needs to be removed
     // ex: if I want to type in "10" for max, and "12" is min,
@@ -62,15 +50,8 @@ function GenerateFilters({
         }
     }
 
-    function newLabel(){
-        let x;
-        x=shortenDays(date);
-        return(
-            <Button variant="outline-light">{x} {firstTime}--{secondTime}</Button>
-        )
-    }
-    return(
-        <Form className='filter-form' onSubmit={handleSubmit}>
+    return (
+        <Form className='filter-form' onSubmit={onSubmit}>
             <Form.Row>
                 <Form.Group as={Col} sm={6} controlId="formMinUnit">
                     <Form.Label>Minimum Units</Form.Label>
@@ -85,15 +66,15 @@ function GenerateFilters({
             </Form.Row>
             <Form.Row>
                 <Form.Group as={Col} sm={5} controlId="formDatePick">
-                    <Form.Label>Date</Form.Label>
+                    <Form.Label>Avoid Times on Day</Form.Label>
                     <Form.Control className='filter-date-picker' as="select" value={date} onChange={(e)=>pickDate(e.target.value)}>
-                        <option value={0}>Sunday</option>
-                        <option value={1}>Monday</option>
-                        <option value={2}>Tuesday</option>
-                        <option value={3}>Wednesday</option>
-                        <option value={4}>Thursday</option>
-                        <option value={5}>Friday</option>
-                        <option value={6}>Saturday</option>
+                        <option value="Sunday">Sunday</option>
+                        <option value="Monday">Monday</option>
+                        <option value="Tuesday">Tuesday</option>
+                        <option value="Wednesday">Wednesday</option>
+                        <option value="Thursday">Thursday</option>
+                        <option value="Friday">Friday</option>
+                        <option value="Saturday">Saturday</option>
                     </Form.Control>
                 </Form.Group>
                 <Form.Group as={Col} sm={3} controlId="firstTime">
@@ -104,18 +85,12 @@ function GenerateFilters({
                     <Form.Label>To</Form.Label>
                     <Form.Control className='second-time-picker' type="time" value={secondTime} onChange={(e)=>pickSecondTime(e.target.value)}/>
                 </Form.Group>
-                {/* clicking "add" should add the day/time constraint to avoidTimes */}
-                <Form.Group as={Col} sm={1} className='filters-button' controlId="formFavorites">
-                    <Button variant="purple" type="submit" onClick={handleSubmit}>
+                <Form.Group as={Col} sm={1} className="filters-button" controlId="formFavorites">
+                    <Button variant="purple" className="add-button" type="submit">
                         Add
                     </Button>
                 </Form.Group>
-                {/* need to display avoidTimes as labels (see mockup for example) */}
-                {/*its looks like we should add small card?*/}
             </Form.Row>
-          <Form.Row>
-        <newLabel/>
-          </Form.Row>
             <Alert show={show} variant="danger">
                 <Alert.Heading>Please type in number again</Alert.Heading>
                 <p>
@@ -123,7 +98,8 @@ function GenerateFilters({
                 </p>
             </Alert>
         </Form>
-    )}
+    );
+}
 
 
 export default GenerateFilters;
