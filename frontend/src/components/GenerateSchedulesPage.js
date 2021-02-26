@@ -149,7 +149,7 @@ function GenerateSchedulesPage({ favList, setFavList }) {
         avoidTime.days = [day];
         avoidTime.start = start;
         avoidTime.end = end;
-        var newAvoidTimes = avoidTimes;
+        var newAvoidTimes = avoidTimes.slice();
         newAvoidTimes.push(avoidTime);
         // set new constraint labels
         var newConstraintLabels = newAvoidTimes.map((constraint, index) => {
