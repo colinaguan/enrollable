@@ -26,6 +26,7 @@ function GenerateFilters({
     }
     
     // TODO: checking min and max unit constraints on change needs to be removed
+    // (will be done after merging with pre-generation components)
     // ex: if I want to type in "10" for max, and "12" is min,
     //   - type in "1"
     //   - error shows

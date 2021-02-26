@@ -100,8 +100,6 @@ function GenerateSchedulesPage({ favList, setFavList }) {
             </Row>
             <Row className='constraint-row'>
                 {constraintLabels}
-                {/* <GenerateAvoidTimeLabel key={4} day="Monday" start="08:00" end="10:00"/>
-                <GenerateAvoidTimeLabel key={5} day="Wednesday" start="08:00" end="10:00"/> */}
             </Row>
             <Row>
                 {
