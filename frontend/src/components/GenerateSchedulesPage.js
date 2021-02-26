@@ -36,6 +36,7 @@ function GenerateSchedulesPage({ favList, setFavList }) {
             return;
         }
         else {
+            setFilterError(false);
             console.log(selectedClasses);
             var generateRequest = {};
             generateRequest.minUnits = minUnits;
