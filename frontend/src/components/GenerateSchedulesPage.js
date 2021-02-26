@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Row, Button } from 'react-bootstrap';
 import GenerateClassCard from './GenerateClassCard';
 import GenerateFilters from './GenerateFilters';
+import GeneratePagePills from './GeneratePagePills';
 import '../style/GenerateSchedulesPage.css';
 
 function GenerateSchedulesPage({ favList, setFavList }) {
@@ -17,6 +18,13 @@ function GenerateSchedulesPage({ favList, setFavList }) {
 
     // schedules to display
     const [schedules, setSchedules] = useState([]);
+    const [pagePills, setPagePills] = useState([]);
+    const [scheduleCards, setScheduleCards] = useState([]);
+
+    const onPillClick = (start, end) => {
+        console.log(start);
+        console.log(end);
+    }
 
     const handleGenerate = () => {
         console.log(selectedClasses);
@@ -34,6 +42,7 @@ function GenerateSchedulesPage({ favList, setFavList }) {
         // .then(schedules => {
         //     console.log(schedules);
         // });
+        setPagePills(<GeneratePagePills numPages={4} onPillClick={onPillClick}/>);
     }
 
     useEffect(() => {
@@ -119,6 +128,10 @@ function GenerateSchedulesPage({ favList, setFavList }) {
                 <Button className='generate-button' variant="purple" onClick={handleGenerate}>
                     Generate
                 </Button>
+            </Row>
+            {pagePills}
+            <Row>
+                {scheduleCards}
             </Row>
         </Container>
     );
