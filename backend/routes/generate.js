@@ -15,6 +15,88 @@ router.post('/', function(req, res) {
     res.send(generateResult);
 });
 
+function unitConstraint(possibleSchedules, minUnits, maxUnits){
+    // for (var schedule of possibleSchedules) {
+    for (var i=0; i<possibleSchedules.length; i++) {
+        schedule = possibleSchedules[i]
+        unitSum = 0;
+        // conflict : variable indicates whether class is conflict with time constraints
+        conflict = false;
+        for (var classData of schedule) {
+            unitSum += classData.unit;
+        } 
+        // check unit restriction
+        console.log("unitSum", unitSum)
+        console.log("before possibleSchedules", possibleSchedules)
+        if (unitSum < minUnits || unitSum > maxUnits) {	
+            // possibleSchedules.remove(schedule);
+            index = possibleSchedules.indexOf(schedule);
+            if (index > -1) {
+                possibleSchedules.splice(index, 1);
+                // consider one item has been removed
+                i-=1;
+            }
+            console.log("after possibleSchedules", possibleSchedules)
+            continue;
+        }  
+        
+
+    }
+    return possibleSchedules
+
+}
+
+// function to check avoidTime constraint
+function avoidTimesConstraint(possibleSchedules, avoidTimes){
+    for (var i=0; i<possibleSchedules.length; i++) {
+        schedule = possibleSchedules[i];
+        // conflict : variable indicates whether class is conflict with time constraints
+        conflict = false;
+        for (var classData of schedule) {
+            console.log("classData iteration to detect conflict with avoid times")
+            if (conflictAvoidTime(avoidTimes, classData)) {
+                conflict = true;
+                    break;
+            }
+            
+            // check possible sections 
+            if (classData.sections && !conflict) {
+                // for (var section of classData.sections) {
+                //     console.log("section")
+                //     // remove from class.sections array if conflict with schedule
+                //     // or avoid time list
+                //     if (checkTimeConflict(schedule, section) && conflictAvoidTime(avoidTimes, section)) {
+                //         // classData.sections.remove(section)
+                //         const index = classData.sections.indexOf(section);
+                //         if (index > -1) {
+                //             classData.sections.splice(index, 1);
+                //         }
+                        
+                //     }
+                // }
+            }
+        } 
+        console.log(i,"end")
+        if (conflict) {
+            // possibleSchedules.remove(schedule);
+            console.log("removed schedule")
+            index = possibleSchedules.indexOf(schedule);
+            if (index > -1) {
+                console.log(possibleSchedules[index])
+                possibleSchedules.splice(index, 1);
+                i-=1;
+            }
+            
+            // continue; 
+        }
+    }
+    return possibleSchedules
+
+}
+
+
+
+
 function generateSchedules(requestObject) {
     result = {};
     priorityScores = [];
@@ -26,6 +108,27 @@ function generateSchedules(requestObject) {
         result.schedules = conflictPairs;
         return result;
     }
+
+    
+    minUnits = requestObject.minUnits
+    maxUnits = requestObject.maxUnits
+    avoidTimes = requestObject.avoidTimes
+    possibleSchedules = unitConstraint(possibleSchedules, minUnits, maxUnits);
+    if (possibleSchedules.length === 0) {
+        console.log("no schedule satisfy unit constraints")
+        result.successful = false;
+        result.schedules = {};
+        return result;
+    }
+    
+    possibleSchedules = avoidTimesConstraint(possibleSchedules, avoidTimes);
+    if (possibleSchedules.length === 0) {
+        console.log("no schedule satisfy avoid constraints")
+        result.successful = false;
+        result.schedules = {};
+        return result;
+    }
+    
     
     // // TODO: after generate all schedules without conflict
     // for (var schedule in possibleSchedules) {
@@ -79,7 +182,7 @@ function generateSchedules(requestObject) {
     //     priorityScoresCopy.remove(min);
     //     resultList.append(possibleSchedule[priorityScore.indexOf(min)]);
     // }
-
+    
     result.successful = true;
     // for testing getNoConflictSchedules function
     result.schedules = possibleSchedules;
@@ -103,8 +206,15 @@ function getNoConflictSchedules(classesList) {
             schedule = newStack.pop();
             console.log("pop: ", schedule);
             successors = successor(schedule, classesList)
+            // temp = schedule
+            // needs to be a copy, not reference
+            temp = JSON.parse(JSON.stringify(schedule));
             if(successors.length !== 0){
-                successors.forEach(newClass=>{
+                for(var newClass of successors){
+                
+                    // reinitialize schedule here
+                    schedule = JSON.parse(JSON.stringify(temp));
+                    console.log("temp",temp)
                     console.log("newClass: ", newClass);
                     conflict = checkTimeConflict(schedule, newClass)
                     console.log("conflict", conflict)
@@ -116,7 +226,8 @@ function getNoConflictSchedules(classesList) {
                         newStack.push(schedule);
                     }
                     console.log("possible schdule", possibleSchedules)
-                })
+                // })
+                }
             }
         }	
     }
@@ -185,16 +296,16 @@ function checkTimeConflict(schedule, newClass) {
 }
 
 function conflictAvoidTime(avoidTimes, newClass) {
+    classDates = newClass.days;
     for (var avoidTime of avoidTimes) {
-        classDates = newClass.days;
         avoidTimeDates = avoidTime.days;
-        intersectDates = intersect(classDates, avoidTimeDates);
-        if (len(intersectDates) === 0) {
+        intersectDates = intersect(avoidTimeDates, classDates);
+        if (intersectDates.length === 0) {
             continue;
         }
         // check overlap
-
-        if (avoidTimeDates.start<=newClass.end && avoidTimeDates.end>=newClass.start){
+        console.log("intersect length !=0")
+        if (avoidTime.start<=newClass.end && avoidTime.end>=newClass.start){
             return true;
         }
     }
