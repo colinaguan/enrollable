@@ -21,15 +21,35 @@ function GenerateSchedulesPage({ favList, setFavList }) {
     const [selectedClasses, setSelectedClasses] = useState([]);
 
     // schedules to display
+    const schedulesPerPage = 1;
     const [generated, setGenerated] = useState(false);
-    const [schedules, setSchedules] = useState([]);
+    // replaced state with variable since this variable needs to be updated quickly
+    var schedules = [];
     const [pagePills, setPagePills] = useState([]);
     const [scheduleCards, setScheduleCards] = useState([]);
 
-    const onPillClick = (start, end) => {
+    const updateScheduleCards = (start, end) => {
         // TODO: post-generation setup; update scheduleCards
         console.log(start);
         console.log(end);
+        const cards = [];
+        for (var index = start; index <= end; index++) {
+            console.log(start, schedules.length);
+            // stop loop if index goes out of bounds
+            if (index >= schedules.length)
+                break;
+            console.log("creating card");
+            // create card
+            cards.push(
+                <GenerateScheduleCard
+                    key={index+1}
+                    id={index+1}
+                    classList={schedules[index]}
+                    scheduleNumber={index+1}
+                />
+            );
+        }
+        setScheduleCards(cards);
     }
 
     const handleGenerate = () => {
@@ -55,7 +75,6 @@ function GenerateSchedulesPage({ favList, setFavList }) {
             //     console.log(schedules);
             // });
             // TODO: will be moved to .then statement and modified when API call is fixed
-            setPagePills(<GeneratePagePills numPages={4} onPillClick={onPillClick}/>);
 
             //Output Result from API generate route
             //Currently outputs all selected classes to test schedules card
@@ -78,19 +97,38 @@ function GenerateSchedulesPage({ favList, setFavList }) {
             var generatedSchedules = [];
             generatedSchedules[0] = selectedClasses;
             generatedSchedules[1] = selectedClasses;
-            var scheduleNumber = 0;
-            var sCards = generatedSchedules.map(schedule => {
-                scheduleNumber += 1;
-                return (
+            schedules = generatedSchedules;
+
+            const remainder = generatedSchedules.length % schedulesPerPage;
+            const numPills = remainder > 0 ?
+                generatedSchedules.length / schedulesPerPage + 1 :
+                generatedSchedules.length / schedulesPerPage;
+            
+            setPagePills(
+                <GeneratePagePills
+                    numPages={numPills}
+                    schedulesPerPage={schedulesPerPage}
+                    defaultPill={1}
+                    updateScheduleCards={updateScheduleCards}
+                />
+            );
+
+            // set first page
+            // (repeat of updateScheduleCards, but state hasn't been updated so this is a temp solution)
+            const cards = [];
+            for (var index = 0; index < schedulesPerPage; index++) {
+                if (index >= generatedSchedules.length)
+                    break;
+                cards.push(
                     <GenerateScheduleCard
-                        key={scheduleNumber}
-                        id={scheduleNumber}
-                        classList={schedule}
-                        scheduleNumber={scheduleNumber}
-                    />  
+                        key={index+1}
+                        id={index+1}
+                        classList={generatedSchedules[index]}
+                        scheduleNumber={index+1}
+                    />
                 );
-            }); 
-            setScheduleCards(sCards);
+            }
+            setScheduleCards(cards);
         }
     }
 

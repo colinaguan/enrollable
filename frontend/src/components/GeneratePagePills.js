@@ -2,17 +2,18 @@ import React, { useState } from 'react';
 import { Button, Row, Col } from 'react-bootstrap';
 import '../style/GeneratePagePill.css';
 
-function GeneratePagePills({ numPages, onPillClick }) {
-    const [currentPill, setCurrentPill] = useState(1);
+function GeneratePagePills({ numPages, schedulesPerPage, defaultPill, updateScheduleCards }) {
+    const [currentPill, setCurrentPill] = useState(parseInt(defaultPill, 10));
 
     const onClick = (e) => {
         e.preventDefault();
+        const newPill = parseInt(e.target.id, 10);
         // update schedule cards
-        const start = currentPill * 10 - 10;
-        const end = currentPill * 10 - 1;
-        onPillClick(start, end);
+        const start = newPill * schedulesPerPage - schedulesPerPage;
+        const end = newPill * schedulesPerPage - 1;
+        updateScheduleCards(start, end);
         // change selected pill
-        setCurrentPill(parseInt(e.target.id, 10));
+        setCurrentPill(newPill);
     }
 
     // create all buttons
