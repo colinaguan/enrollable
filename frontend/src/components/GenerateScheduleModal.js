@@ -1,16 +1,17 @@
 import React, {useState} from 'react';
 import { Modal, Container, Button, Row, Card, Col } from 'react-bootstrap';
-// import { shortenDays, timeToString } from '../utils/format';
+import { shortenDays, timeToString } from '../utils/format';
 import '../style/GenerateScheduleModal.css';
 
 function GenerateScheduleModal({ classList, scheduleTitle, show, setShow, setCardTitle }) {
 
-    const secInclude = [];
     const [title, setTitle] = useState(scheduleTitle);
+    const scheduleData = {};
 
     //temporary, needs to be passed from generateScheduleCard
     const saveSchedule = () => {
         console.log("Save Schedule");
+        console.log(scheduleData);
         handleClose();
     }
 
@@ -34,13 +35,16 @@ function GenerateScheduleModal({ classList, scheduleTitle, show, setShow, setCar
         setShow(false);
     }
 
-    const handleCheckbox = () => {
-
+    const handleRadio = (e) => {
+        const sectionNum = parseInt(e.target.id, 10);
+        const classNum = parseInt(e.target.name, 10);
+        console.log(sectionNum, classNum)
+        scheduleData[classNum] = sectionNum;
     }
 
     const classCards = classList.map(thisClass => {
         return (
-            <Card className='schedule-info-card'>
+            <Card key={thisClass.num} className='schedule-info-card'>
                 <Card.Title>
                     <b>{thisClass.title}</b> {thisClass.dayTime}
                 </Card.Title>
@@ -50,46 +54,39 @@ function GenerateScheduleModal({ classList, scheduleTitle, show, setShow, setCar
                             <Col>
                                 <Row className='row-bottom-pad'>
                                     <Col className='info-title' sm={1}></Col>       
-                                    <Col className='info-title' sm={3}>Section</Col>
-                                    <Col className='info-title' sm={3}>Day and Time</Col>
-                                    <Col className='info-title' sm={3}>Instructor</Col>
+                                    <Col className='info-title' sm={5}>Section</Col>
+                                    <Col className='info-title' sm={6}>Day and Time</Col>
                                 </Row>
-                                {/* {
+                                {
                                     thisClass.sections.map(data => {
-                                        var secDay = shortenDays(data['day']);
-                                        var secStart = timeToString(data['start']);
-                                        var secEnd = timeToString(data['end']);
+                                        var secDay = shortenDays(data.days);
+                                        var secStart = timeToString(data.start);
+                                        var secEnd = timeToString(data.end);
                                         var secDayTime = (secDay && secStart && secEnd) ?
                                             secDay + ' ' + secStart + ' - ' + secEnd :
                                             '';
-                                        //Array of inclusion status for each section
-                                        secInclude.push({sec: data['num'], checked: true});
+                                        // Array of inclusion status for each section
                                         return (
-                                            <Row key={data['num']} className='row-bottom-pad'>
+                                            <Row key={data.num} className='row-bottom-pad'>
                                                 <Col sm={1}>
                                                     <input  
-                                                        type="checkbox" 
-                                                        name="include"
-                                                        id={data['num']}
-                                                        defaultChecked="true"
-                                                        onChange={handleCheckbox}
+                                                        type="radio" 
+                                                        name={thisClass.num}
+                                                        id={data.num}
+                                                        onChange={handleRadio}
                                                     />
                                                 </Col>
-                                                <Col sm={3}>
-                                                    {classTitle}-{data['secName']}
+                                                <Col sm={5}>
+                                                    {thisClass.title}-{data.title}
                                                 </Col>
-                                                <Col sm={3}>
+                                                <Col sm={6}>
                                                     {secDayTime !== '' && secDayTime}
                                                     {secDayTime === '' && <i>Not stated</i>}
                                                 </Col>
-                                                <Col sm={3}>
-                                                    {data['instructor']}
-                                                </Col>
-                                                
                                             </Row>
                                         )
                                     })
-                                } */}
+                                }
                             </Col>
                         </Row>
                     </Container>

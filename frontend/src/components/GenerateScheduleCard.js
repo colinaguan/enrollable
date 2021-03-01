@@ -11,17 +11,15 @@ function GenerateScheduleCard({ classList, scheduleNumber}) {
 
     const handleShow = () => setShow(true);
 
-    const scheduleInfo = classList.map(thisClass => {
+    const scheduleInfo = classList.map((thisClass) => {
         return (
-            <Col>
-                <Row>
-                    <p className='schedule-class-title'>
-                        <b>{thisClass.title}</b> {thisClass.dayTime}
-                    </p>
+            <Col key={thisClass.num}>
+                <Row className='schedule-class-title'>
+                    <p><b>{thisClass.title}</b> {thisClass.dayTime}</p>
                 </Row>
                 {thisClass.sections.map(thisSection => {
                     return (
-                        <Row>
+                        <Row key={thisSection.num}>
                             <Col offset={1} sm={2} className='schedule-section-title'>
                                 {thisClass.title + '-' + thisSection.title}
                             </Col>
@@ -41,9 +39,9 @@ function GenerateScheduleCard({ classList, scheduleNumber}) {
                 <Card.Title>
                     <h2>{title}</h2>
                 </Card.Title>
-                <Card.Text className="schedule-card-text">
+                <div className="schedule-card-text">
                     {scheduleInfo}
-                </Card.Text>
+                </div>
                 <Card.Link onClick={handleShow}>
                     <Button variant='purple' className='view-schedule'>View Schedule</Button>
                 </Card.Link>
