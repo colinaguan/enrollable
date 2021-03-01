@@ -35,7 +35,7 @@ function GeneratePagePills({ numPages, onPillClick }) {
     }
 
     return (
-        <Row className="justify-content-md-center page-pill-container">
+        <Row className="page-pill-container">
             {pagePills}
         </Row>
     );

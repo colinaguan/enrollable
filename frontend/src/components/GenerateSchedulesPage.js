@@ -21,6 +21,7 @@ function GenerateSchedulesPage({ favList, setFavList }) {
     const [selectedClasses, setSelectedClasses] = useState([]);
 
     // schedules to display
+    const [generated, setGenerated] = useState(false);
     const [schedules, setSchedules] = useState([]);
     const [pagePills, setPagePills] = useState([]);
     const [scheduleCards, setScheduleCards] = useState([]);
@@ -37,6 +38,7 @@ function GenerateSchedulesPage({ favList, setFavList }) {
             return;
         }
         else {
+            setGenerated(true);
             console.log(selectedClasses);
             var generateRequest = {};
             generateRequest.minUnits = minUnits;
@@ -218,11 +220,16 @@ function GenerateSchedulesPage({ favList, setFavList }) {
             <Row className='constraint-row'>
                 {constraintLabels}
             </Row>
+            <Row className='select-classes-text'>
+                <h3>Please select classes to consider in generation</h3>
+            </Row>
             <Row>
                 {
                     classCards && classCards.length > 0 ?
                     classCards :
-                    <p>No favorites selected, or API is not working</p>
+                    <i className="placeholder-favorites">
+                        No favorites selected; go to the Class Search page to favorite classes
+                    </i>
                 }
             </Row>
             <Row>
@@ -230,6 +237,18 @@ function GenerateSchedulesPage({ favList, setFavList }) {
                     Generate
                 </Button>
             </Row>
+            {
+                generated &&
+                <Row>
+                    <h1>Results</h1>
+                </Row>
+            }
+            {
+                generated &&
+                <Row>
+                    <p>Choose which schedules to save</p>
+                </Row>
+            }
             {pagePills}
             <Row>
                 {scheduleCards}

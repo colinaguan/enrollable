@@ -43,7 +43,7 @@ function GenerateScheduleCard({ classList, scheduleNumber}) {
                     {scheduleInfo}
                 </div>
                 <Card.Link onClick={handleShow}>
-                    <Button variant='purple' className='view-schedule'>Save or Delete Schedule</Button>
+                    <Button variant='purple' className='view-schedule'>Save Schedule</Button>
                 </Card.Link>
             </Card.Body>
             <GenerateScheduleModal

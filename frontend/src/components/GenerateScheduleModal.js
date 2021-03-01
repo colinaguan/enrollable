@@ -18,12 +18,6 @@ function GenerateScheduleModal({ classList, scheduleTitle, show, setShow, setCar
         handleClose();
     }
 
-    //temporary, needs to be passed from GenerateSchedulesPage to GenerateSchedulesCard to this modal
-    const deleteSchedule = () => {
-        console.log("Delete Schedule");
-        handleClose();
-    }
-
     const handleTitle = (event) => {
         setTitle(event.target.value);
     }
@@ -152,8 +146,8 @@ function GenerateScheduleModal({ classList, scheduleTitle, show, setShow, setCar
                         Save
                     </Button>
                 </OverlayTrigger>
-                <Button onClick={deleteSchedule} variant="outline-purple">
-                    Delete
+                <Button onClick={handleClose} variant="outline-purple">
+                    Cancel
                 </Button>
             </Modal.Footer>
         </Modal>
