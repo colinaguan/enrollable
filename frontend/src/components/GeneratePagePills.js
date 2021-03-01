@@ -21,14 +21,14 @@ function GeneratePagePills({ numPages, onPillClick }) {
         // current pill is filled button
         if (page === currentPill)
             pagePills.push(
-                <Col md="auto">
+                <Col md="auto" key={page}>
                     <Button id={page} variant="purple">{page}</Button>
                 </Col>
             );
         // other pills are outlined buttons
         else
             pagePills.push(
-                <Col md="auto">
+                <Col md="auto" key={page}>
                     <Button id={page} variant="outline-purple" onClick={onClick}>{page}</Button>
                 </Col>
             )

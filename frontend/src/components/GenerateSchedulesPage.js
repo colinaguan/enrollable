@@ -81,8 +81,8 @@ function GenerateSchedulesPage({ favList, setFavList }) {
                 scheduleNumber += 1;
                 return (
                     <GenerateScheduleCard
-                        key={1}
-                        id={1}
+                        key={scheduleNumber}
+                        id={scheduleNumber}
                         classList={schedule}
                         scheduleNumber={scheduleNumber}
                     />  
@@ -232,11 +232,7 @@ function GenerateSchedulesPage({ favList, setFavList }) {
             </Row>
             {pagePills}
             <Row>
-                {
-                    scheduleCards && scheduleCards.length > 0 ?
-                    scheduleCards :
-                    <p>No schedules generated</p>
-                }
+                {scheduleCards}
             </Row>
         </Container>
     );
