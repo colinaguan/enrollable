@@ -1,16 +1,19 @@
 import React, {useState} from 'react';
-import { Modal, Container, Button, Row, Card, Col } from 'react-bootstrap';
+import { Modal, Container, Button, Row, Card, Col, Form, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { shortenDays, timeToString } from '../utils/format';
 import '../style/GenerateScheduleModal.css';
 
 function GenerateScheduleModal({ classList, scheduleTitle, show, setShow, setCardTitle }) {
 
     const [title, setTitle] = useState(scheduleTitle);
+    const [description, setDescription] = useState('');
     const scheduleData = {};
 
     //temporary, needs to be passed from generateScheduleCard
     const saveSchedule = () => {
         console.log("Save Schedule");
+        scheduleData.title = title;
+        scheduleData.description = description;
         console.log(scheduleData);
         handleClose();
     }
@@ -21,24 +24,24 @@ function GenerateScheduleModal({ classList, scheduleTitle, show, setShow, setCar
         handleClose();
     }
 
-    const handleKeyDown = (event) => {
-        if (event.key === 'Enter'){
-            handleClose();
-        }
-    }
-    const handleChange = (event) => {
+    const handleTitle = (event) => {
         setTitle(event.target.value);
     }
 
+    const handleDescription = (event) => {
+        setDescription(event.target.value);
+    }
+
     const handleClose = () => {
-        setCardTitle(title);
+        // setCardTitle(title);
         setShow(false);
     }
 
     const handleRadio = (e) => {
         const sectionNum = parseInt(e.target.id, 10);
         const classNum = parseInt(e.target.name, 10);
-        console.log(sectionNum, classNum)
+        console.log(sectionNum, classNum);
+        // TODO: once firestore savedSchedules object is documented, store proper information
         scheduleData[classNum] = sectionNum;
     }
 
@@ -52,12 +55,20 @@ function GenerateScheduleModal({ classList, scheduleTitle, show, setShow, setCar
                     <Container>
                         <Row>
                             <Col>
-                                <Row className='row-bottom-pad'>
-                                    <Col className='info-title' sm={1}></Col>       
-                                    <Col className='info-title' sm={5}>Section</Col>
-                                    <Col className='info-title' sm={6}>Day and Time</Col>
-                                </Row>
                                 {
+                                    thisClass.sections.length === 0 &&
+                                    <i>No sections to display</i>
+                                }
+                                {
+                                    thisClass.sections.length > 0 &&
+                                    <Row className='row-bottom-pad'>
+                                        <Col className='info-title' sm={1}></Col>       
+                                        <Col className='info-title' sm={5}>Section</Col>
+                                        <Col className='info-title' sm={6}>Day and Time</Col>
+                                    </Row>
+                                }
+                                {
+                                    thisClass.sections.length > 0 &&
                                     thisClass.sections.map(data => {
                                         var secDay = shortenDays(data.days);
                                         var secStart = timeToString(data.start);
@@ -99,21 +110,48 @@ function GenerateScheduleModal({ classList, scheduleTitle, show, setShow, setCar
         <Modal show={show} onHide={handleClose} animation={false} dialogClassName="schedule-info-modal">
             <Modal.Header closeButton>
                 <Modal.Title>
-                    <input type="text" value={title}
-                        onKeyDown={handleKeyDown} onChange={handleChange}/>
+                    {scheduleTitle}
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Container>
                     <Row>
+                        <Card className='schedule-info-card'>
+                            <Card.Title>
+                                <b>Schedule Information</b>
+                            </Card.Title>
+                            <Card.Body>
+                                <Form>
+                                    <Form.Group as={Row} controlId="formTitle">
+                                        <Form.Label>Title</Form.Label>
+                                        <Form.Control type="text" value={title} onChange={handleTitle}>
+                                        </Form.Control>
+                                    </Form.Group>
+                                    <Form.Group as={Row} controlId="formTitle">
+                                        <Form.Label>Description</Form.Label>
+                                        <Form.Control as="textarea" value={description} onChange={handleDescription}>
+                                        </Form.Control>
+                                    </Form.Group>
+                                </Form>
+                            </Card.Body>
+                        </Card>
                         {classCards}
                     </Row>
                 </Container>
             </Modal.Body>
             <Modal.Footer>
-                <Button onClick={saveSchedule} variant="purple">
-                    Save
-                </Button>
+                <OverlayTrigger
+                    placement="top"
+                    overlay={
+                        <Tooltip>
+                            See all saved schedules on the saved schedules page
+                        </Tooltip>
+                    }
+                >
+                    <Button onClick={saveSchedule} variant="purple">
+                        Save
+                    </Button>
+                </OverlayTrigger>
                 <Button onClick={deleteSchedule} variant="outline-purple">
                     Delete
                 </Button>
