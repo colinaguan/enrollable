@@ -9,28 +9,30 @@ import ClassSearchPage from './ClassSearchPage';
 import GenerateSchedulesPage from './GenerateSchedulesPage';
 import SavedSchedulesPage from './SavedSchedulesPage';
 import { AuthProvider } from "../contexts/AuthContext";
+import PrivateRoute from "../routes/PrivateRoute";
+import PublicRoute from "../routes/PublicRoute";
 
 function App() {
   const [favList, setFavList] = useState([]);
   return (
     <div>
-      <Header/>
-        <AuthProvider>
+      <AuthProvider>
+        <Header/>
           <Switch>
             <Route path="/search">
-              <ClassSearchPage favList={favList} setFavList={setFavList} />
+              <PrivateRoute component={ClassSearchPage} favList={favList} setFavList={setFavList} />
             </Route>
             <Route path="/generate">
-              <GenerateSchedulesPage favList={favList} setFavList={setFavList} />
+              <PrivateRoute component={GenerateSchedulesPage} favList={favList} setFavList={setFavList} />
             </Route>
             <Route path="/saved">
-              <SavedSchedulesPage />
+              <PrivateRoute component={SavedSchedulesPage} />
             </Route>
             <Route path="/">
-              <LoginPage setFavList={setFavList}/>
+              <PublicRoute component={LoginPage} setFavList={setFavList} />
             </Route>
           </Switch>
-        </AuthProvider>
+    </AuthProvider>
     </div>
   );
 }

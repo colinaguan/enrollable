@@ -12,18 +12,12 @@ function GenerateClassCard({ classNum, favList, setFavList, handleSelectedClasse
     const [sectionPicks, setSecChoices] = useState([]);
     const [classObject, setClassObject] = useState({});
     const [isSelected, setIsSelected] = useState(false);
+
     const [priority, setPriority] = useState(1);
     const [favorite, setFav] = useState(true);
     const [show, setShow] = useState(false);
     
     const handleShow = () => setShow(true);
-    const secChoices = (secInclude) => {
-        setSecChoices(secInclude);
-    }
-    useEffect(() => {
-        console.log("section choices");
-        console.log(sectionPicks);
-    }, [sectionPicks]);
 
     useEffect(() => {
         // get data from API
@@ -64,6 +58,10 @@ function GenerateClassCard({ classNum, favList, setFavList, handleSelectedClasse
             });
             classObj.sections = sections;
             setClassObject(classObj);
+            var sectionNums = data['sections'].map(section => {
+                return parseInt(section['num'], 10);
+            });
+            setSecChoices(sectionNums);
         })
         .catch(() => {
             console.error("classNum API call not responding")
@@ -71,6 +69,7 @@ function GenerateClassCard({ classNum, favList, setFavList, handleSelectedClasse
         });
     }, [classNum, priority]);
 
+    // updates selected classes
     const handleSelect = () => {
         if (isSelected) {
             setIsSelected(false);
@@ -82,13 +81,29 @@ function GenerateClassCard({ classNum, favList, setFavList, handleSelectedClasse
         }
     }
 
+    // updates class object when priority is updated
     const handlePriority = (e) => {
         var numPriority = parseInt(e.target.value, 10);
         setPriority(numPriority);
+        var classObj = classObject;
+        classObj.priority = numPriority;
+        setClassObject(classObj);
         if (isSelected) {
-            var classObj = classObject;
-            classObj.priority = numPriority;
-            setClassObject(classObj);
+            handleSelectedClasses('mod', classObj);
+        }
+    }
+
+    // updates sections in class object
+    const handleSections = (sections) => {
+        setSecChoices(sections);
+        // filter sections in class object
+        var classObj = classObject;
+        var cSections = classObj.sections;
+        cSections = cSections.filter(section => sections.indexOf(section['num']) !== -1);
+        classObj.sections = cSections;
+        setClassObject(classObj);
+        // update selected classes
+        if (isSelected) {
             handleSelectedClasses('mod', classObj);
         }
     }
@@ -185,7 +200,7 @@ function GenerateClassCard({ classNum, favList, setFavList, handleSelectedClasse
                     </Col>
                 </Row>
             </Card.Body>
-            <GenerateSectionsModal classData={classData} show={show} setShow={setShow} secChoices={secChoices}/>
+            <GenerateSectionsModal classData={classData} show={show} setShow={setShow} sectionPicks={sectionPicks} handleSections={handleSections}/>
         </Card>
     );
 }
