@@ -28,17 +28,13 @@ function GenerateSchedulesPage({ favList, setFavList }) {
     const [pagePills, setPagePills] = useState([]);
     const [scheduleCards, setScheduleCards] = useState([]);
 
+    // updates schedule cards to display
     const updateScheduleCards = (start, end) => {
-        // TODO: post-generation setup; update scheduleCards
-        console.log(start);
-        console.log(end);
         const cards = [];
         for (var index = start; index <= end; index++) {
-            console.log(start, schedules.length);
             // stop loop if index goes out of bounds
             if (index >= schedules.length)
                 break;
-            console.log("creating card");
             // create card
             cards.push(
                 <GenerateScheduleCard
@@ -112,23 +108,8 @@ function GenerateSchedulesPage({ favList, setFavList }) {
                     updateScheduleCards={updateScheduleCards}
                 />
             );
-
             // set first page
-            // (repeat of updateScheduleCards, but state hasn't been updated so this is a temp solution)
-            const cards = [];
-            for (var index = 0; index < schedulesPerPage; index++) {
-                if (index >= generatedSchedules.length)
-                    break;
-                cards.push(
-                    <GenerateScheduleCard
-                        key={index+1}
-                        id={index+1}
-                        classList={generatedSchedules[index]}
-                        scheduleNumber={index+1}
-                    />
-                );
-            }
-            setScheduleCards(cards);
+            updateScheduleCards(0, schedulesPerPage - 1);
         }
     }
 
