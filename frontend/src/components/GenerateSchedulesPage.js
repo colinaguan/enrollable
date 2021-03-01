@@ -121,10 +121,9 @@ function GenerateSchedulesPage({ favList, setFavList }) {
     // for constraints: remove constraint when constraint is clicked
     const removeConstraint = (days, start, end) => {
         // remove given constraint
-        console.log("removeConstraint");
-        console.log(avoidTimes);
-        const newAvoidTimes = avoidTimes.filter(constraint => {
-            const sameDay = constraint.days === days;
+        var newAvoidTimes = avoidTimes.slice(0)
+        newAvoidTimes = newAvoidTimes.filter(constraint => {
+            const sameDay = constraint.days[0] === days[0];
             const sameStart = constraint.start === start;
             const sameEnd = constraint.end === end;
             return !(sameDay && sameStart && sameEnd);
@@ -149,12 +148,30 @@ function GenerateSchedulesPage({ favList, setFavList }) {
 
     // for filters: adds a time constraint label and avoid time object
     const addConstraint = (day, start, end) => {
-        if (end < start) {
+        if (start === '' || end === '') {
+            setFilterError(true);
+            setFilterErrMessage('Empty start or end time');
+            return;
+        }
+        else if (end < start) {
             setFilterError(true);
             setFilterErrMessage('The end time for an avoided time should be after the start time.');
             return;
         }
         else {
+            // check if constraint is a duplicate
+            const duplicateCheck = avoidTimes.filter(constraint => {
+                const sameDay = constraint.days[0] === day;
+                const sameStart = constraint.start === start;
+                const sameEnd = constraint.end === end;
+                return sameDay && sameStart && sameEnd;
+            });
+            if (duplicateCheck.length > 0) {
+                setFilterError(true);
+                setFilterErrMessage('Duplicate time to avoid.');
+                return;
+            }
+            // no errors
             setFilterError(false);
             // create new avoid time object
             var avoidTime = {};
@@ -162,7 +179,7 @@ function GenerateSchedulesPage({ favList, setFavList }) {
             avoidTime.start = start;
             avoidTime.end = end;
             // add avoid time object
-            var newAvoidTimes = avoidTimes.slice();
+            var newAvoidTimes = avoidTimes.slice(0);
             newAvoidTimes.push(avoidTime);
             // set new constraint labels
             var newConstraintLabels = newAvoidTimes.map((constraint, index) => {
