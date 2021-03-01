@@ -205,7 +205,7 @@ function GenerateSchedulesPage({ favList, setFavList }) {
                 {
                     classCards && classCards.length > 0 ?
                     classCards :
-                    <p>No favorites selected, or API is not working</p>
+                    <i>No favorites selected; please go to the Class Search page to favorite classes.</i>
                 }
             </Row>
             <Row>

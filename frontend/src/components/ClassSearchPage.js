@@ -94,6 +94,9 @@ function ClassSearchPage({ favList, setFavList }) {
             <Row className='page-header'>
                 <h1>Class Search</h1>
             </Row>
+            <Row>
+                <i>class data provided by the SlugSurvival API</i>
+            </Row>
             <Row className="sticky-top filter-row">
                 <ClassSearchFilters
                     dep={dep}
