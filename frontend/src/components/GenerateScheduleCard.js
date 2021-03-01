@@ -1,5 +1,5 @@
-import React, { useState, useEffect, handleClick, Button, Menu, handleClose, MenuItem } from 'react';
-import { Card, Row, Col} from 'react-bootstrap';
+import React, { useState } from 'react';
+import { Card, Row, Col, Button } from 'react-bootstrap';
 import { shortenDays, timeToString } from '../utils/format';
 import GenerateScheduleModal from './GenerateScheduleModal';
 import '../style/GenerateScheduleCard.css';
@@ -11,51 +11,52 @@ function GenerateScheduleCard({ classList, scheduleNumber}) {
 
     const handleShow = () => setShow(true);
 
-    return (
-        //All of this formatting needs work
-        <Col xs={12}>
-        <Card classname="class-card">
-            <Card.Body classname='class-card-body'>
+    const scheduleInfo = classList.map(thisClass => {
+        console.log(thisClass)
+        return (
+            <Col>
                 <Row>
-                    <Col>
-                <Card.Title>
-                    <b>{title}</b>
-                </Card.Title>
-                <Card.Text>
-                    {
-                    classList.map(thisClass => {
-                        return (
-                            <Col>
-                            <Row>
-                            {thisClass.title + ' ' + thisClass.dayTime} 
-                            </Row>
-                            {console.log(thisClass.sections)}
-                            {thisClass.sections.map(thisSection => {
-                                return (
-                                    <Row>
-                                        <Col offset={1}>
-                                    {thisClass.title + '-' + thisSection.title + ' ' + thisSection.dayTime}
-                                        </Col>
-                                    </Row>
-                                )
-                            })}
+                    <p className='schedule-class-title'>
+                        <b>{thisClass.title}</b> {thisClass.dayTime}
+                    </p>
+                </Row>
+                {thisClass.sections.map(thisSection => {
+                    return (
+                        <Row>
+                            <Col offset={1} sm={2} className='schedule-section-title'>
+                                {thisClass.title + '-' + thisSection.title}
                             </Col>
-                        )
-                    })
-                    }
+                            <Col>
+                                {thisSection.dayTime}
+                            </Col>
+                        </Row>
+                    )
+                })}
+            </Col>
+        )
+    })
+
+    return (
+        <Card className="schedule-card">
+            <Card.Body className='schedule-card-body'>
+                <Card.Title>
+                    <h2>{title}</h2>
+                </Card.Title>
+                <Card.Text className="schedule-card-text">
+                    {scheduleInfo}
                 </Card.Text>
                 <Card.Link onClick={handleShow}>
-                    View Schedule
+                    <Button variant='purple' className='view-schedule'>View Schedule</Button>
                 </Card.Link>
-                    </Col>
-                </Row>
             </Card.Body>
-            <Col textAlign="center">
-            <GenerateScheduleModal classList={classList} scheduleTitle={"Schedule " + scheduleNumber} 
-                show={show} setShow={setShow} setCardTitle={setTitle}/>
-            </Col>
+            <GenerateScheduleModal
+                classList={classList}
+                scheduleTitle={"Schedule " + scheduleNumber} 
+                show={show}
+                setShow={setShow}
+                setCardTitle={setTitle}
+            />
         </Card>
-        </Col>
     );
 }
 
