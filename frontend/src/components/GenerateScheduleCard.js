@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Card, Row, Col, Button } from 'react-bootstrap';
-import { shortenDays, timeToString } from '../utils/format';
+// import { shortenDays, timeToString } from '../utils/format';
 import GenerateScheduleModal from './GenerateScheduleModal';
 import '../style/GenerateScheduleCard.css';
 
@@ -12,7 +12,6 @@ function GenerateScheduleCard({ classList, scheduleNumber}) {
     const handleShow = () => setShow(true);
 
     const scheduleInfo = classList.map(thisClass => {
-        console.log(thisClass)
         return (
             <Col>
                 <Row>

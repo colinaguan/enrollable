@@ -5,6 +5,9 @@
   border: none !important;
   box-shadow: 0 15px 35px rgba(50,50,93,.1), 0 5px 15px rgba(0,0,0,.07);
 }
+div.schedule-card-body {
+  padding: 2rem;
+}
 
 .schedule-class-title {
   margin-top: .5rem;
@@ -16,7 +19,7 @@
 }
 
 .schedule-card-text {
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
 }
 
 button.view-schedule {
