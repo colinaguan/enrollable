@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Button } from 'react-bootstrap';
+import { Container, Row, Button, Alert } from 'react-bootstrap';
 import GenerateClassCard from './GenerateClassCard';
 import GenerateScheduleCard from './GenerateScheduleCard';
 import GenerateFilters from './GenerateFilters';
@@ -23,6 +23,7 @@ function GenerateSchedulesPage({ favList, setFavList }) {
     // schedules to display
     const schedulesPerPage = 1;
     const [generated, setGenerated] = useState(false);
+    const [generatedError, setGenErr] = useState('');
     // replaced state with variable since this variable needs to be updated quickly
     var schedules = [];
     const [pagePills, setPagePills] = useState([]);
@@ -55,61 +56,58 @@ function GenerateSchedulesPage({ favList, setFavList }) {
         }
         else {
             setGenerated(true);
-            console.log(selectedClasses);
+            // console.log(selectedClasses);
             var generateRequest = {};
-            generateRequest.minUnits = minUnits;
-            generateRequest.maxUnits = maxUnits;
+            generateRequest.minUnits = parseInt(minUnits, 10);
+            generateRequest.maxUnits = parseInt(maxUnits, 10);
             generateRequest.avoidTimes = avoidTimes;
             generateRequest.classes = selectedClasses;
+            console.log(generateRequest);
             // TODO: implement API generate route
-            // fetch('generate', {
-            //     method: 'GET',
-            //     body: generateRequest
-            // })
-            // .then(res => res.json())
-            // .then(schedules => {
-            //     console.log(schedules);
-            // });
-            // TODO: will be moved to .then statement and modified when API call is fixed
+            fetch('generate', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(generateRequest)
+            })
+            .then(res => res.json())
+            .then(response => {
+                console.log(response);
+                // no possible schedules
+                // NOTE: API currently only returns the successful attribute when it fails
+                if (response.successful || response.successful === false) {
+                    console.log("unsuccessful");
+                    setGenErr('No possible schedules can be made with given constraints.')
+                }
+                // display schedules
+                // NOTE: API currently only returns array of schedules when generation is successful
+                else {
+                    // reset error message
+                    setGenErr('');
 
-            //Output Result from API generate route
-            //Currently outputs all selected classes to test schedules card
-            /*
-            var cards = selectedClasses.map(classObject => {
-                return (
-                    <GenerateScheduleCard
-                        key={classObject.num}
-                        id={classObject.num}
-                        classNum={classObject.num}
-                    />
-                );
+                    // store new schedules
+                    const generatedSchedules = response;
+                    schedules = generatedSchedules;
+
+                    const remainder = generatedSchedules.length % schedulesPerPage;
+                    const numPills = remainder > 0 ?
+                        generatedSchedules.length / schedulesPerPage + 1 :
+                        generatedSchedules.length / schedulesPerPage;
+                    
+                    setPagePills(
+                        <GeneratePagePills
+                            numPages={numPills}
+                            schedulesPerPage={schedulesPerPage}
+                            defaultPill={1}
+                            updateScheduleCards={updateScheduleCards}
+                        />
+                    );
+                    // set first page
+                    updateScheduleCards(0, schedulesPerPage - 1);
+                }
             });
-            */
-
-            //Current list of generated schedules is 
-            //a single schedule containing all selected classes
-            //repeated twice to show multiple schedules
-            //until schedule generation is complete
-            var generatedSchedules = [];
-            generatedSchedules[0] = selectedClasses;
-            generatedSchedules[1] = selectedClasses;
-            schedules = generatedSchedules;
-
-            const remainder = generatedSchedules.length % schedulesPerPage;
-            const numPills = remainder > 0 ?
-                generatedSchedules.length / schedulesPerPage + 1 :
-                generatedSchedules.length / schedulesPerPage;
-            
-            setPagePills(
-                <GeneratePagePills
-                    numPages={numPills}
-                    schedulesPerPage={schedulesPerPage}
-                    defaultPill={1}
-                    updateScheduleCards={updateScheduleCards}
-                />
-            );
-            // set first page
-            updateScheduleCards(0, schedulesPerPage - 1);
         }
     }
 
@@ -266,6 +264,12 @@ function GenerateSchedulesPage({ favList, setFavList }) {
                 generated &&
                 <Row>
                     <p>Choose which schedules to save</p>
+                </Row>
+            }
+            {
+                generated && generatedError !== '' &&
+                <Row>
+                    <Alert variant="danger">{generatedError}</Alert>
                 </Row>
             }
             {pagePills}

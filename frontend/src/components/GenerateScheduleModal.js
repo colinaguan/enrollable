@@ -116,12 +116,12 @@ function GenerateScheduleModal({ classList, scheduleTitle, show, setShow, setCar
                             </Card.Title>
                             <Card.Body>
                                 <Form>
-                                    <Form.Group as={Row} controlId="formTitle">
+                                    <Form.Group as={Row} controlId="schedTitle">
                                         <Form.Label>Title</Form.Label>
                                         <Form.Control type="text" value={title} onChange={handleTitle}>
                                         </Form.Control>
                                     </Form.Group>
-                                    <Form.Group as={Row} controlId="formTitle">
+                                    <Form.Group as={Row} controlId="schedDesc">
                                         <Form.Label>Description</Form.Label>
                                         <Form.Control as="textarea" value={description} onChange={handleDescription}>
                                         </Form.Control>
