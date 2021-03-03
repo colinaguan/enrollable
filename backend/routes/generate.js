@@ -9,121 +9,11 @@ var conflictPairs = [];
 router.post('/', function(req, res) {
     conflictPairs = [];
     var generateRequest = req.body;
-    //console.log(generateRequest);
+    // console.log(JSON.parse(generateRequest));
     var generateResult = generateSchedules(generateRequest);
     // console.log(generateResult);
     res.send(generateResult);
 });
-
-function unitConstraint(possibleSchedules, minUnits, maxUnits){
-    // for (var schedule of possibleSchedules) {
-    for (var i=0; i<possibleSchedules.length; i++) {
-        schedule = possibleSchedules[i]
-        unitSum = 0;
-        // conflict : variable indicates whether class is conflict with time constraints
-        conflict = false;
-        for (var classData of schedule) {
-            unitSum += classData.unit;
-        } 
-        // check unit restriction
-        // console.log("unitSum", unitSum)
-        // console.log("before possibleSchedules", possibleSchedules)
-        if (unitSum < minUnits || unitSum > maxUnits) {	
-            // possibleSchedules.remove(schedule);
-            index = possibleSchedules.indexOf(schedule);
-            if (index > -1) {
-                possibleSchedules.splice(index, 1);
-                // consider one item has been removed
-                i-=1;
-            }
-            // console.log("after possibleSchedules", possibleSchedules)
-            continue;
-        }  
-    }
-    return possibleSchedules
-}
-
-// function to check avoidTime constraint
-function avoidTimesConstraint(possibleSchedules, avoidTimes){
-    for (var i=0; i<possibleSchedules.length; i++) {
-        schedule = possibleSchedules[i];
-
-        for (var classData of schedule) {
-            // console.log("classData iteration to detect conflict with avoid times")
-            // check conflict with avoid time list
-            // if conflict remove schedule from possibleSchedules
-            if (conflictAvoidTime(avoidTimes, classData)) {
-                // console.log("removed schedule")
-                index = possibleSchedules.indexOf(schedule);
-                if (index > -1) {
-                    // console.log(possibleSchedules[index])
-                    possibleSchedules.splice(index, 1);
-                    i-=1;
-                }    
-                break;
-            }
-        } 
-    }
-    return possibleSchedules
-}
-
-function sectionConstraint(possibleSchedules, avoidTimes){
-    result = [];
-    for (var i=0; i<possibleSchedules.length; i++) {
-        schedule = possibleSchedules[i];
-
-        for (var classData of schedule) {
-            classCopy = classData;
-            if (classData.sections) {
-                for (var section of classData.sections) {
-                    // remove from class.sections array if conflict with schedule
-                    // or avoid time list
-                    if (checkTimeConflict(schedule, section) || conflictAvoidTime(avoidTimes, section)) {
-                        classCopy.sections.splice(classData.sections.indexOf(section), 1);
-                    }
-                }
-            }
-            // console.log(classCopy);
-            // store the new class information
-            schedule[schedule.indexOf(classData)] = classCopy;
-        } 
-        result.push(schedule)
-    }
-    return result
-}
-
-function priorityReorder(possibleSchedules) {
-    priorityScores = [];
-    reorderedList = [];
-    // get priorityScores for each schedule
-    for (var i=0; i<possibleSchedules.length; i++) {
-        schedule = possibleSchedules[i];
-        score = 0;
-        for (var classData of schedule) {
-            score += classData.priority;
-        }
-        priorityScores.push(score);
-    }
-    // console.log("priority score:", priorityScores);
-
-    // priority reorder based on priority score
-    // the schedule with minimum score means higher priority
-    // will be reordered and displayed in the front of the list
-    priorityScoresCopy = [...priorityScores];
-    while (priorityScoresCopy && priorityScoresCopy.length) {
-        min = Infinity;
-        for (var score of priorityScoresCopy) {
-            if (score < min) {
-                min = score;
-            }
-        }
-        priorityScoresCopy.splice(priorityScoresCopy.indexOf(min), 1);
-        reorderedList.push(possibleSchedules[priorityScores.indexOf(min)]);
-    }
-
-    return reorderedList
-}
-
 
 function generateSchedules(requestObject) {
     result = {};
@@ -137,10 +27,11 @@ function generateSchedules(requestObject) {
         return result;
     }
 
-    // check unit constraint
     minUnits = requestObject.minUnits
     maxUnits = requestObject.maxUnits
     avoidTimes = requestObject.avoidTimes
+
+    // check unit constraint
     possibleSchedules = unitConstraint(possibleSchedules, minUnits, maxUnits);
     if (possibleSchedules.length === 0) {
         // console.log("no schedule satisfy unit constraints")
@@ -150,6 +41,7 @@ function generateSchedules(requestObject) {
     }
     
     // check time constraint
+    // console.log(avoidTimes)
     possibleSchedules = avoidTimesConstraint(possibleSchedules, avoidTimes);
     if (possibleSchedules.length === 0) {
         // console.log("no schedule satisfy avoid constraints")
@@ -212,6 +104,118 @@ function getNoConflictSchedules(classesList) {
     return possibleSchedules;
 }
 
+function unitConstraint(possibleSchedules, minUnits, maxUnits){
+    // for (var schedule of possibleSchedules) {
+    for (var i=0; i<possibleSchedules.length; i++) {
+        schedule = possibleSchedules[i]
+        unitSum = 0;
+        // conflict : variable indicates whether class is conflict with time constraints
+        conflict = false;
+        for (var classData of schedule) {
+            unitSum += classData.unit;
+        } 
+        // check unit restriction
+        // console.log("unitSum", unitSum)
+        // console.log("before possibleSchedules", possibleSchedules)
+        if (unitSum < minUnits || unitSum > maxUnits) {	
+            // possibleSchedules.remove(schedule);
+            index = possibleSchedules.indexOf(schedule);
+            if (index > -1) {
+                possibleSchedules.splice(index, 1);
+                // consider one item has been removed
+                i-=1;
+            }
+            // console.log("after possibleSchedules", possibleSchedules)
+            continue;
+        }  
+    }
+
+    return possibleSchedules
+}
+
+// function to check avoidTime constraint
+function avoidTimesConstraint(possibleSchedules, avoidTimes){
+    for (var i=0; i<possibleSchedules.length; i++) {
+        schedule = possibleSchedules[i];
+
+        for (var classData of schedule) {
+            // console.log("classData iteration to detect conflict with avoid times")
+            // check conflict with avoid time list
+            // if conflict remove schedule from possibleSchedules
+            if (conflictAvoidTime(avoidTimes, classData)) {
+                // console.log("removed schedule")
+                index = possibleSchedules.indexOf(schedule);
+                if (index > -1) {
+                    // console.log(possibleSchedules[index])
+                    possibleSchedules.splice(index, 1);
+                    i-=1;
+                }    
+                break;
+            }
+        } 
+    }
+
+    return possibleSchedules
+}
+
+function sectionConstraint(possibleSchedules, avoidTimes){
+    newPossibleSchedules = [];
+    for (var i=0; i<possibleSchedules.length; i++) {
+        schedule = possibleSchedules[i];
+
+        for (var classData of schedule) {
+            classCopy = classData;
+            if (classData.sections) {
+                for (var section of classData.sections) {
+                    // remove from class.sections array if conflict with schedule
+                    // or avoid time list
+                    if (checkTimeConflict(schedule, section) || conflictAvoidTime(avoidTimes, section)) {
+                        classCopy.sections.splice(classData.sections.indexOf(section), 1);
+                    }
+                }
+            }
+            // console.log(classCopy);
+            // store the new class information
+            schedule[schedule.indexOf(classData)] = classCopy;
+        } 
+        newPossibleSchedules.push(schedule)
+    }
+
+    return newPossibleSchedules
+}
+
+function priorityReorder(possibleSchedules) {
+    priorityScores = [];
+    reorderedList = [];
+    // get priorityScores for each schedule
+    for (var i=0; i<possibleSchedules.length; i++) {
+        schedule = possibleSchedules[i];
+        score = 0;
+        for (var classData of schedule) {
+            score += classData.priority;
+        }
+        priorityScores.push(score);
+    }
+    // console.log("priority score:", priorityScores);
+
+    // priority reorder based on priority score
+    // the schedule with minimum score means higher priority
+    // will be reordered and displayed in the front of the list
+    priorityScoresCopy = [...priorityScores];
+    while (priorityScoresCopy && priorityScoresCopy.length) {
+        min = Infinity;
+        for (var score of priorityScoresCopy) {
+            if (score < min) {
+                min = score;
+            }
+        }
+        priorityScoresCopy.splice(priorityScoresCopy.indexOf(min), 1);
+        reorderedList.push(possibleSchedules[priorityScores.indexOf(min)]);
+    }
+
+    return reorderedList
+}
+
 function successor(schedule, classesList) {
     index = schedule.length-1;
     lastCourse = schedule[index];
@@ -227,8 +231,8 @@ function successor(schedule, classesList) {
     }
     // console.log("successors");
     // console.log(successors);
-	return successors;
 
+	return successors;
 }
 
 function checkTimeConflict(schedule, newClass) {
@@ -259,6 +263,7 @@ function checkTimeConflict(schedule, newClass) {
             }
         }
     }
+
     return false;
 }
 
@@ -284,6 +289,7 @@ function intersect(arrA, arrB) {
     // console.log("arrA", arrA)
     // console.log("arrB", arrB)
     let intersection = arrA.filter(x => arrB.includes(x));
+    
     return intersection
 }
 

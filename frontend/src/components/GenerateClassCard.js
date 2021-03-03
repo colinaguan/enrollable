@@ -29,17 +29,31 @@ function GenerateClassCard({ classNum, favList, setFavList, handleSelectedClasse
             console.log(data)
             var classObj = {};
             classObj.num = data['num'];
+            classObj.title = data['dep'].toUpperCase() + ' ' + data['code'];
             classObj.unit = data['credits'];
             classObj.days = data['day'];
             classObj.start = data['start'];
             classObj.end = data['end'];
+            var days = shortenDays(classObj.days);
+            var start = timeToString(classObj.start);
+            var end = timeToString(classObj.end);
+            classObj.dayTime = (days && start && end) ?
+            days + ' ' + start + ' - ' + end :
+            '';
             classObj.priority = priority;
             var sections = data['sections'].map(section => {
                 var sectionObj = {};
                 sectionObj.num = parseInt(section['num'], 10);
+                sectionObj.title = section['secName'];
                 sectionObj.days = section['day'];
                 sectionObj.start = section['start'];
                 sectionObj.end = section['end'];
+                var sDays = shortenDays(sectionObj.days);
+                var sStart = timeToString(sectionObj.start);
+                var sEnd = timeToString(sectionObj.end);
+                sectionObj.dayTime = (sDays && sStart && sEnd) ?
+                    sDays + ' ' + sStart + ' - ' + sEnd :
+                    '';
                 return sectionObj;
             });
             classObj.sections = sections;

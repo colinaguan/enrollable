@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Button } from 'react-bootstrap';
+import { Container, Row, Button, Alert } from 'react-bootstrap';
 import GenerateClassCard from './GenerateClassCard';
+import GenerateScheduleCard from './GenerateScheduleCard';
 import GenerateFilters from './GenerateFilters';
 import GenerateAvoidTimeLabel from './GenerateAvoidTimeLabel';
 import GeneratePagePills from './GeneratePagePills';
@@ -20,14 +21,32 @@ function GenerateSchedulesPage({ favList, setFavList }) {
     const [selectedClasses, setSelectedClasses] = useState([]);
 
     // schedules to display
-    const [schedules, setSchedules] = useState([]);
+    const schedulesPerPage = 1;
+    const [generated, setGenerated] = useState(false);
+    const [generatedError, setGenErr] = useState('');
+    // replaced state with variable since this variable needs to be updated quickly
+    var schedules = [];
     const [pagePills, setPagePills] = useState([]);
     const [scheduleCards, setScheduleCards] = useState([]);
 
-    const onPillClick = (start, end) => {
-        // TODO: post-generation setup; update scheduleCards
-        console.log(start);
-        console.log(end);
+    // updates schedule cards to display
+    const updateScheduleCards = (start, end) => {
+        const cards = [];
+        for (var index = start; index <= end; index++) {
+            // stop loop if index goes out of bounds
+            if (index >= schedules.length)
+                break;
+            // create card
+            cards.push(
+                <GenerateScheduleCard
+                    key={index+1}
+                    id={index+1}
+                    classList={schedules[index]}
+                    scheduleNumber={index+1}
+                />
+            );
+        }
+        setScheduleCards(cards);
     }
 
     const handleGenerate = () => {
@@ -36,23 +55,59 @@ function GenerateSchedulesPage({ favList, setFavList }) {
             return;
         }
         else {
-            console.log(selectedClasses);
+            setGenerated(true);
+            // console.log(selectedClasses);
             var generateRequest = {};
-            generateRequest.minUnits = minUnits;
-            generateRequest.maxUnits = maxUnits;
+            generateRequest.minUnits = parseInt(minUnits, 10);
+            generateRequest.maxUnits = parseInt(maxUnits, 10);
             generateRequest.avoidTimes = avoidTimes;
             generateRequest.classes = selectedClasses;
+            console.log(generateRequest);
             // TODO: implement API generate route
-            // fetch('generate', {
-            //     method: 'GET',
-            //     body: generateRequest
-            // })
-            // .then(res => res.json())
-            // .then(schedules => {
-            //     console.log(schedules);
-            // });
-            // TODO: will be moved to .then statement and modified when API call is fixed
-            setPagePills(<GeneratePagePills numPages={4} onPillClick={onPillClick}/>);
+            fetch('generate', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(generateRequest)
+            })
+            .then(res => res.json())
+            .then(response => {
+                console.log(response);
+                // no possible schedules
+                // NOTE: API currently only returns the successful attribute when it fails
+                if (!response.successful) {
+                    console.log("unsuccessful");
+                    setGenErr('No possible schedules can be made with given constraints.')
+                }
+                // display schedules
+                // NOTE: API currently only returns array of schedules when generation is successful
+                else {
+                    // reset error message
+                    setGenErr('');
+
+                    // store new schedules
+                    const generatedSchedules = response.schedules;
+                    schedules = generatedSchedules;
+
+                    const remainder = generatedSchedules.length % schedulesPerPage;
+                    const numPills = remainder > 0 ?
+                        generatedSchedules.length / schedulesPerPage + 1 :
+                        generatedSchedules.length / schedulesPerPage;
+                    
+                    setPagePills(
+                        <GeneratePagePills
+                            numPages={numPills}
+                            schedulesPerPage={schedulesPerPage}
+                            defaultPill={1}
+                            updateScheduleCards={updateScheduleCards}
+                        />
+                    );
+                    // set first page
+                    updateScheduleCards(0, schedulesPerPage - 1);
+                }
+            });
         }
     }
 
@@ -182,11 +237,16 @@ function GenerateSchedulesPage({ favList, setFavList }) {
             <Row className='constraint-row'>
                 {constraintLabels}
             </Row>
+            <Row className='select-classes-text'>
+                <h3>Please select classes to consider in generation</h3>
+            </Row>
             <Row>
                 {
                     classCards && classCards.length > 0 ?
                     classCards :
-                    <p>No favorites selected, or API is not working</p>
+                    <i className="placeholder-favorites">
+                        No favorites selected; go to the Class Search page to favorite classes
+                    </i>
                 }
             </Row>
             <Row>
@@ -194,6 +254,24 @@ function GenerateSchedulesPage({ favList, setFavList }) {
                     Generate
                 </Button>
             </Row>
+            {
+                generated &&
+                <Row>
+                    <h1>Results</h1>
+                </Row>
+            }
+            {
+                generated &&
+                <Row>
+                    <p>Choose which schedules to save</p>
+                </Row>
+            }
+            {
+                generated && generatedError !== '' &&
+                <Row>
+                    <Alert variant="danger">{generatedError}</Alert>
+                </Row>
+            }
             {pagePills}
             <Row>
                 {scheduleCards}

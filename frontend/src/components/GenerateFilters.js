@@ -28,7 +28,7 @@ function GenerateFilters({
     }
 
     return (
-        <Form className='filter-form' onSubmit={onSubmit}>
+        <Form className='generate-filter-form' onSubmit={onSubmit}>
             <Form.Row>
                 <Form.Group as={Col} sm={6} controlId="formMinUnit">
                     <Form.Label>Minimum Units</Form.Label>
