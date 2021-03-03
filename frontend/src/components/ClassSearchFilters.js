@@ -30,7 +30,7 @@ function ClassSearchFilters({
     });
     
     return (
-        <Form className='filter-form' onSubmit={handleFilters}>
+        <Form className='search-filter-form' onSubmit={handleFilters}>
             <Form.Row>
                 <Form.Group as={Col} sm={3} controlId="formDepartment">
                     <Form.Label>Department</Form.Label>
