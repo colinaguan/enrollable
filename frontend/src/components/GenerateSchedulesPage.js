@@ -77,7 +77,7 @@ function GenerateSchedulesPage({ favList, setFavList }) {
                 console.log(response);
                 // no possible schedules
                 // NOTE: API currently only returns the successful attribute when it fails
-                if (response.successful || response.successful === false) {
+                if (!response.successful) {
                     console.log("unsuccessful");
                     setGenErr('No possible schedules can be made with given constraints.')
                 }
@@ -88,7 +88,7 @@ function GenerateSchedulesPage({ favList, setFavList }) {
                     setGenErr('');
 
                     // store new schedules
-                    const generatedSchedules = response;
+                    const generatedSchedules = response.schedules;
                     schedules = generatedSchedules;
 
                     const remainder = generatedSchedules.length % schedulesPerPage;

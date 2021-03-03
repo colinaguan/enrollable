@@ -9,7 +9,7 @@ var conflictPairs = [];
 router.post('/', function(req, res) {
     conflictPairs = [];
     var generateRequest = req.body;
-    //console.log(generateRequest);
+    // console.log(JSON.parse(generateRequest));
     var generateResult = generateSchedules(generateRequest);
     // console.log(generateResult);
     res.send(generateResult);
