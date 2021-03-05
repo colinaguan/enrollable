@@ -6,7 +6,7 @@ import { auth, db } from "../firebase";
 function Login({setErrorDisplay, setErrorContent, setFavList}) {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const { login } = useAuth()
+    const { login, favorList } = useAuth()
     const [loading, setLoading] = useState(false)
     const history = useHistory()
 
@@ -17,22 +17,9 @@ function Login({setErrorDisplay, setErrorContent, setFavList}) {
         setLoading(true);
         login(email, password).then(() => {
             history.push("/search");
-            // get favorites list (copied from AuthContext)
-            var docRef = db.collection("users").doc(auth.currentUser.uid);
-            var list = [];
-            docRef.get().then(function(doc) {
-                if (doc.exists) {
-                    console.log("favorites retrieved");
-                    list = doc.data().favorList;
-                    setFavList(list);
-                } else {
-                    console.error("favorites document dne");
-                    setFavList([]);
-                }
-            }).catch(() => {
-                console.error("favorites not found");
-                setFavList([]);
-            });
+            // get favorites list
+            setFavList(favorList);
+            // console.log(favorList);
         })
         .catch(error => {
             setErrorDisplay(true);

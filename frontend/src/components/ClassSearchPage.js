@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Row } from 'react-bootstrap';
+import { useAuth } from "../contexts/AuthContext";
 import ClassSearchCard from './ClassSearchCard';
 import ClassSearchFilters from './ClassSearchFilters';
 import '../style/Pages.css';
 
 function ClassSearchPage({ favList, setFavList }) {
+    // list of favorite classes
+    const { favorList } = useAuth();
 
     // list of departments, ge's, and types
     const [dep, setDep] = useState({});
@@ -45,7 +48,10 @@ function ClassSearchPage({ favList, setFavList }) {
             setType(types)
         })
         .catch((error) => { console.log(error) });
-    }, []);
+
+        // set favList
+        setFavList(favorList);
+    }, [favList, setFavList]);
 
     // updates displayed cards after filters are submitted
     const handleFilters = (e) => {
@@ -58,6 +64,7 @@ function ClassSearchPage({ favList, setFavList }) {
         console.log(fGE);
         console.log(fType);
         console.log(fFav);
+        console.log(favList);
 
         // API filtering
         fetch('department?dep=' + fDep + '&type=' + fType + '&ge=' + fGE)

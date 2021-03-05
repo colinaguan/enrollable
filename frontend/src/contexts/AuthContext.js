@@ -13,6 +13,7 @@ export function useAuth() {
 export function AuthProvider({ children }) {
     const [currentUser, setCurrentUser] = useState()
     const [loading, setLoading] = useState(true)
+    const [favorList, setFavorList] = useState([])
 
     // signup function takes in an email and password
     function signup(email, password){
@@ -75,22 +76,9 @@ export function AuthProvider({ children }) {
     }
 
     // return a list of user favourite class
+    // no longer in use
     function getFavorList() {
-        var docRef = db.collection("users").doc(auth.currentUser.uid);
-        var list = [];
-
-        docRef.get().then(function(doc) {
-            if (doc.exists) {
-                list = doc.data().favorList;
-                console.log("Document data:", list);
-            } else {
-                console.log("No such document!");
-            }
-        }).catch(function(error) {
-            console.log("Error getting document:", error);
-        });
-
-        return list;
+        return favorList;
     }
 
     // set up firestore for new user
@@ -106,22 +94,41 @@ export function AuthProvider({ children }) {
     }
     
     // return true if there's a current user, else false
+    // for testing only
     function hasUser() {
         return (auth.currentUser ? true : false)
     }
 
-    // track if there's a user
+    // track if there's a user change
+    // store the user's favorList information
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(user => {
             setCurrentUser(user)
             setLoading(false)
         })
 
+        if (hasUser()) {
+            const fetch = async () => {
+                var docRef = db.collection("users").doc(auth.currentUser.uid);
+                await docRef.get().then(function(doc) {
+                    if (doc.exists) {
+                        setFavorList(doc.data().favorList);
+                    } else {
+                        console.log("No such document!");
+                    }
+                }).catch(function(error) {
+                    console.log("Error getting document:", error);
+                });            
+            }
+            fetch();
+        }
+
         return unsubscribe
-    }, [])
+    }, [favorList])
 
     const value = {
         currentUser,
+        favorList,
         login,
         signup,
         logout,
