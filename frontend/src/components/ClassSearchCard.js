@@ -3,7 +3,7 @@ import { Card, Row, Col } from 'react-bootstrap';
 import { StarFill, Star } from "react-bootstrap-icons";
 import ClassSearchModal from './ClassSearchModal';
 import { shortenDays, timeToString } from '../utils/format';
-// import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../contexts/AuthContext';
 import '../style/ClassSearchCard.css';
 
 function ClassSearchCard({ classData, isFav, favList, setFavList }) {
@@ -12,8 +12,8 @@ function ClassSearchCard({ classData, isFav, favList, setFavList }) {
     const [show, setShow] = useState(false);
     const handleShow = () => setShow(true);
 
-    // TODO: fix firestore
-    // const { addToFavorList, removeFromFavorList } = useAuth();
+    // updates favList and firestore
+    const { addToFavorList, removeFromFavorList, update } = useAuth();
     const handleFav = () => {
         var newFavList = []
         if (favorite) {
@@ -25,7 +25,9 @@ function ClassSearchCard({ classData, isFav, favList, setFavList }) {
             }
             // set values for hooks and firestore
             setFav(false);
-            // removeFromFavorList(classData['num']);
+            removeFromFavorList(classData['num']).then(() => {
+                update();
+            });
             setFavList(newFavList);
         }
         else {
@@ -34,7 +36,9 @@ function ClassSearchCard({ classData, isFav, favList, setFavList }) {
             newFavList.push(classData['num']);
             // set values for hooks and firestore
             setFav(true);
-            // addToFavorList(classData['num']);
+            addToFavorList(classData['num']).then(() => {
+                update();
+            });
             setFavList(newFavList);
         }
     };
