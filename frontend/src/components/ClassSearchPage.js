@@ -7,7 +7,7 @@ import '../style/Pages.css';
 
 function ClassSearchPage({ favList, setFavList }) {
     // list of favorite classes
-    const { favorList } = useAuth();
+    const { getFavorList } = useAuth();
 
     // list of departments, ge's, and types
     const [dep, setDep] = useState({});
@@ -50,8 +50,8 @@ function ClassSearchPage({ favList, setFavList }) {
         .catch((error) => { console.log(error) });
 
         // set favList
-        setFavList(favorList);
-    }, [favList, setFavList]);
+        setFavList(getFavorList());
+    }, []);
 
     // updates displayed cards after filters are submitted
     const handleFilters = (e) => {

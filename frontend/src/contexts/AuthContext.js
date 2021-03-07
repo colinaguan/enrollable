@@ -13,7 +13,9 @@ export function useAuth() {
 export function AuthProvider({ children }) {
     const [currentUser, setCurrentUser] = useState()
     const [loading, setLoading] = useState(true)
+    const [reload, setReload] = useState()
     const [favorList, setFavorList] = useState([])
+    const [savedSchedules, setSavedSchedules] = useState([])
 
     // signup function takes in an email and password
     function signup(email, password){
@@ -57,6 +59,19 @@ export function AuthProvider({ children }) {
         return currentUser.updatePassword(password)
     }
 
+    // set up firestore for new user
+    function firestoreInit(email, firstName, lastName) {
+        return (
+            db.collection('users').doc(auth.currentUser.uid).set({
+                firstName: firstName, 
+                lastName: lastName, 
+                email: email,
+                favorList: [],
+                savedSchedules: []
+            })
+        )
+    }
+
     // store courseID to user favorList on firestore
     function addToFavorList(courseID) {
         return (
@@ -75,28 +90,52 @@ export function AuthProvider({ children }) {
         )
     }
 
-    // return a list of user favourite class
-    // no longer in use
+    // return a list of user favourite classes
     function getFavorList() {
+        update();
+        // console.log(favorList);
         return favorList;
     }
 
-    // set up firestore for new user
-    function firestoreInit(email, firstName, lastName) {
+    // return a list of user saved schedules
+    function getSavedSchedules() {
+        update();
+        // console.log(savedSchedules);
+        return savedSchedules;
+    }
+
+    // store schedule to user savedSchedules on firestore
+    function addToSavedSchedules(schedule) {
         return (
-            db.collection('users').doc(auth.currentUser.uid).set({
-                firstName: firstName, 
-                lastName: lastName, 
-                email: email,
-                favorList: [] 
+            db.collection('users').doc(auth.currentUser.uid).update({
+                savedSchedules: firebase.firestore.FieldValue.arrayUnion(schedule)
             })
         )
     }
-    
+
+    // remove schedule from user savedSchedules on firestore
+    function removeFromSavedSchedules(schedule) {
+        return (
+            db.collection('users').doc(auth.currentUser.uid).update({
+                savedSchedules: firebase.firestore.FieldValue.arrayRemove(schedule)
+            })
+        )
+    }
+
     // return true if there's a current user, else false
     // for testing only
     function hasUser() {
         return (auth.currentUser ? true : false)
+    }
+
+    // trigger the fetch (useEffect)
+    function update(){
+        if (reload) {
+            setReload(false);
+        }
+        else {
+            setReload(true);
+        }
     }
 
     // track if there's a user change
@@ -107,6 +146,7 @@ export function AuthProvider({ children }) {
             setLoading(false)
         })
 
+        //console.log("something changed");
         if (hasUser()) {
             const fetch = async () => {
                 var docRef = db.collection("users").doc(auth.currentUser.uid);
@@ -123,12 +163,29 @@ export function AuthProvider({ children }) {
             fetch();
         }
 
+        if (hasUser()) {
+            const fetch = async () => {
+                var docRef = db.collection("users").doc(auth.currentUser.uid);
+                await docRef.get().then(function(doc) {
+                    if (doc.exists) {
+                        setSavedSchedules(doc.data().savedSchedules);
+                    } else {
+                        console.log("No such document!");
+                    }
+                }).catch(function(error) {
+                    console.log("Error getting document:", error);
+                });            
+            }
+            fetch();
+        }
+
         return unsubscribe
-    }, [favorList])
+    }, [currentUser, reload])
 
     const value = {
         currentUser,
         favorList,
+        savedSchedules,
         login,
         signup,
         logout,
@@ -139,7 +196,11 @@ export function AuthProvider({ children }) {
         addToFavorList,
         removeFromFavorList,
         getFavorList,
-        hasUser
+        getSavedSchedules,
+        addToSavedSchedules,
+        removeFromSavedSchedules,
+        hasUser,
+        update
     }
 
     return (

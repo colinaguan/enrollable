@@ -109,7 +109,7 @@ function GenerateClassCard({ classNum, favList, setFavList, handleSelectedClasse
     }
 
     // updates favList and firestore
-    const { addToFavorList, removeFromFavorList } = useAuth();
+    const { addToFavorList, removeFromFavorList, update } = useAuth();
     const handleFav = () => {
         var newFavList = []
         if (favorite) {
@@ -121,7 +121,9 @@ function GenerateClassCard({ classNum, favList, setFavList, handleSelectedClasse
             }
             // set values for hooks and firestore
             setFav(false);
-            removeFromFavorList(classData['num']);
+            removeFromFavorList(classData['num']).then(() => {
+                update();
+            });
             setFavList(newFavList);
         }
         else {
@@ -130,7 +132,9 @@ function GenerateClassCard({ classNum, favList, setFavList, handleSelectedClasse
             newFavList.push(classData['num']);
             // set values for hooks and firestore
             setFav(true);
-            addToFavorList(classData['num']);
+            addToFavorList(classData['num']).then(() => {
+                update();
+            });
             setFavList(newFavList);
         }
     };
