@@ -16,7 +16,7 @@
     "classes": [
         {
             "num": int,
-        “unit”: int,
+            “unit”: int,
             “days”: [string],
             "start": string (24-hour format: 00:00),
             "end": string (24-hour format: 00:00),
@@ -24,7 +24,7 @@
             "sections": [
                 {
                     "num": int,
-              “days”: [string],
+                    “days”: [string],
                     "start": string (24-hour format: 00:00),
                     "end": string (24-hour format: 00:00)
                 }
