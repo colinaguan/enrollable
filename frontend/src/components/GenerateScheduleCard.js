@@ -7,9 +7,36 @@ import '../style/GenerateScheduleCard.css';
 function GenerateScheduleCard({ classList, scheduleNumber}) {
 
     const [show, setShow] = useState(false);
-    const [title, setTitle] = useState("Schedule " + scheduleNumber);
+    //const [title, setTitle] = useState("Schedule " + scheduleNumber);
+    const [cardTitle, setTitle] = useState("Schedule " + scheduleNumber);
+    const [cardDescription, setDescription] = useState(description);
+    const [cardClasses, setClasses] = useState(classes);
+    const [scheduleData, setScheduleData] = useState({
+        title: cardTitle,
+        description: cardDescription,
+        classes: cardClasses
+    });
+
+    const {addToSavedSchedule} = useAuth();
+    const {removeFromSavedSchedule} = useAuth();
 
     const handleShow = () => setShow(true);
+
+    const saveSchedule = () => {
+        //remove old schedule
+        removeFromSavedSchedule(scheduleData);
+        setScheduleData({
+            title: cardTitle,
+            description: cardDescription,
+            classes: cardClasses
+        })
+        //add new schedule
+        addToSavedSchedule(scheduleData);
+    }
+
+    const deleteSchedule = () => {
+        removeFromSavedSchedule(scheduleData);
+    }
 
     const scheduleInfo = classList.map((thisClass) => {
         return (
@@ -52,6 +79,8 @@ function GenerateScheduleCard({ classList, scheduleNumber}) {
                 show={show}
                 setShow={setShow}
                 setCardTitle={setTitle}
+                setCardDescription={setDescription}
+                saveSchedule={saveSchedule}
             />
         </Card>
     );

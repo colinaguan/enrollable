@@ -3,27 +3,27 @@ import { Modal, Container, Button, Row, Card, Col, Form, OverlayTrigger, Tooltip
 import { shortenDays, timeToString } from '../utils/format';
 import '../style/GenerateScheduleModal.css';
 
-function GenerateScheduleModal({ classList, scheduleTitle, show, setShow, setCardTitle }) {
+function GenerateScheduleModal({ classList, scheduleTitle, show, setShow, setCardTitle, setCardDescription, saveSchedule }) {
 
-    const [title, setTitle] = useState(scheduleTitle);
-    const [description, setDescription] = useState('');
-    const scheduleData = {};
+    //new versions passed in from GenerateScheduleCard
+    //const [title, setTitle] = useState(scheduleTitle);
+    //const [description, setDescription] = useState('');
+    //const scheduleData = {};
 
     //temporary, needs to be passed from generateScheduleCard
-    const saveSchedule = () => {
+    const handleSave = () => {
         console.log("Save Schedule");
-        scheduleData.title = title;
-        scheduleData.description = description;
+        saveSchedule();
         console.log(scheduleData);
         handleClose();
     }
 
     const handleTitle = (event) => {
-        setTitle(event.target.value);
+        setCardTitle(event.target.value);
     }
 
     const handleDescription = (event) => {
-        setDescription(event.target.value);
+        setCardDescription(event.target.value);
     }
 
     const handleClose = () => {
@@ -142,7 +142,7 @@ function GenerateScheduleModal({ classList, scheduleTitle, show, setShow, setCar
                         </Tooltip>
                     }
                 >
-                    <Button onClick={saveSchedule} variant="purple">
+                    <Button onClick={handleSave} variant="purple">
                         Save
                     </Button>
                 </OverlayTrigger>

@@ -8,8 +8,34 @@ import '../style/SavedScheduleCard.css';
 function SavedScheduleCard({ title, description, classes}) {
     const [show, setShow] = useState(false);
     const [cardTitle, setTitle] = useState(title);
+    const [cardDescription, setDescription] = useState(description);
+    const [cardClasses, setClasses] = useState(classes);
+    const [scheduleData, setScheduleData] = useState({
+        title: cardTitle,
+        description: cardDescription,
+        classes: cardClasses
+    });
+
+    const {addToSavedSchedule} = useAuth();
+    const {removeFromSavedSchedule} = useAuth();
 
     const handleShow = () => setShow(true);
+
+    const saveSchedule = () => {
+        //remove old schedule
+        removeFromSavedSchedule(scheduleData);
+        setScheduleData({
+            title: cardTitle,
+            description: cardDescription,
+            classes: cardClasses
+        });
+        //add new schedule
+        addToSavedSchedule(scheduleData);
+    }
+
+    const deleteSchedule = () => {
+        removeFromSavedSchedule(scheduleData);
+    }
 
     const scheduleInfo = classes.map((thisClass) => {
         return (
@@ -54,6 +80,9 @@ function SavedScheduleCard({ title, description, classes}) {
                 show={show}
                 setShow={setShow}
                 setCardTitle={setTitle}
+                setCardDescription={setDescription}
+                saveSchedule={saveSchedule}
+                deleteSchedule={deleteSchedule}
                 
             />
         </Card>

@@ -3,7 +3,7 @@ import { Modal, Container, Button, Row, Card, Col, Form, OverlayTrigger, Tooltip
 import { shortenDays, timeToString } from '../utils/format';
 import '../style/GenerateScheduleModal.css';
 
-function SavedScheduleModal({  title, description, modalClasses, show, setShow, setCardTitle }) {
+function SavedScheduleModal({  title, description, modalClasses, show, setShow, setCardTitle, setCardDescpription, saveSchedule, deleteSchedule }) {
     // classList: classes in schedule
     const [modalTitle, setTitle] = useState(title);
     const [modalDescription, setDescription] = useState(description);
@@ -12,20 +12,26 @@ function SavedScheduleModal({  title, description, modalClasses, show, setShow, 
     
     const handleTitle = (event) => {
         setTitle(event.target.value);
+        setCardTitle(event.target.value);
     }
 
     const handleDescription = (event) => {
         setDescription(event.target.value);
+        setCardDescprition(event.target.value);
     }
+    
+    
     //update in firestore
-    const saveSchedule = () => {
+    const handleSave = () => {
         
         // console.log("Save Schedule");
         // scheduleData.title = title;
         // scheduleData.description = description;
         // console.log(scheduleData);
+        saveSchedule();
         handleClose();
     }
+    
 
     
 
@@ -34,6 +40,7 @@ function SavedScheduleModal({  title, description, modalClasses, show, setShow, 
         setShow(false);
     }
     const handleDelete = () => {
+        deleteSchedule();
         // delete from firestore
         
     }
@@ -156,7 +163,7 @@ function SavedScheduleModal({  title, description, modalClasses, show, setShow, 
                     
                 </OverlayTrigger>
                 
-                <Button onClick={saveSchedule} variant="purple">
+                <Button onClick={handleSave} variant="purple">
                     Save
                 </Button>
             </Modal.Footer>
