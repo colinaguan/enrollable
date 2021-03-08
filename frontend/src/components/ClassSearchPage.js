@@ -9,6 +9,9 @@ function ClassSearchPage({ favList, setFavList }) {
     // list of favorite classes
     const { getFavorList } = useAuth();
 
+    // term
+    const [term, setTerm] = useState('N/A');
+
     // list of departments, ge's, and types
     const [dep, setDep] = useState({});
     const [ge, setGE] = useState([]);
@@ -25,6 +28,14 @@ function ClassSearchPage({ favList, setFavList }) {
 
     // store lists of filters
     useEffect(() => {
+        // get term
+        fetch('/api/course/term')
+        .then(res => res.json())
+        .then(term => {
+            setTerm(term.term);
+        })
+        .catch((error) => { console.log(error) })
+
         // get departments
         fetch('/api/department/details')
         .then(res => res.json())
@@ -57,14 +68,6 @@ function ClassSearchPage({ favList, setFavList }) {
     const handleFilters = (e) => {
         // prevent page from refreshing
         e.preventDefault();
-
-        // for debugging
-        console.log("---------- FILTERS");
-        console.log(fDep);
-        console.log(fGE);
-        console.log(fType);
-        console.log(fFav);
-        console.log(favList);
 
         // API filtering
         fetch('/api/department?dep=' + fDep + '&type=' + fType + '&ge=' + fGE)
@@ -102,7 +105,10 @@ function ClassSearchPage({ favList, setFavList }) {
                 <h1>Class Search</h1>
             </Row>
             <Row>
-                <i>class data provided by the SlugSurvival API</i>
+                <i>Data provided by the SlugSurvival API</i>
+            </Row>
+            <Row>
+                <i>Current Term: {term}</i>
             </Row>
             <Row className="sticky-top filter-row">
                 <ClassSearchFilters
