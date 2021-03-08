@@ -11,7 +11,7 @@ var rmpMap = {};
 const getData=()=>{
     console.log("get data start");
     console.time('Startup Time');
-    fetch('https://andromeda.miragespace.net/slugsurvival/data/fetch/terms/2210')
+    fetch('https://andromeda.miragespace.net/slugsurvival/data/fetch/terms/2212')
     .then(res => res.json()) 
     .then(json => {
         items = json;
@@ -21,7 +21,7 @@ const getData=()=>{
 }
 
 const getData2=()=>{
-  fetch('https://andromeda.miragespace.net/slugsurvival/data/fetch/courses/2210')
+  fetch('https://andromeda.miragespace.net/slugsurvival/data/fetch/courses/2212')
   .then(res => res.json())
   .then(json => {
     items2 = json;

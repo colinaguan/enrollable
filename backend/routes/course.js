@@ -78,7 +78,7 @@ router.get('/', function(req, res) {
 });
 
 router.get('/term', function(req,res) {
-    res.send(2210);
+    res.send("2212");
 })
 
 router.get('/ge', function(req,res) {
