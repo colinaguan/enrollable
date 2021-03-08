@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Card, Row, Col, Button } from 'react-bootstrap';
 // import { shortenDays, timeToString } from '../utils/format';
 import SavedScheduleModal from './SavedScheduleModal';
-import '../style/GenerateScheduleCard.css';
+import '../style/SavedScheduleCard.css';
 
 // function SavedScheduleCard({ classList, scheduleNumber}) {
 function SavedScheduleCard({ title, description, classes}) {
@@ -13,7 +13,8 @@ function SavedScheduleCard({ title, description, classes}) {
 
     const scheduleInfo = classes.map((thisClass) => {
         return (
-            <Col key={thisClass.num}>
+            <Col key={thisClass.num} className='schedule-class'>
+                {/* <Row>-</Row> */}
                 <Row className='schedule-class-title'>
                     <p><b>{thisClass.title}</b> {thisClass.dayTime}</p>
                 </Row>
@@ -28,7 +29,7 @@ function SavedScheduleCard({ title, description, classes}) {
                             </Col>
                         </Row>
                     )
-                })}
+                })}  
             </Col>
         )
     })
@@ -53,7 +54,7 @@ function SavedScheduleCard({ title, description, classes}) {
                 show={show}
                 setShow={setShow}
                 setCardTitle={setTitle}
-                // setDescription={setDescription}
+                
             />
         </Card>
     );

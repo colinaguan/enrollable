@@ -146,20 +146,19 @@ function SavedScheduleModal({  title, description, modalClasses, show, setShow, 
                     placement="top"
                     overlay={
                         <Tooltip>
-                            See all saved schedules on the saved schedules page
+                            delete this schedule
                         </Tooltip>
                     }
                 >
-                    <Button onClick={saveSchedule} variant="purple">
-                        Save
+                    <Button onClick={handleDelete} variant="outline-purple">
+                        Delete
                     </Button>
+                    
                 </OverlayTrigger>
-                <Button onClick={handleDelete} variant="outline-purple">
-                    Delete
+                
+                <Button onClick={saveSchedule} variant="purple">
+                    Save
                 </Button>
-                {/* <Button onClick={handleClose} variant="outline-purple">
-                    Cancel
-                </Button> */}
             </Modal.Footer>
         </Modal>
     );

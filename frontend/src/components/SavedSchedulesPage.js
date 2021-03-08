@@ -32,6 +32,11 @@ function SavedSchedulesPage() {
                             "num": 33456,
                             "title": "1A",
                             "dayTime": "TuTh 1:30PM - 3:05PM"
+                        },
+                        {
+                            "num": 33457,
+                            "title": "1B",
+                            "dayTime": "TuTh 1:30PM - 3:05PM"
                         }
      
                     ]
@@ -39,8 +44,8 @@ function SavedSchedulesPage() {
             ]
         },
         {
-            "title": "backup",
-            "description": "good",
+            "title": "optimal",
+            "description": "perfect",
             "classes": [
                 {
                     "num": 12345, // for key?
