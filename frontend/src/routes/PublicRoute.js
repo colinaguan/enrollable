@@ -11,7 +11,7 @@ export default function PrivateRoute({ component: Component, ...rest }) {
         <Route 
             {...rest}
             render={props => {
-                return currentUser ? <Redirect to="/saved" /> : <Component {...rest} />
+                return currentUser ? <Redirect to="/search" /> : <Component {...rest} />
             }}
         >
         </Route>
