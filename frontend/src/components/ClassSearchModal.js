@@ -144,24 +144,38 @@ function ClassSearchModal({ classData, show, setShow }) {
                                         <Col>
                                             <Row className='row-bottom-pad'>
                                                 <Col className='info-title' sm={4}>Name</Col>
-                                                <Col sm={8}>Patrick Tantalo</Col>
+                                                <Col sm={8}>
+                                                    {
+                                                        classData['instructor'] ?
+                                                        classData['instructor'] :
+                                                        <i>Not specified</i>
+                                                    }
+                                                </Col>
                                             </Row>
                                             <Row className='row-bottom-pad'>
                                                 <Col className='info-title' sm={4}>Easy Rating</Col>
-                                                <Col sm={8}>3/5</Col>
+                                                <Col sm={8}>
+                                                    <i>N/A</i>
+                                                </Col>
                                             </Row>
                                             <Row className='row-bottom-pad'>
                                                 <Col className='info-title' sm={4}>Clarity Rating</Col>
-                                                <Col sm={8}>3/5</Col>
+                                                <Col sm={8}>
+                                                    <i>N/A</i>
+                                                </Col>
                                             </Row>
                                             <Row className='row-bottom-pad'>
                                                 <Col className='info-title' sm={4}>Overall Rating</Col>
-                                                <Col sm={8}>3/5</Col>
+                                                <Col sm={8}>
+                                                    <i>N/A</i>
+                                                </Col>
                                             </Row>
                                         </Col>
                                         <Col>
                                             <Row className='info-title'>Quality Tags</Row>
-                                            <Row>Lorem ipsum dolor sit amet...</Row>
+                                            <Row>
+                                                <i>N/A</i>
+                                            </Row>
                                         </Col>
                                     </Row>
                                 </Container>
