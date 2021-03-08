@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, Row, Col, Form, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { StarFill, Star } from "react-bootstrap-icons";
 import { shortenDays, timeToString } from '../utils/format';
-// import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../contexts/AuthContext';
 import GenerateSectionsModal from './GenerateSectionsModal';
 import '../style/GenerateClassCard.css';
 
@@ -108,8 +108,8 @@ function GenerateClassCard({ classNum, favList, setFavList, handleSelectedClasse
         }
     }
 
-    // TODO: fix firestore
-    // const { addToFavorList, removeFromFavorList } = useAuth();
+    // updates favList and firestore
+    const { addToFavorList, removeFromFavorList, update } = useAuth();
     const handleFav = () => {
         var newFavList = []
         if (favorite) {
@@ -121,7 +121,9 @@ function GenerateClassCard({ classNum, favList, setFavList, handleSelectedClasse
             }
             // set values for hooks and firestore
             setFav(false);
-            // removeFromFavorList(classData['num']);
+            removeFromFavorList(classData['num']).then(() => {
+                update();
+            });
             setFavList(newFavList);
         }
         else {
@@ -130,7 +132,9 @@ function GenerateClassCard({ classNum, favList, setFavList, handleSelectedClasse
             newFavList.push(classData['num']);
             // set values for hooks and firestore
             setFav(true);
-            // addToFavorList(classData['num']);
+            addToFavorList(classData['num']).then(() => {
+                update();
+            });
             setFavList(newFavList);
         }
     };
