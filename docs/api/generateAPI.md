@@ -16,6 +16,8 @@
     "classes": [
         {
             "num": int,
+            "title": string,
+            "dayTime": string,
             “unit”: int,
             “days”: [string],
             "start": string (24-hour format: 00:00),
