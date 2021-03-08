@@ -72,7 +72,7 @@ function SavedSchedulesPage() {
         }
     ]
     
-    const [scheduleCards, setCards] = useState([]);
+    // const [scheduleCards, setCards] = useState([]);
     var cards = savedSchedules.map((schedule, index) => {
         
         return (
@@ -86,9 +86,8 @@ function SavedSchedulesPage() {
         );
     });
     
-    setCards(cards);
-    
-    
+    // setCards(cards);
+
     return (
         <Container>
             <Row className='page-header'>
@@ -96,12 +95,10 @@ function SavedSchedulesPage() {
             </Row>
             <Row>
                 { 
-                    scheduleCards && scheduleCards.length > 0 ? 
-                    scheduleCards :
+                    cards && cards.length > 0 ? 
+                    cards :
                     <p><i>No schedules to display. Go generate some schedules:)</i></p>
-
                 }
-                
             </Row>
         </Container>
     );
