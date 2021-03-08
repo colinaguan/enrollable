@@ -1,6 +1,7 @@
 import React from 'react';
 import { Container, Row } from 'react-bootstrap';
 import SavedScheduleCard from './SavedScheduleCard';
+import  { useState, useEffect } from 'react';
 function SavedSchedulesPage() {
     // {savedSchedules}
     // var schedules = [];
@@ -16,7 +17,7 @@ function SavedSchedulesPage() {
                     "sections": [
                         {
                             "num": 23456,
-                            "title": "CSE 101-A",
+                            "title": "1A",
                             "dayTime": "TuTh 1:30PM - 3:05PM"
                         }
      
@@ -29,7 +30,7 @@ function SavedSchedulesPage() {
                     "sections": [
                         {
                             "num": 33456,
-                            "title": "CSE 102-A",
+                            "title": "1A",
                             "dayTime": "TuTh 1:30PM - 3:05PM"
                         }
      
@@ -48,7 +49,7 @@ function SavedSchedulesPage() {
                     "sections": [
                         {
                             "num": 23456,
-                            "title": "CSE 101-A",
+                            "title": "1A",
                             "dayTime": "TuTh 1:30PM - 3:05PM"
                         }
      
@@ -61,7 +62,7 @@ function SavedSchedulesPage() {
                     "sections": [
                         {
                             "num": 33456,
-                            "title": "CSE 102-A",
+                            "title": "1A",
                             "dayTime": "TuTh 1:30PM - 3:05PM"
                         }
      
@@ -78,9 +79,9 @@ function SavedSchedulesPage() {
           <SavedScheduleCard
             key={index}
             id={index}
-            title={title}
-            description={description}
-            classes={classes}
+            title={schedule.title}
+            description={schedule.description}
+            classes={schedule.classes}
            />
         );
     });
@@ -95,7 +96,7 @@ function SavedSchedulesPage() {
             </Row>
             <Row>
                 { 
-                    scheduleCards && scheduleCards > 0 ? 
+                    scheduleCards && scheduleCards.length > 0 ? 
                     scheduleCards :
                     <p><i>No schedules to display. Go generate some schedules:)</i></p>
 

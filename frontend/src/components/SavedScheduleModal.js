@@ -3,21 +3,13 @@ import { Modal, Container, Button, Row, Card, Col, Form, OverlayTrigger, Tooltip
 import { shortenDays, timeToString } from '../utils/format';
 import '../style/GenerateScheduleModal.css';
 
-function SavedScheduleModal({  title, description, scheduleInfo, show, setShow, setTitle, setDescription }) {
+function SavedScheduleModal({  title, description, modalClasses, show, setShow, setCardTitle }) {
     // classList: classes in schedule
     const [modalTitle, setTitle] = useState(title);
     const [modalDescription, setDescription] = useState(description);
     // const scheduleData = {};
 
-    //temporary, needs to be passed from generateScheduleCard
-    // const saveSchedule = () => {
-    //     console.log("Save Schedule");
-    //     scheduleData.title = title;
-    //     scheduleData.description = description;
-    //     console.log(scheduleData);
-    //     handleClose();
-    // }
-
+    
     const handleTitle = (event) => {
         setTitle(event.target.value);
     }
@@ -25,6 +17,17 @@ function SavedScheduleModal({  title, description, scheduleInfo, show, setShow, 
     const handleDescription = (event) => {
         setDescription(event.target.value);
     }
+    //update in firestore
+    const saveSchedule = () => {
+        
+        // console.log("Save Schedule");
+        // scheduleData.title = title;
+        // scheduleData.description = description;
+        // console.log(scheduleData);
+        handleClose();
+    }
+
+    
 
     const handleClose = () => {
         // setCardTitle(title);
@@ -40,70 +43,70 @@ function SavedScheduleModal({  title, description, scheduleInfo, show, setShow, 
     //     const classNum = parseInt(e.target.name, 10);
     //     console.log(sectionNum, classNum);
     //     // TODO: once firestore savedSchedules object is documented, store proper information
-    //     scheduleData[classNum] = sectionNum;
+    //     // scheduleData[classNum] = sectionNum;
     // }
 
     //replaced by schedule-info
-    // const classCards = classList.map(thisClass => {
-    //     return (
-    //         <Card key={thisClass.num} className='schedule-info-card'>
-    //             <Card.Title>
-    //                 <b>{thisClass.title}</b> {thisClass.dayTime}
-    //             </Card.Title>
-    //             <Card.Body>
-    //                 <Container>
-    //                     <Row>
-    //                         <Col>
-    //                             {
-    //                                 thisClass.sections.length === 0 &&
-    //                                 <i>No sections to display</i>
-    //                             }
-    //                             {
-    //                                 thisClass.sections.length > 0 &&
-    //                                 <Row className='row-bottom-pad'>
-    //                                     <Col className='info-title' sm={1}></Col>       
-    //                                     <Col className='info-title' sm={5}>Section</Col>
-    //                                     <Col className='info-title' sm={6}>Day and Time</Col>
-    //                                 </Row>
-    //                             }
-    //                             {
-    //                                 thisClass.sections.length > 0 &&
-    //                                 thisClass.sections.map(data => {
-    //                                     var secDay = shortenDays(data.days);
-    //                                     var secStart = timeToString(data.start);
-    //                                     var secEnd = timeToString(data.end);
-    //                                     var secDayTime = (secDay && secStart && secEnd) ?
-    //                                         secDay + ' ' + secStart + ' - ' + secEnd :
-    //                                         '';
-    //                                     // Array of inclusion status for each section
-    //                                     return (
-    //                                         <Row key={data.num} className='row-bottom-pad'>
-    //                                             <Col sm={1}>
-    //                                                 <input  
-    //                                                     type="radio" 
-    //                                                     name={thisClass.num}
-    //                                                     id={data.num}
-    //                                                     onChange={handleRadio}
-    //                                                 />
-    //                                             </Col>
-    //                                             <Col sm={5}>
-    //                                                 {thisClass.title}-{data.title}
-    //                                             </Col>
-    //                                             <Col sm={6}>
-    //                                                 {secDayTime !== '' && secDayTime}
-    //                                                 {secDayTime === '' && <i>Not stated</i>}
-    //                                             </Col>
-    //                                         </Row>
-    //                                     )
-    //                                 })
-    //                             }
-    //                         </Col>
-    //                     </Row>
-    //                 </Container>
-    //             </Card.Body>
-    //         </Card>
-    //     )
-    // })
+    const scheduleCards = modalClasses.map(thisClass => {
+        return (
+            <Card key={thisClass.num} className='schedule-info-card'>
+                <Card.Title>
+                    <b>{thisClass.title}</b> {thisClass.dayTime}
+                </Card.Title>
+                <Card.Body>
+                    <Container>
+                        <Row>
+                            <Col>
+                                {
+                                    thisClass.sections.length === 0 &&
+                                    <i>No sections to display</i>
+                                }
+                                {
+                                    thisClass.sections.length > 0 &&
+                                    <Row className='row-bottom-pad'>
+                                        <Col className='info-title' sm={1}></Col>       
+                                        <Col className='info-title' sm={5}>Section</Col>
+                                        <Col className='info-title' sm={6}>Day and Time</Col>
+                                    </Row>
+                                }
+                                {
+                                    thisClass.sections.length > 0 &&
+                                    thisClass.sections.map(data => {
+                                        // var secDay = shortenDays(data.days);
+                                        // var secStart = timeToString(data.start);
+                                        // var secEnd = timeToString(data.end);
+                                        // var secDayTime = (secDay && secStart && secEnd) ?
+                                        //     secDay + ' ' + secStart + ' - ' + secEnd :
+                                        //     '';
+                                        // Array of inclusion status for each section
+                                        return (
+                                            <Row key={data.num} className='row-bottom-pad'>
+                                                {/* <Col sm={1}>
+                                                    <input  
+                                                        type="radio" 
+                                                        name={thisClass.num}
+                                                        id={data.num}
+                                                        onChange={handleRadio}
+                                                    />
+                                                </Col> */}
+                                                <Col sm={5}>
+                                                    {thisClass.title}-{data.title}
+                                                </Col>
+                                                <Col sm={6}>
+                                                    {data.dayTime !== '' && data.dayTime}
+                                                    {data.dayTime === '' && <i>Not stated</i>}
+                                                </Col>
+                                            </Row>
+                                        )
+                                    })
+                                }
+                            </Col>
+                        </Row>
+                    </Container>
+                </Card.Body>
+            </Card>
+        )
+    })
 
     return (
         <Modal show={show} onHide={handleClose} animation={false} dialogClassName="schedule-info-modal">
@@ -134,7 +137,7 @@ function SavedScheduleModal({  title, description, scheduleInfo, show, setShow, 
                                 </Form>
                             </Card.Body>
                         </Card>
-                        {scheduleInfo}
+                        {scheduleCards}
                     </Row>
                 </Container>
             </Modal.Body>

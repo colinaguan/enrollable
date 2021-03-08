@@ -49,11 +49,11 @@ function SavedScheduleCard({ title, description, classes}) {
             <SavedScheduleModal
                 title={title} 
                 description = {description}
-                scheduleInfo={scheduleInfo}
+                modalClasses={classes}
                 show={show}
                 setShow={setShow}
-                setTitle={setTitle}
-                setDescription={setDescription}
+                setCardTitle={setTitle}
+                // setDescription={setDescription}
             />
         </Card>
     );
