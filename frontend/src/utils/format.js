@@ -31,6 +31,7 @@ export function timeToString(time) {
     var hours = parseInt(time.substring(0, 2));
     var period = hours < 12 ? 'AM' : 'PM';
     hours = (hours > 12) ? hours - 12 : hours;
+    hours = (hours === 0) ? 12 : hours;
     return hours + time.substring(2) + period;
 }
 
