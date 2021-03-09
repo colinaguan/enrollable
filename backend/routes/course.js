@@ -78,7 +78,10 @@ router.get('/', function(req, res) {
 });
 
 router.get('/term', function(req,res) {
-    res.send("2212");
+    res.send({
+        "code": "2212",
+        "term": "2021 Spring Quarter"
+    });
 })
 
 router.get('/ge', function(req,res) {
