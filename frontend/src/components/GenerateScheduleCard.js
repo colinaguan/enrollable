@@ -25,19 +25,27 @@ function GenerateScheduleCard({ classList, scheduleNumber}) {
     const saveSchedule = () => {
         //remove old schedule
         removeFromSavedSchedules(scheduleData);
-        console.log(cardTitle);
-        console.log(cardDescription);
-        setScheduleData({
-            title: cardTitle,
-            description: cardDescription,
-            classes: cardClasses
-        })
-        //add new schedule
-        addToSavedSchedules(scheduleData);
+        removeFromSavedSchedules(scheduleData)
+        .then( () =>{
+            //update schedule object with most recent values
+            setScheduleData({
+                title: cardTitle,
+                description: cardDescription,
+                classes: cardClasses
+            });
+            //add new schedule
+            addToSavedSchedules(scheduleData)
+            .then( () => {
+                update();
+            });
+        });
     }
 
     const deleteSchedule = () => {
-        removeFromSavedSchedules(scheduleData);
+        removeFromSavedSchedules(scheduleData)
+        .then( () => {;
+            update();
+        });
     }
 
     const scheduleInfo = classList.map((thisClass) => {
