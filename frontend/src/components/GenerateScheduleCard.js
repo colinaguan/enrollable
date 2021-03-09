@@ -4,6 +4,7 @@ import { Card, Row, Col, Button } from 'react-bootstrap';
 import GenerateScheduleModal from './GenerateScheduleModal';
 import { useAuth } from "../contexts/AuthContext";
 import '../style/GenerateScheduleCard.css';
+import SavedSchedulesPage from './SavedSchedulesPage';
 
 function GenerateScheduleCard({ classList, scheduleNumber}) {
 
@@ -29,15 +30,25 @@ function GenerateScheduleCard({ classList, scheduleNumber}) {
         //remove old schedule
         removeFromSavedSchedules(scheduleData);
         removeFromSavedSchedules(scheduleData)
+
         .then( () =>{
             //update schedule object with most recent values
-            setScheduleData({
+            
+            // setScheduleData({
+            //     title: cardTitle,
+            //     description: cardDescription,
+            //     classes: cardClasses
+            // });
+        
+            // above update is incorrect
+            // following creates a new object
+            const savedScheduleData = {
                 title: cardTitle,
                 description: cardDescription,
                 classes: cardClasses
-            });
+            }
             //add new schedule
-            addToSavedSchedules(scheduleData)
+            addToSavedSchedules(savedScheduleData)
             .then( () => {
                 update();
             });
