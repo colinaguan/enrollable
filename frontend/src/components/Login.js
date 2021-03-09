@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useAuth } from "../contexts/AuthContext";
 import { useHistory } from "react-router-dom";
-import { auth, db } from "../firebase";
+// import { auth, db } from "../firebase";
 
 function Login({setErrorDisplay, setErrorContent, setFavList}) {
     const [email, setEmail] = useState('')
