@@ -3,7 +3,11 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+<<<<<<< HEAD
     "start": "node ./bin/www" 
+=======
+    "start": "PORT=3001 node bin/www"
+>>>>>>> f1bec055a8dfebda0c1e5d00451fcfa1fdd639b4
   },
   "dependencies": {
     "cookie-parser": "^1.4.5",
