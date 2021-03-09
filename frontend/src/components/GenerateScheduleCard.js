@@ -24,67 +24,35 @@ function GenerateScheduleCard({ classList, scheduleNumber}) {
     const handleShow = () => setShow(true);
 
     const saveSchedule = () => {
-<<<<<<< HEAD
-        //remove old schedule
-        removeFromSavedSchedules(scheduleData);
-        console.log("add",cardTitle);
-        console.log(cardDescription);
-        // not working 
-        // setScheduleData({
-        //     title: cardTitle,
-        //     description: cardDescription,
-        //     classes: cardClasses
-        // })
-        // setScheduleData(prevState => {
-        //     let scheduleData = Object.assign({}, prevState.scheduleData);  // creating copy of state variable scheduleData
-        //     scheduleData.title = cardTitle;  
-        //     scheduleData.description= cardDescription;
-        //     scheduleData.classes= cardClasses;
-        //     return { scheduleData};                                 // return new object scheduleData object
-        // })
-        // setScheduleData(prevState => ({
-        //     scheduleData: {                   // object that we want to update
-        //         ...prevState.scheduleData,    // keep all other key-value pairs
-        //         title: cardTitle       // update the value of specific key
-        //     }
-        // }))
-        // setScheduleData({...scheduleData, 
-        //     title: {cardTitle},
-        //     description: {cardDescription}
-        // })
-
-        // until figure out how to make a copy, we just recreate an object with new value
-        const savedScheduleData = {
-            title: cardTitle,
-            description: cardDescription,
-            classes: cardClasses
-        }
-        console.log(savedScheduleData)
-        //add new schedule
-        addToSavedSchedules(savedScheduleData);
-        // SavedSchedulesPage.forceUpdate();
-        
-=======
         console.log(cardTitle);
         console.log(cardDescription);
         console.log(scheduleData);
         //remove old schedule
         removeFromSavedSchedules(scheduleData);
         removeFromSavedSchedules(scheduleData)
+
         .then( () =>{
             //update schedule object with most recent values
-            setScheduleData({
+            
+            // setScheduleData({
+            //     title: cardTitle,
+            //     description: cardDescription,
+            //     classes: cardClasses
+            // });
+        
+            // above update is incorrect
+            // following creates a new object
+            const savedScheduleData = {
                 title: cardTitle,
                 description: cardDescription,
                 classes: cardClasses
-            });
+            }
             //add new schedule
-            addToSavedSchedules(scheduleData)
+            addToSavedSchedules(savedScheduleData)
             .then( () => {
                 update();
             });
         });
->>>>>>> f1bec055a8dfebda0c1e5d00451fcfa1fdd639b4
     }
 
     const deleteSchedule = () => {
