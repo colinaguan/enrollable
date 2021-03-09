@@ -30,13 +30,13 @@ function SavedScheduleCard({ title, description, classes}) {
         .then( () =>{
             update();
             //update schedule object with most recent values
-            setScheduleData({
-                title: cardTitle,
-                description: cardDescription,
-                classes: cardClasses
-            });
+            var newSchedule = {};
+            newSchedule.title = cardTitle;
+            newSchedule.description = cardDescription;
+            newSchedule.classes = cardClasses;
+            console.log(newSchedule);
             //add new schedule
-            addToSavedSchedules(scheduleData)
+            addToSavedSchedules(newSchedule)
             .then( () => {
                 update();
             });
