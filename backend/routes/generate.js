@@ -9,19 +9,16 @@ var conflictPairs = [];
 router.post('/', function(req, res) {
     conflictPairs = [];
     var generateRequest = req.body;
-    // console.log(JSON.parse(generateRequest));
     var generateResult = generateSchedules(generateRequest);
-    // console.log(generateResult);
     res.send(generateResult);
 });
 
 function generateSchedules(requestObject) {
     result = {};
     priorityScores = [];
-    // console.log(requestObject.classes);
     possibleSchedules = getNoConflictSchedules(requestObject.classes);
+    // if no possible schedules generated return the conflict pairs
     if (possibleSchedules.length === 0) {
-        // console.log("conflictPairs",conflictPairs)
         result.successful = false;
         result.schedules = conflictPairs;
         return result;
@@ -67,31 +64,22 @@ function getNoConflictSchedules(classesList) {
     // go through all courses except the last course
     for (var i=0; i<classesList.length-1; i++) {
         var course = classesList[i];
-        // console.log("course root: ", course);
         var newStack = [];
-        newStack.push([course]);// newStack.push([course]);
-        // console.log("stack: ", newStack);
-        while (newStack.length) { //
-            // console.log("enter");
+        newStack.push([course]);
+        while (newStack.length) {
             schedule = newStack.pop();
             // console.log("pop: ", schedule);
             successors = successor(schedule, classesList)
-            // temp = schedule
+            // a copy for schedule, so when add new class for successors origin one won't be affected 
             // needs to be a copy, not reference
             temp = JSON.parse(JSON.stringify(schedule));
             if(successors.length !== 0){
                 for(var newClass of successors){
-                
                     // reinitialize schedule here
                     schedule = JSON.parse(JSON.stringify(temp));
-                    // console.log("temp",temp)
-                    // console.log("newClass: ", newClass);
                     conflict = checkTimeConflict(schedule, newClass)
-                    // console.log("conflict", conflict)
                     if (!conflict) {
-                        // console.log("no conflict pass")
                         schedule.push(newClass);
-                        // console.log("schedule: ", schedule);
                         possibleSchedules.push(schedule);
                         newStack.push(schedule);
                     }
@@ -105,7 +93,6 @@ function getNoConflictSchedules(classesList) {
 }
 
 function unitConstraint(possibleSchedules, minUnits, maxUnits){
-    // for (var schedule of possibleSchedules) {
     for (var i=0; i<possibleSchedules.length; i++) {
         schedule = possibleSchedules[i]
         unitSum = 0;
@@ -115,17 +102,10 @@ function unitConstraint(possibleSchedules, minUnits, maxUnits){
             unitSum += classData.unit;
         } 
         // check unit restriction
-        // console.log("unitSum", unitSum)
-        // console.log("before possibleSchedules", possibleSchedules)
         if (unitSum < minUnits || unitSum > maxUnits) {	
-            // possibleSchedules.remove(schedule);
-            index = possibleSchedules.indexOf(schedule);
-            if (index > -1) {
-                possibleSchedules.splice(index, 1);
-                // consider one item has been removed
-                i-=1;
-            }
-            // console.log("after possibleSchedules", possibleSchedules)
+            possibleSchedules.splice(i, 1);
+            // consider one item has been removed
+            i-=1;
             continue;
         }  
     }
@@ -137,19 +117,12 @@ function unitConstraint(possibleSchedules, minUnits, maxUnits){
 function avoidTimesConstraint(possibleSchedules, avoidTimes){
     for (var i=0; i<possibleSchedules.length; i++) {
         schedule = possibleSchedules[i];
-
         for (var classData of schedule) {
-            // console.log("classData iteration to detect conflict with avoid times")
             // check conflict with avoid time list
             // if conflict remove schedule from possibleSchedules
             if (conflictAvoidTime(avoidTimes, classData)) {
-                // console.log("removed schedule")
-                index = possibleSchedules.indexOf(schedule);
-                if (index > -1) {
-                    // console.log(possibleSchedules[index])
-                    possibleSchedules.splice(index, 1);
-                    i-=1;
-                }    
+                possibleSchedules.splice(i, 1);
+                i-=1;
                 break;
             }
         } 
@@ -164,7 +137,8 @@ function sectionConstraint(possibleSchedules, avoidTimes){
         schedule = possibleSchedules[i];
 
         for (var classData of schedule) {
-            classCopy = classData;
+            // make a copy of current class
+            classCopy = JSON.parse(JSON.stringify(classData));;
             if (classData.sections) {
                 for (var section of classData.sections) {
                     // remove from class.sections array if conflict with schedule
@@ -174,7 +148,6 @@ function sectionConstraint(possibleSchedules, avoidTimes){
                     }
                 }
             }
-            // console.log(classCopy);
             // store the new class information
             schedule[schedule.indexOf(classData)] = classCopy;
         } 
@@ -196,7 +169,6 @@ function priorityReorder(possibleSchedules) {
         }
         priorityScores.push(score);
     }
-    // console.log("priority score:", priorityScores);
 
     // priority reorder based on priority score
     // the schedule with minimum score means higher priority
@@ -209,8 +181,12 @@ function priorityReorder(possibleSchedules) {
                 min = score;
             }
         }
+        // remove the sorted index in priorityScoresCopy
         priorityScoresCopy.splice(priorityScoresCopy.indexOf(min), 1);
+        // push the index to the new list
         reorderedList.push(possibleSchedules[priorityScores.indexOf(min)]);
+        // remove the sorted index in possibleSchedules
+        possibleSchedules.splice(priorityScores.indexOf(min), 1);
     }
 
     return reorderedList
@@ -220,7 +196,6 @@ function successor(schedule, classesList) {
     index = schedule.length-1;
     lastCourse = schedule[index];
 
-    // console.log("last course: ", lastCourse);
 	successors = [];
 	for (var i=classesList.indexOf(lastCourse)+1; i<classesList.length; i++) {
         if (i >= classesList.length) {
@@ -229,8 +204,6 @@ function successor(schedule, classesList) {
 
         successors.push(classesList[i]);
     }
-    // console.log("successors");
-    // console.log(successors);
 
 	return successors;
 }
@@ -241,21 +214,12 @@ function checkTimeConflict(schedule, newClass) {
         classDate = classData.days;
         courseDate = newClass.days;
         intersectDate = intersect(classDate, courseDate);
-        // console.log("intersect", intersectDate);
         if (intersectDate.length !== 0) {
             // check overlap
-            // console.log("classData.start", classData.start)
-            // console.log("newClass.end", newClass.end)
-            // console.log("-")
-            // console.log("classData.end", classData.end)
-            // console.log("newClass.start", newClass.start)
-            // console.log("classData.start<=newClass.end",classData.start<=newClass.end)
-            // console.log("classData.end>=newClass.start", classData.end>=newClass.start)
             if (classData.start<=newClass.end && classData.end>=newClass.start){
-                // console.log("detected conflcit")
                 // if the conflict pair was not recorded, append to the list
                 conflictPair = [newClass, classData];
-                if (conflictPairs.indexOf([newClass, classData]) === -1) {
+                if (!alreadyInArray(conflictPair)) {
                     conflictPairs.push(conflictPair);
                 }
 
@@ -264,6 +228,16 @@ function checkTimeConflict(schedule, newClass) {
         }
     }
 
+    return false;
+}
+
+function alreadyInArray(conflictPair) {
+    // check if conflict pair already in conflictPairs
+    for (var pair of conflictPairs) {
+        if (conflictPair === pair) {
+            return true;
+        }
+    }
     return false;
 }
 
@@ -276,7 +250,6 @@ function conflictAvoidTime(avoidTimes, newClass) {
             continue;
         }
         // check overlap
-        // console.log("intersect length !=0")
         if (avoidTime.start<=newClass.end && avoidTime.end>=newClass.start){
             return true;
         }
@@ -286,8 +259,6 @@ function conflictAvoidTime(avoidTimes, newClass) {
 }
 
 function intersect(arrA, arrB) {
-    // console.log("arrA", arrA)
-    // console.log("arrB", arrB)
     let intersection = arrA.filter(x => arrB.includes(x));
     
     return intersection
