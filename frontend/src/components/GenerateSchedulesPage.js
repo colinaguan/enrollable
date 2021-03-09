@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Button, Alert } from 'react-bootstrap';
+import { Container, Row, Button } from 'react-bootstrap';
 import GenerateClassCard from './GenerateClassCard';
 import GenerateScheduleCard from './GenerateScheduleCard';
 import GenerateFilters from './GenerateFilters';
