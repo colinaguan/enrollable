@@ -4,6 +4,7 @@ import { Card, Row, Col, Button } from 'react-bootstrap';
 import GenerateScheduleModal from './GenerateScheduleModal';
 import { useAuth } from "../contexts/AuthContext";
 import '../style/GenerateScheduleCard.css';
+import SavedSchedulesPage from './SavedSchedulesPage';
 
 function GenerateScheduleCard({ classList, scheduleNumber}) {
 
@@ -25,15 +26,43 @@ function GenerateScheduleCard({ classList, scheduleNumber}) {
     const saveSchedule = () => {
         //remove old schedule
         removeFromSavedSchedules(scheduleData);
-        console.log(cardTitle);
+        console.log("add",cardTitle);
         console.log(cardDescription);
-        setScheduleData({
+        // not working 
+        // setScheduleData({
+        //     title: cardTitle,
+        //     description: cardDescription,
+        //     classes: cardClasses
+        // })
+        // setScheduleData(prevState => {
+        //     let scheduleData = Object.assign({}, prevState.scheduleData);  // creating copy of state variable scheduleData
+        //     scheduleData.title = cardTitle;  
+        //     scheduleData.description= cardDescription;
+        //     scheduleData.classes= cardClasses;
+        //     return { scheduleData};                                 // return new object scheduleData object
+        // })
+        // setScheduleData(prevState => ({
+        //     scheduleData: {                   // object that we want to update
+        //         ...prevState.scheduleData,    // keep all other key-value pairs
+        //         title: cardTitle       // update the value of specific key
+        //     }
+        // }))
+        // setScheduleData({...scheduleData, 
+        //     title: {cardTitle},
+        //     description: {cardDescription}
+        // })
+
+        // until figure out how to make a copy, we just recreate an object with new value
+        const savedScheduleData = {
             title: cardTitle,
             description: cardDescription,
             classes: cardClasses
-        })
+        }
+        console.log(savedScheduleData)
         //add new schedule
-        addToSavedSchedules(scheduleData);
+        addToSavedSchedules(savedScheduleData);
+        // SavedSchedulesPage.forceUpdate();
+        
     }
 
     const deleteSchedule = () => {
