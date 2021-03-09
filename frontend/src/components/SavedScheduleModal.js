@@ -1,15 +1,23 @@
 import React, {useState} from 'react';
-import { Modal, Container, Button, Row, Card, Col, Form, OverlayTrigger, Tooltip } from 'react-bootstrap';
-import { shortenDays, timeToString } from '../utils/format';
+import { Modal, Container, Button, Row, Card, Col, Form } from 'react-bootstrap';
 import '../style/GenerateScheduleModal.css';
 
-function SavedScheduleModal({  title, description, modalClasses, show, setShow, setCardTitle, setCardDescription, saveSchedule, deleteSchedule }) {
+function SavedScheduleModal({
+    title,
+    description,
+    modalClasses,
+    show,
+    setShow,
+    setCardTitle,
+    setCardDescription,
+    saveSchedule,
+    deleteSchedule
+}) {
     // classList: classes in schedule
     const [modalTitle, setTitle] = useState(title);
     const [modalDescription, setDescription] = useState(description);
     // const scheduleData = {};
 
-    
     const handleTitle = (event) => {
         setTitle(event.target.value);
         setCardTitle(event.target.value);
@@ -19,8 +27,7 @@ function SavedScheduleModal({  title, description, modalClasses, show, setShow, 
         setDescription(event.target.value);
         setCardDescription(event.target.value);
     }
-    
-    
+
     //update in firestore
     const handleSave = () => {
         setCardTitle(modalTitle);
@@ -32,9 +39,6 @@ function SavedScheduleModal({  title, description, modalClasses, show, setShow, 
         saveSchedule();
         handleClose();
     }
-    
-
-    
 
     const handleClose = () => {
         // setCardTitle(title);
@@ -46,14 +50,6 @@ function SavedScheduleModal({  title, description, modalClasses, show, setShow, 
         handleClose();
         
     }
-
-    // const handleRadio = (e) => {
-    //     const sectionNum = parseInt(e.target.id, 10);
-    //     const classNum = parseInt(e.target.name, 10);
-    //     console.log(sectionNum, classNum);
-    //     // TODO: once firestore savedSchedules object is documented, store proper information
-    //     // scheduleData[classNum] = sectionNum;
-    // }
 
     //replaced by schedule-info
     const scheduleCards = modalClasses.map(thisClass => {
@@ -81,23 +77,9 @@ function SavedScheduleModal({  title, description, modalClasses, show, setShow, 
                                 {
                                     thisClass.sections.length > 0 &&
                                     thisClass.sections.map(data => {
-                                        // var secDay = shortenDays(data.days);
-                                        // var secStart = timeToString(data.start);
-                                        // var secEnd = timeToString(data.end);
-                                        // var secDayTime = (secDay && secStart && secEnd) ?
-                                        //     secDay + ' ' + secStart + ' - ' + secEnd :
-                                        //     '';
                                         // Array of inclusion status for each section
                                         return (
                                             <Row key={data.num} className='row-bottom-pad'>
-                                                {/* <Col sm={1}>
-                                                    <input  
-                                                        type="radio" 
-                                                        name={thisClass.num}
-                                                        id={data.num}
-                                                        onChange={handleRadio}
-                                                    />
-                                                </Col> */}
                                                 <Col sm={5}>
                                                     {thisClass.title}-{data.title}
                                                 </Col>
@@ -151,20 +133,9 @@ function SavedScheduleModal({  title, description, modalClasses, show, setShow, 
                 </Container>
             </Modal.Body>
             <Modal.Footer>
-                <OverlayTrigger
-                    placement="top"
-                    overlay={
-                        <Tooltip>
-                            delete this schedule
-                        </Tooltip>
-                    }
-                >
-                    <Button onClick={handleDelete} variant="outline-purple">
-                        Delete
-                    </Button>
-                    
-                </OverlayTrigger>
-                
+                <Button onClick={handleDelete} variant="outline-purple">
+                    Delete
+                </Button>
                 <Button onClick={handleSave} variant="purple">
                     Save
                 </Button>

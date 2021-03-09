@@ -14,6 +14,7 @@ function SavedSchedulesPage() {
     useEffect( () => {
         const newScheds = getSavedSchedules();
         setSchedules(newScheds);
+        console.log(newScheds);
         var cards = newScheds.map((schedule, index) => {
             return (
               <SavedScheduleCard

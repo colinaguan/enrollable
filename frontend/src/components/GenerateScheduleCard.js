@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
 import { Card, Row, Col, Button } from 'react-bootstrap';
-// import { shortenDays, timeToString } from '../utils/format';
 import GenerateScheduleModal from './GenerateScheduleModal';
 import { useAuth } from "../contexts/AuthContext";
 import '../style/GenerateScheduleCard.css';
-import SavedSchedulesPage from './SavedSchedulesPage';
 
 function GenerateScheduleCard({ classList, scheduleNumber}) {
 
@@ -30,7 +28,6 @@ function GenerateScheduleCard({ classList, scheduleNumber}) {
         //remove old schedule
         removeFromSavedSchedules(scheduleData);
         removeFromSavedSchedules(scheduleData)
-
         .then( () =>{
             //update schedule object with most recent values
             
