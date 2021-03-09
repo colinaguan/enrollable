@@ -29,7 +29,7 @@ export function timeToString(time) {
     if (!time) return '';
     // parse time
     var hours = parseInt(time.substring(0, 2));
-    var period = hours <= 12 ? 'AM' : 'PM';
+    var period = hours < 12 ? 'AM' : 'PM';
     hours = (hours > 12) ? hours - 12 : hours;
     return hours + time.substring(2) + period;
 }
