@@ -6,6 +6,7 @@ import GenerateFilters from './GenerateFilters';
 import GenerateAvoidTimeLabel from './GenerateAvoidTimeLabel';
 import GeneratePagePills from './GeneratePagePills';
 import { useAuth } from "../contexts/AuthContext";
+import GenerateScheduleError from './GenerateScheduleError';
 import '../style/GenerateSchedulesPage.css';
 
 function GenerateSchedulesPage({ favList, setFavList }) {
@@ -65,8 +66,6 @@ function GenerateSchedulesPage({ favList, setFavList }) {
         }
         else {
             setFilterError(false);
-            console.log("in generate");
-            console.log(avoidTimes);
             setGenerated(true);
             // console.log(selectedClasses);
             var generateRequest = {};
@@ -74,9 +73,8 @@ function GenerateSchedulesPage({ favList, setFavList }) {
             generateRequest.maxUnits = parseInt(maxUnits, 10);
             generateRequest.avoidTimes = avoidTimes;
             generateRequest.classes = selectedClasses;
-            console.log(generateRequest);
-            // TODO: implement API generate route
-            fetch('generate', {
+            // call API
+            fetch('/api/generate', {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
@@ -86,15 +84,12 @@ function GenerateSchedulesPage({ favList, setFavList }) {
             })
             .then(res => res.json())
             .then(response => {
-                console.log(response);
                 // no possible schedules
-                // NOTE: API currently only returns the successful attribute when it fails
                 if (!response.successful) {
-                    console.log("unsuccessful");
-                    setGenErr('No possible schedules can be made with given constraints.')
+                    const conflictPairs = response.schedules;
+                    setGenErr(<GenerateScheduleError conflicts={conflictPairs}/>);
                 }
                 // display schedules
-                // NOTE: API currently only returns array of schedules when generation is successful
                 else {
                     // reset error message
                     setGenErr('');
@@ -298,27 +293,31 @@ function GenerateSchedulesPage({ favList, setFavList }) {
                 </Button>
             </Row>
             {
-                generated &&
+                generated && generatedError !== '' &&
+                generatedError
+            }
+            {
+                generated && generatedError === '' &&
                 <Row>
                     <h1>Results</h1>
                 </Row>
             }
             {
-                generated &&
+                generated && generatedError === '' &&
                 <Row>
                     <p>Choose which schedules to save</p>
                 </Row>
             }
             {
-                generated && generatedError !== '' &&
+                generatedError === '' &&
+                pagePills
+            }
+            {
+                generatedError === '' &&
                 <Row>
-                    <Alert variant="danger">{generatedError}</Alert>
+                    {scheduleCards}
                 </Row>
             }
-            {pagePills}
-            <Row>
-                {scheduleCards}
-            </Row>
         </Container>
     );
 }

@@ -1,17 +1,13 @@
 ## How To Run Website
 
-In the backend directory, run
+In the frontend directory, run
 
 ### npm install
 
 and then
 
-### PORT=3001 node bin/www
+### npm run build
 
-In another terminal in the frontend directory, run
-
-### npm install
-
-and then
+Then go back to the parent directory, and run
 
 ### npm start

@@ -9,6 +9,9 @@ function ClassSearchPage({ favList, setFavList }) {
     // list of favorite classes
     const { getFavorList } = useAuth();
 
+    // term
+    const [term, setTerm] = useState('N/A');
+
     // list of departments, ge's, and types
     const [dep, setDep] = useState({});
     const [ge, setGE] = useState([]);
@@ -25,8 +28,16 @@ function ClassSearchPage({ favList, setFavList }) {
 
     // store lists of filters
     useEffect(() => {
+        // get term
+        fetch('/api/course/term')
+        .then(res => res.json())
+        .then(term => {
+            setTerm(term.term);
+        })
+        .catch((error) => { console.log(error) })
+
         // get departments
-        fetch('/department/details')
+        fetch('/api/department/details')
         .then(res => res.json())
         .then(departments => {
             setDep(departments);
@@ -34,7 +45,7 @@ function ClassSearchPage({ favList, setFavList }) {
         .catch((error) => { console.log(error) });
 
         // get GE
-        fetch('/course/ge')
+        fetch('/api/course/ge')
         .then(res => res.json())
         .then(ges => {
             setGE(Object.keys(ges));
@@ -42,7 +53,7 @@ function ClassSearchPage({ favList, setFavList }) {
         .catch((error) => { console.log(error) });
 
         // get types
-        fetch('/course/type')
+        fetch('/api/course/type')
         .then(res => res.json())
         .then(types => {
             setType(types)
@@ -58,16 +69,8 @@ function ClassSearchPage({ favList, setFavList }) {
         // prevent page from refreshing
         e.preventDefault();
 
-        // for debugging
-        console.log("---------- FILTERS");
-        console.log(fDep);
-        console.log(fGE);
-        console.log(fType);
-        console.log(fFav);
-        console.log(favList);
-
         // API filtering
-        fetch('department?dep=' + fDep + '&type=' + fType + '&ge=' + fGE)
+        fetch('/api/department?dep=' + fDep + '&type=' + fType + '&ge=' + fGE)
         .then(res => res.json())
         .then(courses => {
             var cardData = courses;
@@ -102,7 +105,10 @@ function ClassSearchPage({ favList, setFavList }) {
                 <h1>Class Search</h1>
             </Row>
             <Row>
-                <i>class data provided by the SlugSurvival API</i>
+                <i>Data provided by the SlugSurvival API</i>
+            </Row>
+            <Row>
+                <i>Current Term: {term}</i>
             </Row>
             <Row className="sticky-top filter-row">
                 <ClassSearchFilters
