@@ -23,6 +23,9 @@ function GenerateScheduleCard({ classList, scheduleNumber}) {
     const handleShow = () => setShow(true);
 
     const saveSchedule = () => {
+        console.log(cardTitle);
+        console.log(cardDescription);
+        console.log(scheduleData);
         //remove old schedule
         removeFromSavedSchedules(scheduleData);
         removeFromSavedSchedules(scheduleData)

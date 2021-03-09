@@ -23,7 +23,8 @@ function SavedScheduleModal({  title, description, modalClasses, show, setShow, 
     
     //update in firestore
     const handleSave = () => {
-        
+        setCardTitle(modalTitle);
+        setCardDescription(modalDescription);
         // console.log("Save Schedule");
         // scheduleData.title = title;
         // scheduleData.description = description;
