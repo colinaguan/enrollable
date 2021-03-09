@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Card, Row, Col, Button } from 'react-bootstrap';
 // import { shortenDays, timeToString } from '../utils/format';
 import GenerateScheduleModal from './GenerateScheduleModal';
+import { useAuth } from "../contexts/AuthContext";
 import '../style/GenerateScheduleCard.css';
 
 function GenerateScheduleCard({ classList, scheduleNumber}) {
@@ -9,33 +10,34 @@ function GenerateScheduleCard({ classList, scheduleNumber}) {
     const [show, setShow] = useState(false);
     //const [title, setTitle] = useState("Schedule " + scheduleNumber);
     const [cardTitle, setTitle] = useState("Schedule " + scheduleNumber);
-    const [cardDescription, setDescription] = useState(description);
-    const [cardClasses, setClasses] = useState(classes);
+    const [cardDescription, setDescription] = useState("");
+    const [cardClasses, setClasses] = useState(classList);
     const [scheduleData, setScheduleData] = useState({
         title: cardTitle,
         description: cardDescription,
         classes: cardClasses
     });
 
-    const {addToSavedSchedule} = useAuth();
-    const {removeFromSavedSchedule} = useAuth();
+    const { addToSavedSchedules, removeFromSavedSchedules, update } = useAuth();
 
     const handleShow = () => setShow(true);
 
     const saveSchedule = () => {
         //remove old schedule
-        removeFromSavedSchedule(scheduleData);
+        removeFromSavedSchedules(scheduleData);
+        console.log(cardTitle);
+        console.log(cardDescription);
         setScheduleData({
             title: cardTitle,
             description: cardDescription,
             classes: cardClasses
         })
         //add new schedule
-        addToSavedSchedule(scheduleData);
+        addToSavedSchedules(scheduleData);
     }
 
     const deleteSchedule = () => {
-        removeFromSavedSchedule(scheduleData);
+        removeFromSavedSchedules(scheduleData);
     }
 
     const scheduleInfo = classList.map((thisClass) => {
@@ -64,7 +66,7 @@ function GenerateScheduleCard({ classList, scheduleNumber}) {
         <Card className="schedule-card">
             <Card.Body className='schedule-card-body'>
                 <Card.Title>
-                    <h2>{title}</h2>
+                    <h2>{cardTitle}</h2>
                 </Card.Title>
                 <div className="schedule-card-text">
                     {scheduleInfo}

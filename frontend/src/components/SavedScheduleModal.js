@@ -3,7 +3,7 @@ import { Modal, Container, Button, Row, Card, Col, Form, OverlayTrigger, Tooltip
 import { shortenDays, timeToString } from '../utils/format';
 import '../style/GenerateScheduleModal.css';
 
-function SavedScheduleModal({  title, description, modalClasses, show, setShow, setCardTitle, setCardDescpription, saveSchedule, deleteSchedule }) {
+function SavedScheduleModal({  title, description, modalClasses, show, setShow, setCardTitle, setCardDescription, saveSchedule, deleteSchedule }) {
     // classList: classes in schedule
     const [modalTitle, setTitle] = useState(title);
     const [modalDescription, setDescription] = useState(description);
@@ -17,7 +17,7 @@ function SavedScheduleModal({  title, description, modalClasses, show, setShow, 
 
     const handleDescription = (event) => {
         setDescription(event.target.value);
-        setCardDescprition(event.target.value);
+        setCardDescription(event.target.value);
     }
     
     
@@ -42,6 +42,7 @@ function SavedScheduleModal({  title, description, modalClasses, show, setShow, 
     const handleDelete = () => {
         deleteSchedule();
         // delete from firestore
+        handleClose();
         
     }
 

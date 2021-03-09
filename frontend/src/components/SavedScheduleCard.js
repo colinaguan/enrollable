@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Card, Row, Col, Button } from 'react-bootstrap';
 // import { shortenDays, timeToString } from '../utils/format';
 import SavedScheduleModal from './SavedScheduleModal';
+import { useAuth } from "../contexts/AuthContext";
 import '../style/SavedScheduleCard.css';
 
 // function SavedScheduleCard({ classList, scheduleNumber}) {
@@ -16,25 +17,24 @@ function SavedScheduleCard({ title, description, classes}) {
         classes: cardClasses
     });
 
-    const {addToSavedSchedule} = useAuth();
-    const {removeFromSavedSchedule} = useAuth();
+    const { addToSavedSchedules, removeFromSavedSchedules, update } = useAuth();
 
     const handleShow = () => setShow(true);
 
     const saveSchedule = () => {
         //remove old schedule
-        removeFromSavedSchedule(scheduleData);
+        removeFromSavedSchedules(scheduleData);
         setScheduleData({
             title: cardTitle,
             description: cardDescription,
             classes: cardClasses
         });
         //add new schedule
-        addToSavedSchedule(scheduleData);
+        addToSavedSchedules(scheduleData);
     }
 
     const deleteSchedule = () => {
-        removeFromSavedSchedule(scheduleData);
+        removeFromSavedSchedules(scheduleData);
     }
 
     const scheduleInfo = classes.map((thisClass) => {
@@ -74,9 +74,9 @@ function SavedScheduleCard({ title, description, classes}) {
                 </Card.Link>
             </Card.Body>
             <SavedScheduleModal
-                title={title} 
-                description = {description}
-                modalClasses={classes}
+                title={cardTitle} 
+                description = {cardDescription}
+                modalClasses={cardClasses}
                 show={show}
                 setShow={setShow}
                 setCardTitle={setTitle}

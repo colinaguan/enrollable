@@ -2,9 +2,20 @@ import React from 'react';
 import { Container, Row } from 'react-bootstrap';
 import SavedScheduleCard from './SavedScheduleCard';
 import  { useState, useEffect } from 'react';
+import { useAuth } from "../contexts/AuthContext";
 function SavedSchedulesPage() {
     // {savedSchedules}
     // var schedules = [];
+    const [schedules, setSchedules] = useState([]);
+
+    const {getSavedSchedules} = useAuth();
+
+    useEffect( () =>{
+        setSchedules(getSavedSchedules());
+    }, []);
+    //var schedules = getSavedSchedules();
+
+    /*
     var savedSchedules= [
         {
             "title": "backup",
@@ -76,9 +87,10 @@ function SavedSchedulesPage() {
             ]
         }
     ]
+    */
     
     // const [scheduleCards, setCards] = useState([]);
-    var cards = savedSchedules.map((schedule, index) => {
+    var cards = schedules.map((schedule, index) => {
         
         return (
           <SavedScheduleCard

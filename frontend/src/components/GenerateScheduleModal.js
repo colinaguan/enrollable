@@ -6,9 +6,9 @@ import '../style/GenerateScheduleModal.css';
 function GenerateScheduleModal({ classList, scheduleTitle, show, setShow, setCardTitle, setCardDescription, saveSchedule }) {
 
     //new versions passed in from GenerateScheduleCard
-    //const [title, setTitle] = useState(scheduleTitle);
-    //const [description, setDescription] = useState('');
-    //const scheduleData = {};
+    const [title, setTitle] = useState(scheduleTitle);
+    const [description, setDescription] = useState('');
+    const scheduleData = {};
 
     //temporary, needs to be passed from generateScheduleCard
     const handleSave = () => {
@@ -19,10 +19,12 @@ function GenerateScheduleModal({ classList, scheduleTitle, show, setShow, setCar
     }
 
     const handleTitle = (event) => {
+        setTitle(event.target.value);
         setCardTitle(event.target.value);
     }
 
     const handleDescription = (event) => {
+        setDescription(event.target.value);
         setCardDescription(event.target.value);
     }
 
