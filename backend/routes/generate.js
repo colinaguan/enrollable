@@ -51,7 +51,7 @@ function generateSchedules(requestObject) {
     possibleSchedules = sectionConstraint(possibleSchedules, avoidTimes);
 
     // priority reorder
-    possibleSchedules = priorityReorder(possibleSchedules);
+     possibleSchedules = priorityReorder(possibleSchedules);
 
     result.successful = true;
     result.schedules = possibleSchedules;
@@ -180,12 +180,12 @@ function priorityReorder(possibleSchedules) {
                 min = score;
             }
         }
+        // push the index to the new list
+        reorderedList.push(possibleSchedules[priorityScoresCopy.indexOf(min)]);
+        // remove the sorted index in possibleSchedules
+        possibleSchedules.splice(priorityScoresCopy.indexOf(min), 1);
         // remove the sorted index in priorityScoresCopy
         priorityScoresCopy.splice(priorityScoresCopy.indexOf(min), 1);
-        // push the index to the new list
-        reorderedList.push(possibleSchedules[priorityScores.indexOf(min)]);
-        // remove the sorted index in possibleSchedules
-        possibleSchedules.splice(priorityScores.indexOf(min), 1);
     }
 
     return reorderedList
