@@ -6,7 +6,7 @@ import { useHistory } from "react-router-dom";
 function Login({setErrorDisplay, setErrorContent, setFavList}) {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const { login, favorList } = useAuth()
+    const { login, getFavorList } = useAuth()
     const [loading, setLoading] = useState(false)
     const history = useHistory()
 
@@ -18,7 +18,7 @@ function Login({setErrorDisplay, setErrorContent, setFavList}) {
         login(email, password).then(() => {
             history.push("/search");
             // get favorites list
-            setFavList(favorList);
+            setFavList(getFavorList());
             // console.log(favorList);
         })
         .catch(error => {

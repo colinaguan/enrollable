@@ -5,6 +5,7 @@ import GenerateScheduleCard from './GenerateScheduleCard';
 import GenerateFilters from './GenerateFilters';
 import GenerateAvoidTimeLabel from './GenerateAvoidTimeLabel';
 import GeneratePagePills from './GeneratePagePills';
+import { useAuth } from "../contexts/AuthContext";
 import GenerateScheduleError from './GenerateScheduleError';
 import '../style/GenerateSchedulesPage.css';
 
@@ -30,6 +31,9 @@ function GenerateSchedulesPage({ favList, setFavList }) {
     var schedules = [];
     const [pagePills, setPagePills] = useState([]);
     const [scheduleCards, setScheduleCards] = useState([]);
+
+    // list of favorite classes
+    const { getFavorList } = useAuth();
 
     // updates schedule cards to display
     const updateScheduleCards = (start, end) => {
@@ -167,6 +171,8 @@ function GenerateSchedulesPage({ favList, setFavList }) {
             );
         });
         setClassCards(cards);
+
+        setFavList(getFavorList());
     }, [favList, setFavList, selectedClasses]);
 
     // for constraints: remove constraint when constraint is clicked

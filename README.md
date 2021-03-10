@@ -18,6 +18,10 @@ For Linux/Mac users, in package.json, change the start script to
 
 ### cd backend && PORT=3001 node ./bin/www
 
+For Windows users, in package.json, change the start script to
+
+### set PORT=3001 && node ./bin/www
+
 (when work is finished, please change it back to)
 
 ### cd backend && node ./bin/www
