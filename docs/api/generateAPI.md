@@ -46,7 +46,7 @@ Return: A single generate return object.
     “successful”: boolean, true: generated schedules(followed by schedules), false: no viable  schedule(followed by conflict pairs)  
 
     “schedules”:  [      // array of schedules if error is false   
-                                          
+
         “classes”: [  // array of class objects
             {
                 "num": int,
@@ -73,6 +73,41 @@ Return: A single generate return object.
     “schedules”: [  // array of array of conflicted classes if error is true
         [class, class] // array of classes
     ]
+
+## Generation Structure
+      - generateSchedules
+      - getNoConflictSchedules
+            - successor(schedule, classesList)
+            - checkTimeConflict(schedule, newClass)
+      - unitConstraint(possibleSchedules)
+      - avoidTimesConstraint(possibleSchedules
+            - conflictAvoidTime()
+      - sectionConstraint(possibleSchedules)
+            - checkTimeConflict(schedule, section)
+            - conflictAvoidTime(avoidTimes, section)
+      - priorityReorder(possibleSchedules)
+
+
+## Basic Steps in function generateSchedules()
+
+      function generateSchedules(requestObject) {
+            **Get non-conflict schedules**
+            possibleSchedules = getNoConflictSchedules(requestObject.classes);
+            **If no viable schedules, return**
+
+            **Filter1: Get min/max units, avoid times constraints**
+            possibleSchedules = unitConstraint(possibleSchedules, minUnits, maxUnits);
+            possibleSchedules = avoidTimesConstraint(possibleSchedules, avoidTimes);
+            (If no viable schedules, return)
+
+            **Filter2: remove unfit sections**
+            possibleSchedules = sectionConstraint(possibleSchedules, avoidTimes);
+            (If no viable schedules, return)
+
+            **reorder schedules by classes priority score**
+            possibleSchedules = priorityReorder(possibleSchedules);
+
+      }
 
 
 ## Generation Psuedocode
@@ -101,7 +136,7 @@ Return: A single generate return object.
                     break;
                 }
                 unitSum += class.unit
-                // check possible sections 
+                // check possible sections
                 If class.sections {
                     For section in class.sections{
                         // remove from class.sections array if conflict with schedule
@@ -115,7 +150,7 @@ Return: A single generate return object.
             // check time restriction
             If (conflict) {
                 possibleSchedules.remove(schedule)
-                continue; 
+                continue;
             }
 
             // check unit restriction
@@ -135,11 +170,11 @@ Return: A single generate return object.
         // priority reorder based on priority score
         // the schedule with minimum score means higher priority
         // will be reordered and displayed in the front of the list
-        temp = priorityScores 
+        temp = priorityScores
         While temp != empty {
             Min = Infinity
             For score in temp {
-                If score < Min 
+                If score < Min
                     Min = score
             }
             temp.remove(min)
@@ -149,11 +184,11 @@ Return: A single generate return object.
     }
 
     // takes a list of classes
-    // returns all possible schedules 
+    // returns all possible schedules
     getNoConflictSchedules(classesList):
-        possibleSchedules = [ ] 
+        possibleSchedules = [ ]
         // go through all courses except the last course
-        For course in classesList - 1: 
+        For course in classesList - 1:
             stack= new stack
             stack.push([course])
             While stack is not empty:
@@ -173,13 +208,13 @@ Return: A single generate return object.
         Successor = [ ]
         For (i = selectedList.indexOf(lastCourse) + 1 to selectedList.length-1):
             If i >= selectedList.length
-                Return successor 
+                Return successor
             successor.append(selectedList[i])
         Return successor
     }
 
     // return true if there is a conflict, and add conflicted course pairs
-    // global variable storing pairs of time conflicts 
+    // global variable storing pairs of time conflicts
     var conflictPair = [ ]
     checkTimeConflict(schedule, newClass) {
         for class in schedule{
@@ -224,7 +259,3 @@ Return: A single generate return object.
         }
         Return false
     }
-
-
-
-
