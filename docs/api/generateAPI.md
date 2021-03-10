@@ -46,7 +46,6 @@ Return: A single generate return object.
     “successful”: boolean, true: generated schedules(followed by schedules), false: no viable  schedule(followed by conflict pairs)  
 
     “schedules”:  [      // array of schedules if error is false   
-
         “classes”: [  // array of class objects
             {
                 "num": int,
@@ -95,7 +94,7 @@ Return: A single generate return object.
             possibleSchedules = getNoConflictSchedules(requestObject.classes);
             **If no viable schedules, return**
 
-            **Filter1: Get min/max units, avoid times constraints**
+            **Filter1: min/max units, avoid times constraints**
             possibleSchedules = unitConstraint(possibleSchedules, minUnits, maxUnits);
             possibleSchedules = avoidTimesConstraint(possibleSchedules, avoidTimes);
             (If no viable schedules, return)
@@ -104,7 +103,7 @@ Return: A single generate return object.
             possibleSchedules = sectionConstraint(possibleSchedules, avoidTimes);
             (If no viable schedules, return)
 
-            **reorder schedules by classes priority score**
+            **Reorder schedules by classes priority score**
             possibleSchedules = priorityReorder(possibleSchedules);
 
       }
@@ -259,3 +258,58 @@ Return: A single generate return object.
         }
         Return false
     }
+
+
+## Sample Request object
+
+      {
+        "minUnits":12,
+        "maxUnits":19,
+        "avoidTimes":[],
+        "classes":[
+           {
+             "num":44438,
+             "title":"CSE 3",
+             "unit":5,
+             "days":["Tuesday","Thursday"],
+             "start":"11:40",
+             "end":"13:15",
+             "dayTime":"TuTh 11:40AM - 1:15PM",
+             "priority":2,
+             "sections":[]
+           },
+           {
+             "num":43530,
+             "title":"CSE 12",
+             "unit":5,
+             "days":["Tuesday","Thursday"],
+             "start":"09:50",
+             "end":"11:25",
+             "dayTime":"TuTh 9:50AM - 11:25AM",
+             "priority":1,
+             "sections":[]
+           },
+           {
+             "num":43521,
+             "title":"HIS 2A",
+             "unit":5,
+             "days":["Monday","Wednesday","Friday"],
+             "start":"10:40",
+             "end":"11:45",
+             "dayTime":"MWF 10:40AM - 11:45AM",
+             "priority":1,
+             "sections":[]
+           },
+           {
+             "num":42949,
+             "title":"HIS 141A",
+             "unit":5,
+             "days":["Tuesday","Thursday"],
+             "start":"13:30",
+             "end":"15:05",
+             "dayTime":"TuTh 1:30PM - 3:05PM",
+             "priority":1,
+             "sections":[]
+           }
+        ]
+      }
