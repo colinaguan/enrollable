@@ -10,6 +10,10 @@ and then
 
 Then go back to the parent directory, and run
 
+### npm install
+
+and then
+
 ### npm start
 
 ## How To Run Website (Dev)
@@ -20,7 +24,7 @@ For Linux/Mac users, in package.json, change the start script to
 
 For Windows users, in package.json, change the start script to
 
-### set PORT=3001 && node ./bin/www
+### cd backend && set PORT=3001 && node ./bin/www
 
 (when work is finished, please change it back to)
 
