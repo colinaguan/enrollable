@@ -24,16 +24,16 @@ function generateSchedules(requestObject) {
         return result;
     }
 
-    minUnits = requestObject.minUnits
-    maxUnits = requestObject.maxUnits
-    avoidTimes = requestObject.avoidTimes
+    minUnits = requestObject.minUnits;
+    maxUnits = requestObject.maxUnits;
+    avoidTimes = requestObject.avoidTimes;
 
     // check unit constraint
     possibleSchedules = unitConstraint(possibleSchedules, minUnits, maxUnits);
     if (possibleSchedules.length === 0) {
         // console.log("no schedule satisfy unit constraints")
         result.successful = false;
-        result.schedules = {};
+        result.schedules = [];
         return result;
     }
     
@@ -43,7 +43,7 @@ function generateSchedules(requestObject) {
     if (possibleSchedules.length === 0) {
         // console.log("no schedule satisfy avoid constraints")
         result.successful = false;
-        result.schedules = {};
+        result.schedules = [];
         return result;
     }
     
@@ -68,8 +68,7 @@ function getNoConflictSchedules(classesList) {
         newStack.push([course]);
         while (newStack.length) {
             schedule = newStack.pop();
-            // console.log("pop: ", schedule);
-            successors = successor(schedule, classesList)
+            successors = successor(schedule, classesList);
             // a copy for schedule, so when add new class for successors origin one won't be affected 
             // needs to be a copy, not reference
             temp = JSON.parse(JSON.stringify(schedule));
@@ -94,7 +93,7 @@ function getNoConflictSchedules(classesList) {
 
 function unitConstraint(possibleSchedules, minUnits, maxUnits){
     for (var i=0; i<possibleSchedules.length; i++) {
-        schedule = possibleSchedules[i]
+        schedule = possibleSchedules[i];
         unitSum = 0;
         // conflict : variable indicates whether class is conflict with time constraints
         conflict = false;
@@ -110,7 +109,7 @@ function unitConstraint(possibleSchedules, minUnits, maxUnits){
         }  
     }
 
-    return possibleSchedules
+    return possibleSchedules;
 }
 
 // function to check avoidTime constraint
@@ -128,7 +127,7 @@ function avoidTimesConstraint(possibleSchedules, avoidTimes){
         } 
     }
 
-    return possibleSchedules
+    return possibleSchedules;
 }
 
 function sectionConstraint(possibleSchedules, avoidTimes){
@@ -138,7 +137,7 @@ function sectionConstraint(possibleSchedules, avoidTimes){
 
         for (var classData of schedule) {
             // make a copy of current class
-            classCopy = JSON.parse(JSON.stringify(classData));;
+            classCopy = JSON.parse(JSON.stringify(classData));
             if (classData.sections) {
                 for (var section of classData.sections) {
                     // remove from class.sections array if conflict with schedule
@@ -151,10 +150,10 @@ function sectionConstraint(possibleSchedules, avoidTimes){
             // store the new class information
             schedule[schedule.indexOf(classData)] = classCopy;
         } 
-        newPossibleSchedules.push(schedule)
+        newPossibleSchedules.push(schedule);
     }
 
-    return newPossibleSchedules
+    return newPossibleSchedules;
 }
 
 function priorityReorder(possibleSchedules) {
