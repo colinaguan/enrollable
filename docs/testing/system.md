@@ -2,27 +2,35 @@
 *Author: Colina*
 
 ### Test Cases
-- brief description of test
-- test 2
+- switching routes through browser
+- refreshing a page
 
 ### Test Details
 
-#### brief description of test
+#### switching routes through browser
 
-Instructions on how you ran the test.
-
-**Result:**
-SUCCESS or ERROR
-
-**Description:**
-If a success, describe output. If an error, describe error.
-
-#### test 2
-
-Instructions on how you ran the test.
+typed in all possible frontend routes in browser:
+- /
+- /search
+- /generate
+- /saved
 
 **Result:**
-SUCCESS or ERROR
+ERROR (in all pages except the root)
 
 **Description:**
-If a success, describe output. If an error, describe error.
+"Not Found" is shown; this is probably because Express cannot find any of the frontend routes when the client requests it. We would need to figure out a way to better integrate our frontend build and backend in order for this error to go away.
+
+#### refreshing a page
+
+Refreshing the page on the following routes:
+- /
+- /search
+- /generate
+- /saved
+
+**Result:**
+ERROR (in all pages except the root)
+
+**Description:**
+"Not Found" is shown; this is probably because Express cannot find any of the frontend routes when the client requests it. We would need to figure out a way to better integrate our frontend build and backend in order for this error to go away.

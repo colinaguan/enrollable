@@ -2,27 +2,63 @@
 *Author: Colina*
 
 ### Test Cases
-- brief description of test
-- test 2
+- sign up with valid email
+- sign up without valid email
+- login with a valid account
+- login with an invalid email and password
+- login with a valid email and invalid password
 
 ### Test Details
 
-#### brief description of test
+#### sign up with valid email
 
-Instructions on how you ran the test.
-
-**Result:**
-SUCCESS or ERROR
-
-**Description:**
-If a success, describe output. If an error, describe error.
-
-#### test 2
-
-Instructions on how you ran the test.
+signed up with an email of the format "text@text.text"
 
 **Result:**
-SUCCESS or ERROR
+SUCCESS
 
 **Description:**
-If a success, describe output. If an error, describe error.
+Successfully signs up user. Potential issue may be that we don't actually validate the email address.
+
+#### sign up without valid email
+
+signed up with an email of the formats:
+- text
+- text@
+- text@text
+
+**Result:**
+SUCCESS
+
+**Description:**
+The page displays the correct error message.
+
+#### login with a valid email and password
+
+logged in with an email used to sign up
+
+**Result:**
+SUCCESS
+
+**Description:**
+Successfully logins the user.
+
+#### login with an invalid email and password
+
+logged in with a email that was not used for an account
+
+**Result:**
+SUCCESS
+
+**Description:**
+The page displays an error message.
+
+#### login with a valid email and invalid password
+
+tried to log in with a valid email, but incorrect password
+
+**Result:**
+SUCCESS
+
+**Description:**
+The page displays an error message.
