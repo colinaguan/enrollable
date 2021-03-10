@@ -68,9 +68,8 @@ function SavedScheduleModal({
                                 }
                                 {
                                     thisClass.sections.length > 0 &&
-                                    <Row className='row-bottom-pad'>
-                                        <Col className='info-title' sm={1}></Col>       
-                                        <Col className='info-title' sm={5}>Section</Col>
+                                    <Row className='row-bottom-pad'>     
+                                        <Col className='info-title' sm={6}>Section</Col>
                                         <Col className='info-title' sm={6}>Day and Time</Col>
                                     </Row>
                                 }
@@ -80,7 +79,7 @@ function SavedScheduleModal({
                                         // Array of inclusion status for each section
                                         return (
                                             <Row key={data.num} className='row-bottom-pad'>
-                                                <Col sm={5}>
+                                                <Col sm={6}>
                                                     {thisClass.title}-{data.title}
                                                 </Col>
                                                 <Col sm={6}>
