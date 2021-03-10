@@ -149,3 +149,63 @@ SUCCESS
 **Description**
 Returned status code 200 and a sigle database class object which I compared to the class of id 63306 on the pisa database to make sure it contained all the correct information.
 
+#### route: api/generate
+This test was run by using Postman to make a POST request to route enrollable.herokuapp.com/api/generate. The body of the request was a Generation Request Object as detailed in the generate api documentation. The full request body is
+
+    {"minUnits":12,
+    "maxUnits":19,
+    "avoidTimes":[],
+    "classes":[
+        {"num":44438,
+        "title":"CSE 3",
+        "unit":5,
+        "days":["Tuesday","Thursday"],
+        "start":"11:40",
+        "end":"13:15",
+        "dayTime":"TuTh 11:40AM - 1:15PM",
+        "priority":2,
+        "sections":[]
+        },
+        {"num":43530,
+        "title":"CSE 12",
+        "unit":5,
+        "days":["Tuesday","Thursday"],
+        "start":"09:50",
+        "end":"11:25",
+        "dayTime":"TuTh 9:50AM - 11:25AM",
+        "priority":1,
+        "sections":[]
+        },
+        {"num":43521,
+        "title":"HIS 2A",
+        "unit":5,
+        "days":["Monday","Wednesday","Friday"],
+        "start":"10:40",
+        "end":"11:45",
+        "dayTime":"MWF 10:40AM - 11:45AM",
+        "priority":1,
+        "sections":[]
+        },
+        {"num":42949,
+        "title":"HIS 141A",
+        "unit":5,
+        "days":["Tuesday","Thursday"],
+        "start":"13:30",
+        "end":"15:05",
+        "dayTime":"TuTh 1:30PM - 3:05PM",
+        "priority":1,
+        "sections":[]
+        }]
+    }
+
+**Result**
+Failure
+
+**Description**
+The call returned a single generation return object as detailed in the generation api documentation. This object had the excepted output with successful value set to 'true' and the schedules value set to an array of all possible schedule combinations based on the generation request object.  
+All of this was working appropriately.
+However I also attempted variations of the generate request object to see what was returned. When the min units was higher than the max units it returned 'successful': false and no schedules. When the max units was below the required limit it also returned false with no schedules. 
+When I sent a request object with incorrectly formatted avoidtimes, I received a 500 error as expected.  
+When i sent a request object with a string of "test" as the max units rather than an int the api incorrectly returned a successful generate request object.
+When other variables of the request object (unit, num, title, days, start, end, dayTime, priority) were sent with invalid values the api continued to return successful responses instead of errors. While the frontend does a good job of ensuring only valid generation request objects are sent, the api not properly catching errors does violate the contract between front and backend and could result in difficulty when debugging the frontend in the future.
+
