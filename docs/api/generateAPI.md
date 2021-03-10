@@ -3,7 +3,6 @@
 # Generation
 
 ## Generation Request object
-
     “minUnits”: int,
     “maxUnits”: int,
     “avoidTimes”: [
