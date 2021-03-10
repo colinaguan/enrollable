@@ -10,21 +10,21 @@
 #### brief description of test
 
 Department	GE	Class Type	Favorites	test time	work/not	problem
-any				                                  10	work	
-	          any			                        15	work	no C1/C2/CD
-		                any		                  6	  work	
-any	        any			                        20	work	
-	          any	    any		                  20	work	
-any		              any		                  20	work	
-any	        any	    any		                  20	work	
-any			                    any	            10	work	
-	          any		          any	            15	work	
-		                any	    any	            6	  work	
-any	        any		          any	            5	  work	
-	          any	    any	    any	            5	  work	
-any		      any	            any	            5	  work	
-any	        any	    any	    any	            5	  work	
-any	        any	    any	    any	            5 	work	
+any				                          10	        work	
+	        any			                  15	        work	        no C1/C2/CD
+		            any		                  6	        work	
+any	        any			                  20	        work	
+	        any	    any		                  20	        work	
+any		            any		                  20	        work	
+any	        any	    any		                  20	        work	
+any			                  any	          10	        work	
+	        any		          any	          15	        work	
+		            any	          any	          6	        work	
+any	        any		          any	          5	        work	
+	        any	    any	          any	          5	        work	
+any		            any	          any	          5	        work	
+any	        any	    any	          any	          5	        work	
+any	        any	    any	          any	          5 	        work	
 
 
 
