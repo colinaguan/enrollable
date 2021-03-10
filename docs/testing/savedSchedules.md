@@ -14,8 +14,9 @@
 ### Test Details
 
 #### test 1 (save a schedule)
-select 3 classes on Generate Schedule page
-click "generate", click "Save Schedule", set title "test1", description "test1des"
+on Generate Schedule page: select multiple classes
+click "generate"
+go to one Schedule card, click "Save Schedule", set title "test1", description "test1des"
 go to saved schedule page
 
 **Result:**
@@ -37,7 +38,7 @@ SUCCESS
 new title and description are updated on the schedule card, and schedule Modal
 
 #### test 3 (delete a schedule)
-
+on Save Schedule page
 click "Edit Schedule", click "Delete" button
 
 **Result:**
@@ -48,8 +49,8 @@ need to go to another page and come back to see update(deleted schedule disappea
 
 #### test 4 (save multiple schedules from one generation)
 
-select classes, click generate.
-among the generated schedules, save multiple of them
+on Generate Schedule page: select classes, click "generate"
+among the generated schedules, click "Save" to save multiple of them
 go to saved schedule page
 
 **Result:**
@@ -84,7 +85,7 @@ go to saved schedule page
 ERROR
 
 **Description:**
-classes are saved correctly, all listed sections are saved(should not save any)
+classes are saved correctly, but all listed sections are saved(should not save any)
 
 
 
@@ -105,15 +106,15 @@ classes are saved, the section was once selected but not selecting when returned
 
 #### test 8 (generate Modal test2)
 on Generate Schedule page:
-select classes, click generate.
+select classes, click "generate"
 click "Save schedule"
 modify title and description
 click "Cancel"
-click "Save schedule" again
+on the same schedule card, click "Save schedule" again
 
 
 **Result:**
 ERROR
 
 **Description:**
- modified title and description was saved on the Modal, same happen when click "Cancel" other than "Cancel"
+ modified title and description was saved on the Modal, same happen when click "Save" other than "Cancel"
