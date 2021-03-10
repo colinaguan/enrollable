@@ -3,7 +3,7 @@ import { Modal, Container, Button, Row, Card, Col, Form, OverlayTrigger, Tooltip
 import { shortenDays, timeToString } from '../utils/format';
 import '../style/GenerateScheduleModal.css';
 
-function GenerateScheduleModal({ classList, scheduleTitle, show, setShow, setCardTitle, setCardDescription, saveSchedule }) {
+function GenerateScheduleModal({ classList, scheduleTitle, show, setShow, setCardTitle, setCardDescription, setCardSections, saveSchedule }) {
 
     //new versions passed in from GenerateScheduleCard
     const [title, setTitle] = useState(scheduleTitle);
@@ -36,9 +36,12 @@ function GenerateScheduleModal({ classList, scheduleTitle, show, setShow, setCar
     const handleRadio = (e) => {
         const sectionNum = parseInt(e.target.id, 10);
         const classNum = parseInt(e.target.name, 10);
-        console.log(sectionNum, classNum);
-        // TODO: once firestore savedSchedules object is documented, store proper information
-        scheduleData[classNum] = sectionNum;
+        //console.log(sectionNum, classNum);
+        //scheduleData[classNum] = sectionNum;
+        //setCardSections(classNum, sectionNum);
+        //console.log("modal scheduleData", scheduleData);
+        setCardSections(classNum, sectionNum);
+        //scheduleData[classNum] = sectionNum;
     }
 
     const classCards = classList.map(thisClass => {
