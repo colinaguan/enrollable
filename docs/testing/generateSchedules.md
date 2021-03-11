@@ -1,7 +1,7 @@
 # Generate Schedules Page
 *Author: Jinghao*
 
-### Test Cases
+## Test Cases
 - Generate test: Generate with 1 class selected with default constrain
 - Generate test: Generate with 2 class selected with default constrain
 - Generate test: Generate with 3+ class selected with default constrain without time conflict
@@ -14,9 +14,9 @@
 - Generate test: Generate with selected section
 - Refresh page
 
-### Test Details
+## Test Details
 
-#### Test 1
+### Test 1
 
 Generate test: Generate with 1 class selected with default constrain
 
@@ -26,7 +26,7 @@ SUCCESS
 **Description:**
 As expected. No possible schedules can be generate with only 1 class.
 
-#### Test 2
+### Test 2
 
 Generate test: Generate with 2 class selected with default constrain
 
@@ -36,7 +36,7 @@ SUCCESS
 **Description:**
 As expected. No possible schedules can be generated with minimum units of 12. 
 
-#### Test 3
+### Test 3
 
 Generate test: Generate with 3+ class selected with default constrain without time conflict
 
@@ -46,7 +46,7 @@ SUCCESS
 **Description:**
 Schedules are successfully generated.
 
-#### Test 4
+### Test 4
 
 Constrain test: units constrain
 
@@ -57,7 +57,7 @@ SUCCESS
 Error displayed when minimum units is greater then or equal to maximum units.
 Schedules are successfully generated if no error in units constrain.
 
-#### Test 5
+### Test 5
 
 Constrain test: units constrain error
 
@@ -72,7 +72,7 @@ adjust the maximum units to 15,
 "generate" gets no response.
 Generate button not working, unless change made in time constarin.
 
-#### Test 6
+### Test 6
 
 Constrain test: time constrain error
 
@@ -84,7 +84,7 @@ After an error occured, unable to generate even the error is removed.
 Same as test5.
 Generate button not working, unless change made in units constarin.
 
-#### Test 7
+### Test 7
 
 Constrain test: time constrain
 
@@ -95,7 +95,7 @@ SUCCESS
 Error displayed when duplicate and end time is smaller than start time.
 Schedules are successfully generated with no conflict to avoid time.
 
-#### Test 8
+### Test 8
 
 Constrain test: remove time constrain 
 
@@ -107,7 +107,7 @@ When have multiple time constrains, remove one constrain will cause two constrai
 Unable to remove the desired time constrain. 
 Only work when removing from the end of list.
 
-#### Test 9
+### Test 9
 
 Generate test: Generate with priority
 
@@ -118,7 +118,7 @@ ERROR
 Priority reordering only works among schedules with the same length.
 schedules with fewer classes will always be displayed before schedules with more classes. 
 
-#### Test 10
+### Test 10
 
 Generate test: Generate with selected section
 
@@ -128,7 +128,7 @@ SUCCESS
 **Description:**
 Schedules generated with selected section. 
 
-#### Test 11
+### Test 11
 
 Refresh page
 
